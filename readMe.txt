@@ -1,0 +1,1 @@
+Copy dealsTemplate 1 and 2 to respective set of hand summaries, changing to relevant dealNo.

@@ -1,0 +1,441 @@
+div.mainDivStyle
+{ 
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0;  /* Change from "margin: 0 auto;" to just "margin: 0;" */
+  height: 100vh;
+  background: #006600;
+  font-family: arial;
+  overflow: hidden;
+}
+
+div.editorDivStyle
+{ position: absolute;
+  top: 0;
+  left: 0;
+  background: #99CCCC;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  font-family: arial;
+  visibility: hidden;
+}
+div.statusDivStyle
+{
+  position: absolute;
+  border: 1px solid black;
+  background: #FFCE00;
+  font-family: arial;
+  padding: 10;
+  text-align: center;
+  visibility: hidden;
+}
+div.menuDivStyle
+{
+  background: #E2E1B5;
+  border: 1px solid #989898;
+  position: absolute;
+  font-family: arial;
+}
+div.annotDivStyle
+{
+  background: #FFFFFF;
+  border: 1px solid black;
+  position: absolute;
+  padding-left: 4;
+  padding-right: 4;
+  padding-top: 2;
+  padding-bottom: 2;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: arial;
+  visibility: hidden;
+}
+div.trickCardStyle
+{
+  background: #FFFFFF;
+  border: 1px solid black;
+  text-align: center;
+  position: absolute;
+}
+div.buttonDivStyle
+{
+  background: #a9a7a7;
+  font-family: arial;
+  position: absolute;
+  visibility: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border: 1px solid black;
+}
+table.handTableStyle
+{
+  border: 1px solid white;
+  position: absolute;
+}
+div.subDivStyle
+{
+  border: 1px solid white;
+  background: #99CCCC;
+  position: absolute;
+}
+div.handDivStyle
+{
+  border: 1px solid white;
+  position: absolute;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+div.auctionTableDivStyle
+{
+  background: #99CCCC;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border: 1px solid white;
+}
+div.announceDivStyle
+{
+  background: #FFCE00;
+  position: absolute;
+  text-align: center;
+  border: 1px solid white;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  font-size: 14px;
+}
+div.blockDivStyle
+{
+  background: #FFCE00;
+  position: absolute;
+  text-align: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+div.alertDivStyle
+{
+  background: #E2E1B5;
+  position: absolute;
+  text-align: center;
+  white-space: nowrap;
+  padding-left: 2;
+  padding-right: 2;
+}
+div.vulDivStyle
+{
+  position: absolute;
+  text-align: center;
+  white-space: nowrap;
+}
+div.vulInnerDivStyle
+{
+  background: #99CCCC;
+  position: absolute;
+  border: 2px solid white;
+  text-align: center;
+}
+div.nameRowDivStyle
+{
+  border: 1px solid white;
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+}
+
+div.nameInitialDivStyle
+{
+  background: #336799;
+  color: FFFFFF;
+  border-right: 1px solid white;
+  height: 100%;
+  width: 18%;
+  text-align: center;
+}
+
+div.suitRowDivStyle
+{
+  position: absolute;
+  height: 20%;
+  width: 100%;
+}
+div.cardDivStyle
+{
+  position: absolute;
+  height: 100%;
+}
+div.gibDivStyle
+{
+  position: absolute;
+  padding-left: 1;
+  padding-right: 1;
+  text-align: center;
+
+}
+div.suitSymbolDivStyle
+{
+  width: 18%;
+  height: 100%;
+  text-align: center;
+}
+div.suitHoldingDivStyle
+{
+  position: absolute;
+  width: 92%;
+  height: 100%;
+}
+div.teamDivStyle
+{
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+div.scoreDivStyle
+{
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-align: right;
+}
+input.buttonStyle
+{
+  position: absolute;
+  height: 100%;
+  overflow: visible;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 2;
+  padding-right: 2;
+}
+img.logoImageStyle
+{
+  position: absolute;
+}
+div.scoreBoardTableDivStyle
+{
+  position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+div.scoreBoardTableStyle
+{
+  position: absolute;
+  background: #FFFFFF;
+}
+div.scoreBoardTDStyle
+{
+  border-right: 1px solid black;
+  text-align: center;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  border-bottom: 1px solid black;
+}
+div.scoreBoardResultTDStyle
+{
+  border-right: 1px solid black;
+  text-align: left;
+  overflow: hidden;
+  padding-left: 2;
+  position: absolute;
+  white-space: nowrap;
+  border-bottom: 1px solid black;
+}
+
+div.playerNameDivStyle
+{
+  position: absolute;
+  white-space: nowrap;
+  text-align: left;
+  padding-left: 3;
+  overflow: hidden;
+  border-right: 1px solid black;
+}
+div.scoreBoardTitleDivStyle
+{
+  position: absolute;
+  background: #FFCE00;
+
+}
+div.scoreBoardTitleLineDivStyle
+{
+  position: absolute;
+  white-space: nowrap;
+  padding-left: 5;
+  padding-right: 5;
+}
+td.scoreBoardScoreTableTDStyle1
+{
+  padding-left:3;
+  padding-right:3;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+td.scoreBoardScoreTableTDStyle2
+{
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  text-align: center;
+}
+td.scoreBoardScoreTableTDStyle3
+{
+  border-right: 1px solid black;
+  text-align: center;
+}
+td.scoreBoardScoreTableTDStyle4
+{
+  padding-left:3;
+  padding-right:3;
+  border-right: 1px solid black;
+}
+td.scoreBoardScoreTableTDStyle5
+{
+  padding-left:3;
+  padding-right:3;
+  border-bottom: 1px solid black;
+}
+a:visited
+{
+  color: #000080;
+}
+a:link
+{
+  color: #000080;
+}
+a:active
+{
+  color: #000080;
+}
+
+div.biddingBoxDivStyle
+{
+  position: absolute;
+  background: #E2E1B5;
+  visibility: hidden;
+  border: 1px solid black;
+}
+input.passButtonStyle
+{
+  position: absolute;
+  overflow: visible;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 2;
+  padding-right: 2;
+  background: #006600;
+  color: #FFFFFF;
+}
+
+input.dblButtonStyle
+{
+  position: absolute;
+  overflow: visible;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 2;
+  padding-right: 2;
+  color: #FFFFFF;
+}
+input.strainButtonStyle
+{
+  position: absolute;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 2;
+  padding-right: 2;
+  background: #99CCCC;
+}
+input.levelButtonStyle
+{
+  position: absolute;
+  overflow: visible;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 2;
+  padding-right: 2;
+}
+input.explainEditStyle
+{
+  position: absolute;
+}
+textarea.commentsEditStyle
+{
+  position: absolute;
+  font-family: Arial;
+  border: 1px solid black;
+}
+div.commentsHeadingDivStyle
+{
+  position: absolute;
+  background: #FFCE00;
+  text-indent: 5;
+  border: 1px solid black;
+}
+
+div.leaderBoardDivStyle
+{
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  border: 1px solid black;
+}
+table.leaderBoardTableStyle
+{
+  background: #99CCCC;
+  text-align: center;
+}
+input.editorButtonStyle
+{
+  position: absolute;
+  overflow: visible;
+  padding-left: 5;
+  padding-right: 5;
+}
+div.editorAnnounceDivStyle
+{
+  background: #FFCE00;
+  position: absolute;
+  text-align: left;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-top: 1px solid black;
+  padding-left: 5;
+  white-space: nowrap;
+  padding-right: 10;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+div.editorMenuDivStyle
+{
+  background: #99CCCC;
+  position: absolute;
+}
+
+
+/* #eastCover, #westCover {
+  visibility: hidden;
+} */
+.coverStyle {
+  position: absolute;
+  visibility: hidden; /* or 'hidden' based on your initial requirement */
+  width: 402px; /* Adjust as needed */
+  height: 285px; /* Adjust as needed */
+  top: 288px;
+  background-color: #06600e; /* Example color, adjust as needed */
+  z-index: 10; /* Ensure it covers the hands */
+  /* Add any other common properties here */
+}
+div.nameTextDivStyle
+{
+  position: absolute;
+  height: 100%;
+  color: #000000 !important;
+  visibility: visible !important;
+  display: block !important;
+  z-index: 1000 !important;
+}

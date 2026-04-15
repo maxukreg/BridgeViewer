@@ -1,0 +1,2 @@
+Bidding.js : 
+when clicking a number to bid, the lower suits are not disappearing.

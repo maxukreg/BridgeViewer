@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge Viewer Hands</title>
+
+    <link rel="stylesheet" href="handlinks.css">
+
+    <!-- Include your existing group data files -->
+    <script src="group11.js"></script>
+    <script src="group12.js"></script>
+    <script src="group17.js"></script>
+    <script src="group18.js"></script>
+    <script src="group19.js"></script>
+    <script src="group20.js"></script>
+    <script src="group21.js"></script>
+    <script src="group22.js"></script>
+    <script src="group23.js"></script>
+    <script src="group24.js"></script>
+    <script src="group25.js"></script>
+    <script src="group26.js"></script>
+    <script src="group27.js"></script>
+    <script src="group28.js"></script>
+    <script src="group29.js"></script>
+    <script src="group30.js"></script>
+    <script src="group31.js"></script>
+    <script src="group32.js"></script>
+    <script src="group33.js"></script>
+    <script src="group34.js"></script>
+    <script src="group35.js"></script>
+    <script src="group36.js"></script>
+    <script src="group37.js"></script>
+    <script src="group38.js"></script>
+</head>
+<body>
+    <div class="bridge-page">
+        <header>
+            <span class="suit-symbols">
+                <span class="club suit-symbol">♣</span>
+                <span class="diamond suit-symbol">♦</span>
+                <span class="heart suit-symbol">♥</span>
+                <span class="spade suit-symbol">♠</span>
+            </span>
+            <h1>Bridge Viewer Hands</h1>
+        </header>
+
+        <section class="dropdown-section">
+            <label for="group-select">Select Group:</label>
+            <select id="group-select">
+                <option value="">-- Choose a group --</option>
+                <option value="11">Squeeze Plays - Part 1</option>
+                <option value="12">Squeeze Plays - Part 2</option>
+                <option value="17">Play Technique - Part 1</option>
+                <option value="18">Play Technique - Part 2</option>
+                <option value="19">Finesses - Part 1</option>
+                <option value="20">Finesses - Part 2</option>
+                <option value="21">Entries - Part 1</option>
+                <option value="22">Entries - Part 2</option>
+                <option value="23">Help from the enemy - Part 1</option>
+                <option value="24">Help from the enemy - Part 2</option>
+                <option value="25">Trump Management - Part 1</option>
+                <option value="26">Trump Management - Part 2</option>
+                <option value="27">Slam Bidding - Part 1</option>
+                <option value="28">Slam Bidding - Part 2</option>
+                <option value="29">NoTrump play - Part 1</option>
+                <option value="30">NoTrump play - Part 2</option>
+                <option value="31">Trump Play - Part 1</option>
+                <option value="32">Trump Play - Part 2</option>
+                <option value="33">Match Point Tourn Play - Part 1</option>
+                <option value="34">Match Point Tourn Play - Part 2</option>
+                <option value="35">Safety Plays - Part 1</option>
+                <option value="36">Safety Plays - Part 2</option>
+                <option value="37">End Plays - Part 1</option>
+                <option value="38">End Plays - Part 2</option>
+            </select>
+        </section>
+
+        <main class="hands-area">
+            <div id="no-selection" class="no-selection">
+                Select a group above to view available hands
+            </div>
+
+            <div id="hands-display" class="hidden">
+                <div class="section-header">
+                    <div id="section-title" class="section-title"></div>
+                    <button id="intro-button" class="intro-button" type="button" disabled>
+                        Introduction
+                    </button>
+                </div>
+
+                <div id="link-grid" class="link-grid"></div>
+            </div>
+
+            <div id="intro-overlay" class="intro-overlay hidden" aria-hidden="true">
+                <div class="intro-modal" role="dialog" aria-modal="true" aria-labelledby="intro-modal-title">
+                    <div class="intro-modal-header">
+                        <div id="intro-modal-title" class="intro-modal-title">Introduction</div>
+                        <button id="intro-close" class="intro-close" type="button">Close</button>
+                    </div>
+                    <div id="intro-modal-body" class="intro-modal-body"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="handlinks.js"></script>
+</body>
+</html>
