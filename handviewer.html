@@ -43,7 +43,7 @@
       type="text/javascript"
       src="js/jquery.hoverIntent.minified.js"
     ></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/bbo_public.css" />
     <script type="text/javascript" src="js/bbo_public.js"></script>
 
@@ -63,6 +63,15 @@
       })
     </script>
   </head>
+  <script type="text/javascript">
+    var _resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(_resizeTimer);
+      _resizeTimer = setTimeout(function() {
+        if (typeof respondToResize === 'function') respondToResize();
+      }, 100);
+    });
+  </script>
   <body
     bgcolor="#FFFFFF"
     leftMargin="0"
@@ -74,6 +83,7 @@
     onkeydown="handleKeyDown(event);"
     style="overflow: hidden"
     onload="documentLoaded();"
+    onresize="respondToResize();"
   >
     <noscript>
       <br />

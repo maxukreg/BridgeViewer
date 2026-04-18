@@ -1,6 +1,6 @@
-const htmlPlayLoc = 'handviewer.html';
-const htmlBidLoc =  'bidding.html';
-const htmlSummLoc =  'summary.html';
+const htmlPlayLoc = 'file:///C:/Users/maxuk/OneDrive/Software/Projects/Handviewer/Autobridge/FullVersion/handviewer.html';
+const htmlBidLoc =  'file:///C:/Users/maxuk/OneDrive/Software/Projects/Handviewer/Autobridge/FullVersion/bidding.html';
+const htmlSummLoc =  'file:///C:/Users/maxuk/OneDrive/Software/Projects/Handviewer/Autobridge/FullVersion/summary.html';
 const htmlLoc= htmlPlayLoc;
 // Object to store all group data
 const groupData = {};
@@ -509,7 +509,7 @@ function respondToResize() {
   nameHeight = Math.floor(handHeight / 5);
 
   // Horizontal offset to bring East/West hands closer to center
-  var sideOffset = Math.floor(totalWidth * 0.10); 
+  var sideOffset = Math.floor(totalWidth * 0.13); 
 
   // 4. Position & Size Hands
   for (var s = 0; s < 4; s++) {
@@ -626,8 +626,8 @@ function respondToResize() {
   }
 
   // 5. CENTERED TRICK AREA (Wider Cards + Larger Border)
-  var trickCardWidth = Math.floor(handWidth * 0.34); 
-  var trickCardHeight = Math.floor(trickCardWidth * 0.55); 
+  var trickCardWidth = Math.floor(handWidth * 0.22);   // was 0.34 - narrower
+  var trickCardHeight = Math.floor(trickCardWidth * 0.7); // was 0.55 - slightly taller ratio
   
   var centerX = totalWidth / 2;
   var centerY = totalHeight / 2;
@@ -668,10 +668,10 @@ function respondToResize() {
     window.trickContainerBorder = document.createElement("div");
     document.getElementById("theDiv").appendChild(window.trickContainerBorder);
   }
-  var containerPadding = Math.floor(trickCardHeight * 0.8);
-  var containerWidth = Math.floor(trickCardWidth * 2.6) + (containerPadding * 2);  
-  var containerHeight = Math.floor(trickCardHeight * 3.2) + (containerPadding * 2);
 
+  var containerPadding = Math.floor(trickCardHeight * 0.9);  // was 0.25 - more space
+  var containerWidth  = Math.floor(trickCardWidth * 3.2) + (containerPadding * 2);  // was 2.2
+  var containerHeight = Math.floor(trickCardHeight * 3.0) + (containerPadding * 2); // was 2.4
   window.trickContainerBorder.style.position = "absolute";
   window.trickContainerBorder.style.width = containerWidth + "px";
   window.trickContainerBorder.style.height = containerHeight + "px";
@@ -1611,7 +1611,7 @@ function nextCard(animate, fromCardClick) {
     if (
       areEventsGrouped() &&
       animate &&
-      (!cardAnnotation[trick][inTrick] || hideChat)
+      (trick < 0 || !cardAnnotation[trick][inTrick] || hideChat)
     ) {
       if (inTrick == 3) {
         // TRICK ENDED:
@@ -2271,7 +2271,9 @@ function showAllTrickCards() {
     showTrickCard(seatPlayed[trick][it], suitPlayed[trick][it], rankPlayed[trick][it]);
   }
 }
-
+function formatTrickCard(html) {
+  return html.replace(/10/g, '<span style="font-family: \'Barlow Condensed\', Arial Narrow, sans-serif; font-weight: 500; letter-spacing: -1px;">10</span>');
+}
 function showTrickCard(seat, suit, rank) {
   if (suit < 0 || rank < 0) {
     return;
@@ -2288,8 +2290,8 @@ function showTrickCard(seat, suit, rank) {
     moveTrickCardImage(seat);
   } else {
     var rankShow = getCardChar(rank);
-
-    trickDivs[seat].innerHTML = suitHTMLs[suit] + "<font color='000000'>" + rankShow + '</font>';
+    trickDivs[seat].innerHTML = suitHTMLs[suit] + "<font color='000000'>" + formatTrickCard(rankShow) + '</font>';
+    // trickDivs[seat].innerHTML = suitHTMLs[suit] + "<font color='000000'>" + rankShow + '</font>';
     trickDivs[seat].style.visibility = 'visible';
   }
 }
@@ -2709,7 +2711,7 @@ function play() {
         disableButton("undo", true);
         disableButton("rewind", true);
     } else {
-        window.location.href = "handlinks.html";
+        window.location.href = "index.html";
     }
 }
 
@@ -2799,12 +2801,13 @@ function next() {
   debugLog('trick:', trick, 'inTrick:', inTrick);
   debugLog('playSeqPoint:', playSeqPoint, 'playSeqMax:', playSeqMax);
   killTimer();
+  
   var retVal;
+
   if (trick === 12 && inTrick === 3) {
       summary();
       return;
-  }
-
+  }  
 
   // LOGIC FIX: Determine if the current turn (whosTurn) is the User.
   // The User plays South (0).
@@ -2860,14 +2863,16 @@ function replay(){
   window.location.href = element.href;
 }
 
+
+function exitToHandLinks() {
+    window.location.href = "index.html";
+}
+
 function summary() {
   const queryString = getQueryString();
   window.location.href = htmlSummLoc + '?' + queryString;
 }
 
-function exitToHandLinks() {
-  window.location.href = 'handlinks.html';
-}
 
 function undo() {
   killTimer();
@@ -2901,10 +2906,6 @@ function undo() {
 
 function rewind() {
   killTimer();
-
-  // Reset button label back to Rewind
-  var rb = document.getElementById('rewindButton');
-  if (rb) rb.value = 'Rewind';
 
   while (trick >= 0 || (undoIntoAuction() && bidSeqPoint >= 0)) {
     undo();
@@ -3089,6 +3090,11 @@ function manageTricksDiv() {
                 html += "&nbsp;" + seats[declarer].charAt(0);
             }
             html += "</span>";
+        }
+        // Show "Select opening lead" prompt when East is declarer,
+        // South is on lead, and no card has been played yet.
+        if (declarer === 3 && whosTurn === 0 && trick === -1) {
+            showTransientAnnouncement("Select opening lead", -1);
         }
     }
     tricksDivLeft.innerHTML = html;
@@ -3292,14 +3298,8 @@ function showTrickResult() {
     }
     
     // change previous button text to replay
-    // change previous button text to replay
-    setTimeout(function() {
-          var rb = document.getElementById('rewindButton');
-          if (rb) {
-            rb.value = 'Replay';
-            rb.disabled = false;
-          }
-        }, 100);
+    var rewindButton = document.getElementById('rewindButton');
+    if (rewindButton) rewindButton.value = 'Replay';
     claimShowing = true;
     if (!picturesOfCards) {
       wasKibitzed = seatKibitzed;
@@ -3351,9 +3351,10 @@ function playCard(card, animate) {
   }
 
   if (inTrick == 3) {
-      clearTrickCards(0, 3);
-      trick++;
-      inTrick = 0;
+ 
+    clearTrickCards(0, 3);
+    trick++;
+    inTrick = 0;
   } else inTrick++;
 
   suitPlayed[trick][inTrick] = suit;
@@ -3451,8 +3452,7 @@ function deal(dealString) {
 
   clearDeck();
 
-  var dealerDigit = parseInt(dealString.charAt(0));
-  var seat = dealerDigit - 1;   // ← Start from dealer's seat (1→S, 2→W, 3→N, 4→E)
+  var seat = 0;
   var suit = -1;
   var card = -1;
   var p = 1;
@@ -8364,7 +8364,13 @@ if (typeof playSeqPoint !== 'undefined' && playSeqPoint === 0) {
             showTransientAnnouncement("Select a card", -1);
         }
     } else if (whosTurn === 2 && declarer === 0) {
-        // North is on lead, but South is declarer (User controls North)
-         showTransientAnnouncement("Select opening lead", -1);
+        // North is on lead, South is declarer (User controls North)
+        showTransientAnnouncement("Select opening lead", -1);
+    } else if (whosTurn === 2 && declarer === 1) {
+        // North is on lead against West declarer - user must click Next
+        showTransientAnnouncement("Click Next to start", -1);
+    } else if (whosTurn === 2 && declarer === 3) {
+        // North is on lead against East declarer - user must click Next
+        showTransientAnnouncement("Click Next to start", -1);
     }
 }

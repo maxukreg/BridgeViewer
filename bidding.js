@@ -392,7 +392,8 @@ if (vugraphClient) {
         loadFromURL(linURL);
       } else {
         linURL = safeDecode(gup('lin'));
-        if (linURL != '') processLinFile(linURL);
+        if (linURL != '')
+             processLinFile(linURL);
         else loadParams();
         if (picturesOfCards && displayType != '') {
           togglePictures();
@@ -1009,7 +1010,8 @@ function respondToResize() {
   manageInfoDiv();
 
 }
-
+debugSeatState('before startBiddingProcess');
+console.log('South handDiv innerHTML:', handDivs[0].innerHTML);
 startBiddingProcess().then(() => {
   console.log('Returned to the line after startBiddingProcess()');
  
@@ -1017,6 +1019,8 @@ startBiddingProcess().then(() => {
 
 
 async function startBiddingProcess() {
+  console.log('startBiddingProcess entered');
+  console.log('South visible before first bid:', deck[0], handDivs[0].innerHTML);  
   blankOutHand(2); // North
   blankOutHand(3); // East
   blankOutHand(1); // West
@@ -3627,63 +3631,60 @@ function playCard(card, animate) {
   return true;
 }
 
-function deal(dealString) {
-  if (!dealString || dealString.length == 0) return false;
+function deal(dealString)
+{
+    if (!dealString || dealString.length == 0) return false;
+    clearDeck(false);
 
-  clearDeck();
+    var seat = 0;
+    // dealer = seat;
 
-  // FIX: Calculate starting seat based on the dealer digit in the md tag
-  // 1=South(0), 2=West(1), 3=North(2), 4=East(3)
-  var dealerDigit = parseInt(dealString.charAt(0));
-  var seat = dealerDigit - 1;  // Start from dealer's seat (1→0=S, 2→1=W, 3→2=N, 4→3=E)
-  dealer = dealerDigit - 1;  // But remember who dealer is
+    var suit = -1;
+    var card = -1;
+    var p = 1;
 
-
-  var suit = -1;
-  var card = -1;
-  var p = 1;
-
-  while (p < dealString.length) {
-    var ch = dealString.charAt(p).toUpperCase();
-
-    if (ch == ',') {
-      seat++; // Move to the next seat clockwise
-      if (seat > 3) seat = 0; // Wrap around East back to South
-      suit = -1;
-      card = -1;
+    while (p < dealString.length)
+    {
+        var ch = dealString.charAt(p).toUpperCase();
+        if (ch == ',')
+        {
+            seat++;
+            if (seat > 3) seat = 0;
+            suit = -1;
+            card = -1;
+        }
+        else
+        {
+            var st = suitchars.indexOf(ch);
+            if (st >= 0) suit = st;
+            else if (ch == 'X')
+            {
+                if (suit < 0) return false;
+                if (howManyCardsDealt[seat] < 13)
+                {
+                    howManyXs[seat][suit]++;
+                    howManyCards[seat]++;
+                    howManyCardsDealt[seat]++;
+                    howManySuit[seat][suit]++;
+                    howManySuitDealt[seat][suit]++;
+                }
+            }
+            else
+            {
+                if (ch == '1') card = 8;
+                else card = cardchars.indexOf(ch);
+                if (card >= 0)
+                {
+                    if (suit < 0) return false;
+                    dealCardToPlayer(suit, card, seat);
+                }
+            }
+        }
+        p++;
     }
-
-    var st = suitchars.indexOf(ch);
-
-    if (st >= 0) suit = st;
-
-    if (ch == 'X') {
-      if (suit < 0) return false;
-      if (howManyCardsDealt[seat] < 13) {
-        howManyXs[seat][suit]++;
-        howManyCards[seat]++;
-        howManyCardsDealt[seat]++;
-        howManySuit[seat][suit]++;
-        howManySuitDealt[seat][suit]++;
-      }
-    } else {
-      if (ch == '1') {
-        card = 8;
-      } else {
-        card = cardchars.indexOf(ch);
-      }
-
-      if (card >= 0) {
-        if (suit < 0) return false;
-
-        dealCardToPlayer(suit, card, seat);
-      }
-    }
-    p++;
-  }
-  fillInFourthHand();
-  populateHands(0, 3, 0, 3);
-  return true;
+    fillInFourthHand();
+    populateHands(0, 3, 0, 3);
+    return true;
 }
 
 function setVul(vul) {
@@ -4270,6 +4271,7 @@ function processLinCommand(command, param) {
       setVul(param);
       break;
     case 'MD':
+      console.log('MD param =', param);  
       deal(param);
       setDealer(seats[parseInt(param.charAt(0)) - 1]);
       break;
@@ -9113,7 +9115,7 @@ function isNumericBid(bid) {
 }
 
 
-const htmlPlayLoc = 'handviewer.html';
+const htmlPlayLoc = 'file:///C:/Users/maxuk/OneDrive/Software/Projects/Handviewer/Autobridge/FullVersion/handviewer.html';
 const htmlLoc = htmlPlayLoc ;
 const groupData = {};
 
@@ -9131,7 +9133,6 @@ function loadGroupData() {
     if (typeof group23Data !== 'undefined') groupData['23'] = group23Data;
     if (typeof group24Data !== 'undefined') groupData['24'] = group24Data;
     if (typeof group25Data !== 'undefined') groupData['25'] = group25Data;
-    if (typeof group26Data !== 'undefined') groupData['26'] = group26Data;
     if (typeof group27Data !== 'undefined') groupData['27'] = group27Data;
     if (typeof group28Data !== 'undefined') groupData['28'] = group28Data;
     if (typeof group29Data !== 'undefined') groupData['29'] = group29Data;
@@ -9171,6 +9172,17 @@ function handleLinkClick() {
     } else {
         console.error('Invalid link ID format:', linkId);
     }
+}
+
+function debugSeatState(label) {
+  console.log('--- ' + label + ' ---');
+  console.log('linURL:', linURL);
+  console.log('dealer:', dealer, dealer >= 0 ? seats[dealer] : 'unset');
+  console.log('whosTurn:', whosTurn, whosTurn >= 0 ? seats[whosTurn] : 'unset');
+  console.log('deck[0] South:', deck[0]);
+  console.log('deck[1] West :', deck[1]);
+  console.log('deck[2] North:', deck[2]);
+  console.log('deck[3] East :', deck[3]);
 }
 
 // Add click event listeners to all links when the page loads

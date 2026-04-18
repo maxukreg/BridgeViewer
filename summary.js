@@ -2575,10 +2575,7 @@ function deal(dealString) {
 
   clearDeck();
 
-  // BBO LIN md|N means: first hand listed belongs to seat N-1 (1=South=0, 2=West=1, 3=North=2, 4=East=3)
-  var startSeat = parseInt(dealString.charAt(0)) - 1;
-  if (startSeat < 0 || startSeat > 3) startSeat = 0;
-  var seat = startSeat;
+  var seat = 0;
   var suit = -1;
   var card = -1;
   var p = 1;
@@ -2587,7 +2584,8 @@ function deal(dealString) {
     var ch = dealString.charAt(p).toUpperCase();
 
     if (ch == ',') {
-      seat = (seat + 1) % 4;
+      seat++;
+      if (seat > 3) return false;
       suit = -1;
       card = -1;
     }

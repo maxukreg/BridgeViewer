@@ -501,8 +501,8 @@ button {
   justify-content: center;
   align-items: center;
   gap: 3px;
-  width: 100%;
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  width: auto;
+  overflow-x: visible;
   white-space: nowrap; /* Prevent wrapping */
   padding: 5px 0;
 }
