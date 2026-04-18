@@ -1,6 +1,6 @@
-const htmlPlayLoc = 'file:///C:/Users/maxuk/OneDrive/Software/Projects/Handviewer/Autobridge/FullVersion/handviewer.html';
-const htmlBidLoc =  'file:///C:/Users/maxuk/OneDrive/Software/Projects/Handviewer/Autobridge/FullVersion/bidding.html';
-const htmlSummLoc =  'file:///C:/Users/maxuk/OneDrive/Software/Projects/Handviewer/Autobridge/FullVersion/summary.html';
+const htmlPlayLoc = 'handviewer.html';
+const htmlBidLoc = 'bidding.html';
+const htmlSummLoc = 'summary.html';
 const htmlLoc= htmlPlayLoc;
 // Object to store all group data
 const groupData = {};

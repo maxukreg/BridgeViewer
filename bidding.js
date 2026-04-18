@@ -9115,7 +9115,7 @@ function isNumericBid(bid) {
 }
 
 
-const htmlPlayLoc = 'file:///C:/Users/maxuk/OneDrive/Software/Projects/Handviewer/Autobridge/FullVersion/handviewer.html';
+const htmlPlayLoc = 'handviewer.html';
 const htmlLoc = htmlPlayLoc ;
 const groupData = {};
 
