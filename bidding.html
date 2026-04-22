@@ -3,16 +3,21 @@
   <head>
     <meta charset="UTF-8">
     <!-- <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
 
    
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="bidding.css" type="text/css" />
 
 
   </head>
-  <body onclick="hideContextMenu(event); hideContextMenu(event,true);" onorientationchange="respondToResize();" onkeydown="handleKeyDown(event);" onload="documentLoaded();">
+  <script>
+    document.addEventListener('touchstart', function(){}, {passive: true});
+    document.addEventListener('gesturestart', function(e){ e.preventDefault(); });
+  </script>
+  
+  <body  onclick="hideContextMenu(event); hideContextMenu(event,true);"  onresize="respondToResize();"  onorientationchange="respondToResize();" onkeydown="handleKeyDown(event);" onload="documentLoaded();">
+    
     <script src="group11.js" defer></script>
     <script src="group12.js" defer></script>
 	  <script src="group17.js" defer></script>
@@ -40,8 +45,17 @@
     <script src="bidding.js" defer></script>
 
    
-    <div class="mainDivStyle" id="theDiv" oncontextmenu="contextMenuRequest(event); return false;">
-     
+    <div class="mainDivStyle" id="theDiv">
+    </div>
+    <div class="buttonDivStyle" id="buttonDiv" oncontextmenu="return false;">
+      <input type="button" value="New" onclick="newDeal()" id="newButton" class="buttonStyle" />
+      <input type="button" value="Shuffle" onclick="shuffle()" id="shuffleButton" class="buttonStyle" />
+      <input type="button" value="Rewind" onclick="rewind()" id="rewindButton" class="buttonStyle" />
+      <input type="button" value="Previous" onclick="undo()" id="undoButton" class="buttonStyle" />
+      <input type="button" value="Next" onclick="nextBid()" id="nextButton" class="buttonStyle" />
+      <input type="button" value="Options" onclick="options()" id="optionsButton" class="buttonStyle" />
+      <input type="button" value="GIB" onclick="gib()" id="gibButton" class="buttonStyle" />
+      <input type="button" value="Play" onclick="play()" id="playButton" class="buttonStyle" />
     </div>
     <div class="container" id="biddingBox">
       <div class="actions">
@@ -69,38 +83,6 @@
     
     <div class="editorDivStyle" id="editorDiv"></div>
     <div class="annotDivStyle" id="annotDiv"></div>
-    <div class="buttonDivStyle" id="buttonDiv" oncontextmenu="return false;">
-      <input type="button" value="New" onclick="newDeal()" id="newButton" class="buttonStyle" />
-      <input
-        type="button"
-        value="Shuffle"
-        onclick="shuffle()"
-        id="shuffleButton"
-        class="buttonStyle"
-      />
-      <input
-        type="button"
-        value="Rewind"
-        onclick="rewind()"
-        id="rewindButton"
-        class="buttonStyle"
-      />
-      <input type="button" value="Previous" onclick="undo()" id="undoButton" class="buttonStyle" />
-      <input type="button" value="Next" onclick="nextBid()" id="nextButton" class="buttonStyle" />
-      <input
-        type="button"
-        value="Options"
-        onclick="options()"
-        id="optionsButton"
-        class="buttonStyle"
-      />
-      <input type="button" value="GIB" onclick="gib()" id="gibButton" class="buttonStyle" />
-      <input type="button" value="Play" onclick="play()" id="playButton" class="buttonStyle" />
-
-      
-      
-    </div>
-    
   </body>
   <!-- <script type="text/javascript" src="./src/hv/jsbig.js?cb=1"></script> -->
   

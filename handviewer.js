@@ -474,306 +474,338 @@ function respondToBodyResize(param) {
 }
 
 function respondToResize() {
-  var div = document.getElementById('theDiv');
-  var buttonDiv = document.getElementById('buttonDiv');
-  if (!div || !buttonDiv) return;
+    var div = document.getElementById('theDiv');
+    var buttonDiv = document.getElementById('buttonDiv');
+    if (!div || !buttonDiv) return;
 
-  hideContextMenu();
-  hideContextMenu(null, true);
+    hideContextMenu();
+    hideContextMenu(null, true);
 
-  // 1. Core Dimensions
-  var winW = div.offsetWidth; 
-  var winH = window.innerHeight || document.documentElement.clientHeight;
+    // 1. Core Dimensions
+    var winW = window.innerWidth || document.documentElement.clientWidth;
+    var winH = window.innerHeight || document.documentElement.clientHeight;
 
-  // 2. Bar Proportions (7% footer)
-  var buttonDivHeight = Math.max(35, Math.floor(winH * 0.07));
-  var annotDivHeight = showAnnotations() ? Math.floor(winH * 0.2) : 0;
-  var tableH = winH - buttonDivHeight - annotDivHeight;
-  
-  totalWidth = winW;
-  totalHeight = tableH;
-
-  div.style.width = totalWidth + 'px';
-  div.style.height = totalHeight + 'px';
-  div.style.position = 'absolute';
-  div.style.top = '0px';
-  div.style.left = '0px';
-
-  // 3. PROPORTIONS
-  margin = Math.floor(totalHeight * 0.02);
-  handWidth = Math.floor(totalWidth * 0.24); 
-  handHeight = Math.floor((totalHeight - (margin * 4)) / 3);
-  
-  suitHeight = Math.floor(handHeight / 5);
-  fontSize = Math.floor(handHeight / 6.5);
-  nameHeight = Math.floor(handHeight / 5);
-
-  // Horizontal offset to bring East/West hands closer to center
-  var sideOffset = Math.floor(totalWidth * 0.13); 
-
-  // 4. Position & Size Hands
-  for (var s = 0; s < 4; s++) {
-    var table = handDivs[s];
-    var bar = nameBars[s];
+    var isMobile = winW < 600;
     
-    // VISIBILITY LOGIC
-    var showingCards = isHandShowing(s);
-    var auctionOver = (declarer !== -1);
-    var showingBox = showingCards || auctionOver;
-
-    if (!showingBox) {
-      table.style.visibility = 'hidden';
-      bar.style.visibility = 'hidden';
-      continue;
+    if (isMobile) {
+      // Tighter proportions for phone
+      handWidth = Math.floor(winW * 0.28);      // slightly wider relative hands
+      var sideOffset = Math.floor(winW * 0.02); // E/W hands pushed right to edge
+      fontSize = Math.floor(handHeight / 7);    // slightly smaller text
     }
 
-    table.style.visibility = 'visible';
-    bar.style.visibility = 'visible';
-    
-    // CARD CONTENT VISIBILITY
-    if (suitRows[s]) {
-        for (var suitIdx = 0; suitIdx < 4; suitIdx++) {
-            if (suitRows[s][suitIdx]) {
-                var rowVisible = showingCards && !picturesOfCards;
-                suitRows[s][suitIdx].style.visibility = rowVisible ? 'visible' : 'hidden';
+
+    // 2. Bar Proportions (7% footer)
+    var buttonDivHeight = Math.max(35, Math.floor(winH * 0.07));
+    var annotDivHeight = showAnnotations() ? Math.floor(winH * 0.2) : 0;
+    var tableH = winH - buttonDivHeight - annotDivHeight;
+
+    totalWidth = winW;
+    totalHeight = tableH;
+
+    var maxW = 1000;
+    totalWidth = Math.min(totalWidth, maxW);
+    div.style.width = totalWidth + 'px';
+    div.style.height = totalHeight + 'px';
+    div.style.position = 'fixed';
+    div.style.top = '0px';
+    div.style.left = Math.max(0, (window.innerWidth - totalWidth) / 2) + 'px';
+
+    // 3. PROPORTIONS
+    margin = Math.floor(totalHeight * 0.02);
+    handWidth = Math.floor(totalWidth * 0.28);
+    handHeight = Math.floor((totalHeight - (margin * 4)) / 3);
+
+    suitHeight = Math.floor(handHeight / 5);
+    fontSize = Math.floor(handHeight / 6.5);
+    nameHeight = Math.floor(handHeight / 5);
+
+    // Horizontal offset to bring East/West hands closer to center
+    var sideOffset = Math.floor(totalWidth * 0.07);
+
+    // NEW: shift the whole layout left
+    var globalShiftX = Math.floor(totalWidth * 0.05);
+
+    // 4. Position & Size Hands
+    for (var s = 0; s < 4; s++) {
+        var table = handDivs[s];
+        var bar = nameBars[s];
+
+        // VISIBILITY LOGIC
+        var showingCards = isHandShowing(s);
+        var auctionOver = (declarer !== -1);
+        var showingBox = showingCards || auctionOver;
+
+        if (!showingBox) {
+            table.style.visibility = 'hidden';
+            bar.style.visibility = 'hidden';
+            continue;
+        }
+
+        table.style.visibility = 'visible';
+        bar.style.visibility = 'visible';
+
+        // CARD CONTENT VISIBILITY
+        if (suitRows[s]) {
+            for (var suitIdx = 0; suitIdx < 4; suitIdx++) {
+                if (suitRows[s][suitIdx]) {
+                    var rowVisible = showingCards && !picturesOfCards;
+                    suitRows[s][suitIdx].style.visibility = rowVisible ? 'visible' : 'hidden';
+                }
             }
         }
-    }
-    
-    // Apply Dimensions
-    table.style.width = handWidth + 'px';
-    table.style.height = (4 * suitHeight) + 'px';
-    table.style.fontSize = fontSize + 'px';
-    
-    bar.style.width = handWidth + 'px';
-    bar.style.height = nameHeight + 'px';
-    bar.style.fontSize = fontSize + 'px';
-    bar.style.lineHeight = nameHeight + 'px';
-    
-    // --- NAME BAR LAYOUT FIX (ABSOLUTE POSITIONING) ---
-    var initialBoxWidth = Math.floor(fontSize * 1.5);
-    
-    // 1. Position Blue Initial Box (Absolute Left)
-    if (nameInitials[s]) {
-        nameInitials[s].style.position = 'absolute'; // Force absolute
-        nameInitials[s].style.left = '0px';
-        nameInitials[s].style.top = '0px';
-        nameInitials[s].style.height = '100%';
-        nameInitials[s].style.width = initialBoxWidth + 'px';
-        nameInitials[s].style.textAlign = 'center';
-        nameInitials[s].style.lineHeight = nameHeight + 'px';
-        nameInitials[s].style.overflow = 'hidden';
-        nameInitials[s].style.zIndex = '5';
-    }
 
-    // 2. Position Name Text (Absolute Right of Blue Box)
-    if (nameTexts[s]) {
-        nameTexts[s].style.position = 'absolute';
-        nameTexts[s].style.left = (initialBoxWidth + 5) + 'px';
-        nameTexts[s].style.top = '0px';
-        nameTexts[s].style.height = '100%';
-        nameTexts[s].style.width = (handWidth - initialBoxWidth - 10) + 'px';
-        nameTexts[s].style.lineHeight = nameHeight + 'px';
-        nameTexts[s].style.overflow = 'hidden';
-        nameTexts[s].style.whiteSpace = 'nowrap';
-        nameTexts[s].style.textAlign = 'left';
-        nameTexts[s].style.color = '#000000'; // Force black text
-        nameTexts[s].style.zIndex = '5';
-        nameTexts[s].style.visibility = 'visible';
-    }
+        // Apply Dimensions
+        table.style.width = handWidth + 'px';
+        table.style.height = (4 * suitHeight) + 'px';
+        table.style.fontSize = fontSize + 'px';
 
-    // CALCULATE POSITIONS
-    var midX = (totalWidth - handWidth) / 2;
-    var midY = (totalHeight - ((4 * suitHeight) + nameHeight)) / 2;
+        bar.style.width = handWidth + 'px';
+        bar.style.height = nameHeight + 'px';
+        bar.style.fontSize = fontSize + 'px';
+        bar.style.lineHeight = nameHeight + 'px';
 
-    if (s === 0) { // South
-      xpos[0] = midX; 
-      ypos[0] = totalHeight - ((4 * suitHeight) + nameHeight) - margin;
-    } else if (s === 2) { // North
-      xpos[2] = midX; 
-      ypos[2] = margin;
-    } else if (s === 1) { // West
-      xpos[1] = sideOffset; 
-      ypos[1] = midY;
-    } else if (s === 3) { // East
-      xpos[3] = totalWidth - handWidth - sideOffset; 
-      ypos[3] = midY;
-    }
+        // --- NAME BAR LAYOUT FIX (ABSOLUTE POSITIONING) ---
+        var initialBoxWidth = Math.floor(fontSize * 1.5);
 
-    table.style.left = xpos[s] + 'px';
-    table.style.top = (ypos[s] + nameHeight) + 'px';
-    bar.style.left = xpos[s] + 'px';
-    bar.style.top = ypos[s] + 'px';
+        // 1. Position Blue Initial Box (Absolute Left)
+        if (nameInitials[s]) {
+            nameInitials[s].style.position = 'absolute';
+            nameInitials[s].style.left = '0px';
+            nameInitials[s].style.top = '0px';
+            nameInitials[s].style.height = '100%';
+            nameInitials[s].style.width = initialBoxWidth + 'px';
+            nameInitials[s].style.textAlign = 'center';
+            nameInitials[s].style.lineHeight = nameHeight + 'px';
+            nameInitials[s].style.overflow = 'hidden';
+            nameInitials[s].style.zIndex = '5';
+        }
 
-    // Position inner suit rows
-    for (var suitIdx = 0; suitIdx < 4; suitIdx++) {
-      var row = suitRows[s][suitIdx];
-      var symbol = suitSymbols[s][suitIdx];
-      var holding = suitHoldings[s][suitIdx];
-      row.style.height = suitHeight + 'px';
-      row.style.top = ((3 - suitIdx) * suitHeight) + 'px'; 
-      var symW = Math.max(25, Math.floor(fontSize * 1.5));
-      symbol.style.width = symW + 'px';
-      symbol.style.fontSize = Math.floor(fontSize * 1.3) + 'px';
-      symbol.style.lineHeight = suitHeight + 'px'; 
-      holding.style.position = 'absolute';
-      holding.style.top = '0px'; 
-      holding.style.left = (symW + 5) + 'px';
-      holding.style.fontSize = fontSize + 'px';
-      holding.style.lineHeight = suitHeight + 'px'; 
-      resizeCards(s, suitIdx);
-    }
-  }
+        // 2. Position Name Text (Absolute Right of Blue Box)
+        if (nameTexts[s]) {
+            nameTexts[s].style.position = 'absolute';
+            nameTexts[s].style.left = (initialBoxWidth + 5) + 'px';
+            nameTexts[s].style.top = '0px';
+            nameTexts[s].style.height = '100%';
+            nameTexts[s].style.width = (handWidth - initialBoxWidth - 10) + 'px';
+            nameTexts[s].style.lineHeight = nameHeight + 'px';
+            nameTexts[s].style.overflow = 'hidden';
+            nameTexts[s].style.whiteSpace = 'nowrap';
+            nameTexts[s].style.textAlign = 'left';
+            nameTexts[s].style.color = '#000000';
+            nameTexts[s].style.zIndex = '5';
+            nameTexts[s].style.visibility = 'visible';
+        }
 
-  // 5. CENTERED TRICK AREA (Wider Cards + Larger Border)
-  var trickCardWidth = Math.floor(handWidth * 0.22);   // was 0.34 - narrower
-  var trickCardHeight = Math.floor(trickCardWidth * 0.7); // was 0.55 - slightly taller ratio
-  
-  var centerX = totalWidth / 2;
-  var centerY = totalHeight / 2;
+        // CALCULATE POSITIONS
+        var midX = (totalWidth - handWidth) / 2 - globalShiftX;
+        var midY = (totalHeight - ((4 * suitHeight) + nameHeight)) / 2;
+        var leftPadding = Math.floor(totalWidth * 0.02); 
 
-  var vOffset = Math.floor(trickCardHeight * 1.6); 
-  var hOffset = Math.floor(trickCardWidth * 1.2);  
+        if (s === 0) { // South
+            xpos[0] = midX + leftPadding;;
+            ypos[0] = totalHeight - ((4 * suitHeight) + nameHeight) - margin *1.4 ;
+        } else if (s === 2) { // North
+            xpos[2] = midX  + leftPadding;
+            ypos[2] = margin;
+        } else if (s === 1) { // West
+            xpos[1] = sideOffset - globalShiftX + leftPadding  ;
+            ypos[1] = midY;
+        } else if (s === 3) { // East
+            xpos[3] = totalWidth - handWidth - sideOffset - globalShiftX +   leftPadding;
+            ypos[3] = midY;
+        }
 
-  for (seat = 0; seat < 4; seat++) {
-    var trickCard = trickDivs[seat];
-    trickCard.style.width = trickCardWidth + 'px';
-    trickCard.style.height = trickCardHeight + 'px';
-    trickCard.style.lineHeight = trickCardHeight + 'px'; 
-    trickCard.style.fontSize = Math.floor(fontSize * 1.25) + 'px';
-    trickCard.style.backgroundColor = "white";
-    trickCard.style.color = "black";
-    trickCard.style.border = "2px solid #000";  
-    trickCard.style.borderRadius = "4px";       
-    trickCard.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";  
-    trickCard.style.textAlign = "center";
+        table.style.left = xpos[s] + 'px';
+        table.style.top = (ypos[s] + nameHeight) + 'px';
+        bar.style.left = xpos[s] + 'px';
+        bar.style.top = ypos[s] + 'px';
 
-    if (seat === 0) { // South (Bottom)
-      trickCard.style.top = (centerY + vOffset - trickCardHeight/2) + 'px';
-      trickCard.style.left = (centerX - trickCardWidth/2) + 'px';
-    } else if (seat === 2) { // North (Top)
-      trickCard.style.top = (centerY - vOffset - trickCardHeight/2) + 'px';
-      trickCard.style.left = (centerX - trickCardWidth/2) + 'px';
-    } else if (seat === 1) { // West (Left)
-      trickCard.style.top = (centerY - trickCardHeight/2) + 'px';
-      trickCard.style.left = (centerX - hOffset - trickCardWidth/2) + 'px';
-    } else if (seat === 3) { // East (Right)
-      trickCard.style.top = (centerY - trickCardHeight/2) + 'px';
-      trickCard.style.left = (centerX + hOffset - trickCardWidth/2) + 'px';
-    }
-  }
+        // Position inner suit rows
+        for (var suitIdx = 0; suitIdx < 4; suitIdx++) {
+            var row = suitRows[s][suitIdx];
+            var symbol = suitSymbols[s][suitIdx];
+            var holding = suitHoldings[s][suitIdx];
 
-  // Trick Container Border
-  if (!window.trickContainerBorder) {
-    window.trickContainerBorder = document.createElement("div");
-    document.getElementById("theDiv").appendChild(window.trickContainerBorder);
-  }
+            row.style.height = suitHeight + 'px';
+            row.style.top = ((3 - suitIdx) * suitHeight) + 'px';
 
-  var containerPadding = Math.floor(trickCardHeight * 0.9);  // was 0.25 - more space
-  var containerWidth  = Math.floor(trickCardWidth * 3.2) + (containerPadding * 2);  // was 2.2
-  var containerHeight = Math.floor(trickCardHeight * 3.0) + (containerPadding * 2); // was 2.4
-  window.trickContainerBorder.style.position = "absolute";
-  window.trickContainerBorder.style.width = containerWidth + "px";
-  window.trickContainerBorder.style.height = containerHeight + "px";
-  window.trickContainerBorder.style.left = (centerX - containerWidth / 2) + "px";
-  window.trickContainerBorder.style.top = (centerY - containerHeight / 2) + "px";
-  window.trickContainerBorder.style.border = "2px solid #f7f2f2ff";
-  window.trickContainerBorder.style.borderRadius = "12px";
-  window.trickContainerBorder.style.pointerEvents = "none";  
-  window.trickContainerBorder.style.zIndex = "1";  
+            var symW = Math.max(5, Math.floor(fontSize * 1.5));
+            symbol.style.width = symW + 'px';
+            symbol.style.fontSize = Math.floor(fontSize * 1.3) + 'px';
+            symbol.style.lineHeight = suitHeight + 'px';
 
-  // 6. Footer Buttons
-  buttonDiv.style.position = 'absolute';
-  buttonDiv.style.top = (tableH + annotDivHeight) + 'px';
-  buttonDiv.style.left = '0px';
-  buttonDiv.style.width = winW + 'px';
-  buttonDiv.style.height = buttonDivHeight + 'px';
-  buttonDiv.style.backgroundColor = '#ccc';
+            holding.style.position = 'absolute';
+            holding.style.top = '0px';
+            holding.style.left = (symW + 0.1) + 'px';
+            holding.style.fontSize = fontSize + 'px';
+            holding.style.lineHeight = suitHeight + 'px';
 
-  var pixels = 10;
-  var btnH = Math.floor(buttonDivHeight * 0.7);
-  var btnFS = Math.floor(btnH * 0.5);
-  var inputs = buttonDiv.getElementsByTagName('input');
-  for (var i = 0; i < inputs.length; i++) {
-    var b = inputs[i];
-    b.style.position = 'absolute';
-    b.style.height = btnH + 'px';
-    b.style.top = Math.floor((buttonDivHeight - btnH) / 2) + 'px';
-    b.style.left = pixels + 'px';
-    b.style.fontSize = btnFS + 'px';
-    pixels += b.offsetWidth + 10;
-  }
-
-  // 7. NARROW BIDDING BOX (Red Header)
-  if (showAuction()) {
-    var aucW = handWidth; 
-    var aucLeft = totalWidth - aucW - margin;
-    var auctionFontSize = Math.floor(fontSize * 0.85);
-    var headerH = Math.floor(auctionFontSize * 1.5); 
-
-    auctionHeadingDiv.style.top = margin + 'px';
-    auctionHeadingDiv.style.left = aucLeft + 'px';
-    auctionHeadingDiv.style.width = aucW + 'px';
-    auctionHeadingDiv.style.height = headerH + 'px';
-    
-    auctionHeadingDiv.style.border = '1px solid black';
-    auctionHeadingDiv.style.borderBottom = 'none'; 
-    
-    auctionTableDiv.style.top = (margin + headerH) + 'px';
-    auctionTableDiv.style.left = aucLeft + 'px';
-    auctionTableDiv.style.width = aucW + 'px';
-    
-    var totalAucHeight = (4 * suitHeight) + nameHeight - suitHeight;
-    var bodyH = totalAucHeight - headerH;
-    auctionTableDiv.style.height = bodyH + 'px';
-    
-    var aucBgColor = "#D0E4E4";
-    auctionTableDiv.style.backgroundColor = aucBgColor;
-    auctionTableDiv.style.border = '1px solid black';
-    auctionTableDiv.style.borderTop = 'none'; 
-    
-    auctionHeading.style.width = '100%';
-    auctionHeading.style.fontSize = auctionFontSize + 'px';
-    auctionHeading.style.backgroundColor = '#CB0000'; 
-    
-    for (var seat = 0; seat < 4; seat++) {
-         var cell = auctionHeadingCells[seat];
-         cell.style.padding = "2px 0";
-         cell.style.borderBottom = "1px solid #777"; 
-         cell.style.fontWeight = "bold";
-         cell.style.backgroundColor = '#CB0000';
-         cell.style.color = '#FFFFFF';
-    }
-    
-    if (auctionHeading.rows[0].cells[4]) {
-         auctionHeading.rows[0].cells[4].style.backgroundColor = '#CB0000';
-         auctionHeading.rows[0].cells[4].style.borderBottom = "1px solid #777";
+            resizeCards(s, suitIdx);
+        }
     }
 
-    auctionTable.style.width = '100%';
-    auctionTable.style.fontSize = auctionFontSize + 'px';
-    auctionTable.style.backgroundColor = aucBgColor;
+    // 5. CENTERED TRICK AREA (Wider Cards + Larger Border)
+        var trickCardWidth = Math.floor(handWidth * 0.27);
+        var trickCardHeight = Math.floor(trickCardWidth * 0.77);
+    
+        var centerX = totalWidth / 2 - globalShiftX  + Math.floor(totalWidth * 0.02);
+        var centerY = totalHeight / 2;
+    
+        var containerCenterX = totalWidth / 2 - globalShiftX;
+    
+        // Container calculations locked to ORIGINAL card size
+        var containerPadding = Math.floor(trickCardHeight * 0.85);
+        var containerWidth = Math.floor(trickCardWidth * 2.4) + (containerPadding * 2);
+        var containerHeight = Math.floor(trickCardHeight * 2.2) + (containerPadding * 1.4);
+    
+        // NOW shrink cards only
+        trickCardWidth = Math.floor(handWidth * 0.215);
+        trickCardHeight = Math.floor(trickCardWidth * 0.71);
+    
+        var vOffset = Math.floor(trickCardHeight * 1.6);
+        var hOffset = Math.floor(trickCardWidth * 1.2);
+    
+        for (seat = 0; seat < 4; seat++) {
+            var trickCard = trickDivs[seat];
+            trickCard.style.width = trickCardWidth + 'px';
+            trickCard.style.height = trickCardHeight + 'px';
+            trickCard.style.lineHeight = trickCardHeight + 'px';
+            trickCard.style.fontSize = Math.floor(fontSize * 1.25) + 'px';
+            trickCard.style.backgroundColor = "white";
+            trickCard.style.color = "black";
+            trickCard.style.border = "2px solid #000";
+            trickCard.style.borderRadius = "4px";
+            trickCard.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+            trickCard.style.textAlign = "center";
+    
+            if (seat === 0) { // South (Bottom)
+                trickCard.style.top = (centerY + vOffset - trickCardHeight / 2) + 'px';
+                trickCard.style.left = (centerX - trickCardWidth / 2) + 'px';
+            } else if (seat === 2) { // North (Top)
+                trickCard.style.top = (centerY - vOffset - trickCardHeight / 2) + 'px';
+                trickCard.style.left = (centerX - trickCardWidth / 2) + 'px';
+            } else if (seat === 1) { // West (Left)
+                trickCard.style.top = (centerY - trickCardHeight / 2) + 'px';
+                trickCard.style.left = (centerX - hOffset - trickCardWidth / 2) + 'px';
+            } else if (seat === 3) { // East (Right)
+                trickCard.style.top = (centerY - trickCardHeight / 2) + 'px';
+                trickCard.style.left = (centerX + hOffset - trickCardWidth / 2) + 'px';
+            }
+        }
+    
+        // Trick Container Border
+        if (!window.trickContainerBorder) {
+            window.trickContainerBorder = document.createElement("div");
+            document.getElementById("theDiv").appendChild(window.trickContainerBorder);
+        }
+    
+        window.trickContainerBorder.style.position = "absolute";
+        window.trickContainerBorder.style.width = containerWidth + "px";
+        window.trickContainerBorder.style.height = containerHeight + "px";
+        window.trickContainerBorder.style.left = (containerCenterX - containerWidth / 2 + Math.floor(totalWidth * 0.02)) + "px";
+        window.trickContainerBorder.style.top = (centerY - containerHeight / 2) + "px";
+        window.trickContainerBorder.style.border = "2px solid #f7f2f2ff";
+        window.trickContainerBorder.style.borderRadius = "12px";
+        window.trickContainerBorder.style.pointerEvents = "none";
+        window.trickContainerBorder.style.zIndex = "1";
+    // 6. Footer Buttons
+    buttonDiv.style.position = 'absolute';
+    var divLeft = Math.max(0, (window.innerWidth - totalWidth) / 2);
+    buttonDiv.style.top = (tableH + annotDivHeight) + 'px';
+    buttonDiv.style.left = divLeft + 'px';
+    buttonDiv.style.width = totalWidth + 'px';
+    buttonDiv.style.height = buttonDivHeight + 'px';
+    buttonDiv.style.backgroundColor = '#ccc';
 
-    var cells = auctionTable.getElementsByTagName("td");
-    for (var i = 0; i < cells.length; i++) {
-        cells[i].style.backgroundColor = aucBgColor;
-        cells[i].style.padding = "0px"; 
-        cells[i].style.height = Math.floor(auctionFontSize * 1.2) + "px"; 
+    var pixels = 10;
+    var btnH = Math.floor(buttonDivHeight * 0.7);
+    var btnFS = Math.floor(btnH * 0.5);
+    var inputs = buttonDiv.getElementsByTagName('input');
+    for (var i = 0; i < inputs.length; i++) {
+        var b = inputs[i];
+        b.style.position = 'absolute';
+        b.style.height = btnH + 'px';
+        b.style.top = Math.floor((buttonDivHeight - btnH) / 2) + 'px';
+        b.style.left = pixels + 'px';
+        b.style.fontSize = btnFS + 'px';
+        pixels += b.offsetWidth + 10;
     }
 
-    manageAuctionScrollBar(); 
-  }
+    // 7. NARROW BIDDING BOX (Red Header)
+    if (showAuction()) {
+        var aucW = handWidth;
+        var aucLeft = totalWidth - aucW - margin - globalShiftX - Math.floor(totalWidth * 0.03);
+        var auctionFontSize = Math.floor(fontSize * 0.85);
+        var headerH = Math.floor(auctionFontSize * 1.5);
 
-  // 8. Contract Details Bar
-  tricksDiv.style.fontSize = fontSize + 'px';
-  tricksDiv.style.height = Math.floor(fontSize * 3.5) + 'px';
-  tricksDivLeft.style.fontSize = fontSize + 'px';
-  tricksDivRight.style.fontSize = fontSize + 'px';
+        auctionHeadingDiv.style.top = margin + 'px';
+        auctionHeadingDiv.style.left = aucLeft + 'px';
+        auctionHeadingDiv.style.width = aucW + 'px';
+        auctionHeadingDiv.style.height = headerH + 'px';
 
-  manageInfoDiv();
-  manageTricksDiv();
-  manageScoreDiv();
-  manageAnnounceDiv();
+        auctionHeadingDiv.style.border = '1px solid black';
+        auctionHeadingDiv.style.borderBottom = 'none';
+
+        auctionTableDiv.style.top = (margin + headerH) + 'px';
+        auctionTableDiv.style.left = aucLeft + 'px';
+        auctionTableDiv.style.width = aucW + 'px';
+
+        var totalAucHeight = (4 * suitHeight) + nameHeight - suitHeight;
+        var bodyH = totalAucHeight - headerH;
+        auctionTableDiv.style.height = bodyH + 'px';
+
+        var aucBgColor = "#D0E4E4";
+        auctionTableDiv.style.backgroundColor = aucBgColor;
+        auctionTableDiv.style.border = '1px solid black';
+        auctionTableDiv.style.borderTop = 'none';
+
+        auctionHeading.style.width = '100%';
+        auctionHeading.style.fontSize = auctionFontSize + 'px';
+        auctionHeading.style.backgroundColor = '#CB0000';
+
+        for (var seat = 0; seat < 4; seat++) {
+            var cell = auctionHeadingCells[seat];
+            cell.style.padding = "2px 0";
+            cell.style.borderBottom = "1px solid #777";
+            cell.style.fontWeight = "bold";
+            cell.style.backgroundColor = '#CB0000';
+            cell.style.color = '#FFFFFF';
+        }
+
+        if (auctionHeading.rows[0].cells[4]) {
+            auctionHeading.rows[0].cells[4].style.backgroundColor = '#CB0000';
+            auctionHeading.rows[0].cells[4].style.borderBottom = "1px solid #777";
+        }
+
+        auctionTable.style.width = '100%';
+        auctionTable.style.fontSize = auctionFontSize + 'px';
+        auctionTable.style.backgroundColor = aucBgColor;
+
+        var cells = auctionTable.getElementsByTagName("td");
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].style.backgroundColor = aucBgColor;
+            cells[i].style.padding = "0px";
+            cells[i].style.height = Math.floor(auctionFontSize * 1.2) + "px";
+        }
+
+        manageAuctionScrollBar();
+    }
+
+    // 8. Contract Details Bar
+    tricksDiv.style.fontSize = fontSize + 'px';
+    tricksDiv.style.height = Math.floor(fontSize * 3.5) + 'px';
+    tricksDivLeft.style.fontSize = fontSize + 'px';
+    tricksDivRight.style.fontSize = fontSize + 'px';
+    tricksDiv.style.fontFamily = "'Arial Narrow', Arial, sans-serif";
+    tricksDivLeft.style.fontFamily = "'Arial Narrow', Arial, sans-serif";
+    tricksDivRight.style.fontFamily = "'Arial Narrow', Arial, sans-serif";
+
+
+    manageInfoDiv();
+    manageTricksDiv();
+    manageScoreDiv();
+    manageAnnounceDiv();
 }
 
 function manageStatusDiv() {
@@ -3006,45 +3038,40 @@ function manageAnnounceDiv() {
     announceDiv.style.lineHeight = 'normal';
     announceDiv.style.left = (totalWidth - announceDiv.clientWidth) / 2 + 'px';
     announceDiv.style.top = (totalHeight - announceDiv.clientHeight) / 2 + 'px';
-    announceDiv.style.border = '1px solid white'; // Default border for centered box
+    announceDiv.style.border = '1px solid white';
   } else {
-    // Standard message (e.g., "Select a card")
-    
+    // Guard: don't position until layout is ready
+    if (!xpos[0] || !handWidth || handWidth < 10) {
+      announceDiv.style.visibility = 'hidden';
+      return;
+    }
+
     // 1. DIMENSIONS
-    // Height: 1.3x for a tight fit
     var announceHeight = Math.floor(fontSize * 1.3); 
     var textFontSize = Math.floor(fontSize * 0.8);
-
-    // Height of the Tricks box below (Must match the 1.5x set previously)
     var tricksHeight = Math.floor(fontSize * 1.5);
 
     // 2. WIDTH LOGIC
     var southRightEdge = xpos[0] + handWidth;
     var startX = southRightEdge + margin;
-    var endX = totalWidth - margin;
+    var endX = totalWidth - margin - Math.floor(totalWidth * 0.08);
     var availableWidth = Math.max((endX - startX), 120);
     
     // 3. STYLING
     announceDiv.style.fontSize = textFontSize + 'px';
-    // Match line-height to box height minus 4px (2px top border + 2px bottom border)
     announceDiv.style.lineHeight = (announceHeight - 4) + 'px'; 
-    
     announceDiv.style.width = availableWidth + 'px';
     announceDiv.style.left = startX + 'px';
     announceDiv.style.height = announceHeight + 'px';
-    
     announceDiv.style.whiteSpace = 'nowrap';
-    announceDiv.style.padding = '0'; 
-    
-    // MATCH BORDER TO TRICKS DIV
-    // This ensures the widths align perfectly visually
+    announceDiv.style.padding = '0';
+    announceDiv.style.paddingLeft = '6px';
+    announceDiv.style.textAlign = 'left';
     announceDiv.style.boxSizing = 'border-box';
     announceDiv.style.border = '2px solid white';
-    announceDiv.style.borderBottom = 'none'; // Optional: Remove bottom border so they merge seamlessly
+    announceDiv.style.borderBottom = 'none';
     
     // 4. POSITIONING
-    // Sit directly on top of the tricksDiv
-    // Calculation: Screen Bottom - Margin - (TricksHeight) - (AnnounceHeight) - 2px (Bottom alignment fix)
     var top = totalHeight - margin - 2 - tricksHeight - announceHeight;
     announceDiv.style.top = top + 'px';
   }
@@ -3091,17 +3118,17 @@ function manageTricksDiv() {
             }
             html += "</span>";
         }
-        // Show "Select opening lead" prompt when East is declarer,
+        // Show "Select a lead" prompt when East is declarer,
         // South is on lead, and no card has been played yet.
         if (declarer === 3 && whosTurn === 0 && trick === -1) {
-            showTransientAnnouncement("Select opening lead", -1);
+            showTransientAnnouncement("Select a lead", -1);
         }
     }
     tricksDivLeft.innerHTML = html;
     
     // Score Display (e.g., "NS: 0 EW: 0")
     // REMOVED BOLD STYLING
-    html = "<span style='color:black;'>NS: " + nsTricks + "&nbsp;&nbsp;EW: " + ewTricks + "</span>";
+    html = "<span style='color:black;'>NS:" + nsTricks + "&nbsp;EW:" + ewTricks + "</span>";
     if (!lessonID) tricksDivRight.innerHTML = html;
     
     // 3. Styling & Positioning
@@ -3126,7 +3153,7 @@ function manageTricksDiv() {
     // Calculate Stretch Width (South Hand Right Edge -> Screen Right Edge)
     var southRightEdge = xpos[0] + handWidth;
     var startX = southRightEdge + margin;
-    var endX = totalWidth - margin;
+    var endX = totalWidth - margin - Math.floor(totalWidth * 0.08);
     var availableWidth = Math.max((endX - startX), 120);
     
     tricksDiv.style.width = availableWidth + 'px';
@@ -3305,7 +3332,7 @@ function showTrickResult() {
       wasKibitzed = seatKibitzed;
       setKibitzed('');
     }
-    result = result = `${result}<br>Hand complete<br>Click Next to continue`;
+    result = result = `${result}<br>Hand complete<br>Next to continue`;
     if (playingClient) {
       showTransientAnnouncement(result, -1);
     } else {
@@ -3395,7 +3422,7 @@ function playCard(card, animate) {
       if (userControlsWinner) {
         showTransientAnnouncement('Select card for next trick', -1);
       } else {
-        showTransientAnnouncement('Click next to continue', -1);
+        showTransientAnnouncement('Next to continue', -1);
       }
       
     } else if (trick == 12) {
@@ -8171,105 +8198,18 @@ function HideHand(handId, Hide) {
   }
 
   // Call the function to draw lines
-    drawNorthSouthLines();
+    // drawNorthSouthLines();
 
     // Redraw lines on window resize
-    window.addEventListener('resize', drawNorthSouthLines);
+    // window.addEventListener('resize', drawNorthSouthLines);
  
-//  // Draw the line from North to South
-//  var lineDiv = document.getElementById('lineDiv');
-//  if (!lineDiv) {
-//    lineDiv = document.createElement('div');
-//    lineDiv.id = 'lineDiv';
-//    lineDiv.style.position = 'absolute';
-//    lineDiv.style.backgroundColor = 'white';
-//   //  lineDiv.style.zIndex = '1000'; // Ensure the line is on top of other elements
-//    document.body.appendChild(lineDiv);
-//  }
 
-//  var northHandDiv = handDivs[2];
-//  var southHandDiv = handDivs[0];
-
-//  var northBottom = northHandDiv.offsetTop + northHandDiv.offsetHeight;
-//  var southTop = southHandDiv.offsetTop;
-
-//  var lineHeight = southTop - northBottom;
-//  var lineTop = northBottom;
-//  var lineLeft = northHandDiv.offsetLeft;
-
-//  lineDiv.style.width = '1px'; // Adjust the width as needed
-//  lineDiv.style.height = lineHeight + 'px';
-//  lineDiv.style.top = lineTop + 'px';
-//  lineDiv.style.left = lineLeft + 'px';
-
-//  // Draw the line from North to South on the right side
-//  var lineDivRight = document.getElementById('lineDivRight');
-//  if (!lineDivRight) {
-//    lineDivRight = document.createElement('div');
-//    lineDivRight.id = 'lineDivRight';
-//    lineDivRight.style.position = 'absolute';
-//    lineDivRight.style.backgroundColor = 'white';
-//   //  lineDivRight.style.zIndex = '1000';
-//    document.body.appendChild(lineDivRight);
-//  }
-
-//  var lineRight = northHandDiv.offsetLeft + northHandDiv.offsetWidth-1;
-
-//  lineDivRight.style.width = '1px';
-//  lineDivRight.style.height = lineHeight + 'px';
-//  lineDivRight.style.top = lineTop + 'px';
-//  lineDivRight.style.left = lineRight + 'px';
 }
 function HideAuction() {
   auctionHeadingDiv.style.visibility = 'hidden';
   auctionTableDiv.style.visibility = 'hidden';
 }
-function drawNorthSouthLines() {
-  // Draw the line from North to South on the left side
-  var lineDiv = document.getElementById('lineDiv');
-  if (!lineDiv) {
-    lineDiv = document.createElement('div');
-    lineDiv.id = 'lineDiv';
-    lineDiv.style.position = 'absolute';
-    lineDiv.style.backgroundColor = 'white';
-    document.body.appendChild(lineDiv);
-  }
 
-  var northHandDiv = handDivs[2];
-  var southHandDiv = handDivs[0];
-
-  var northBottom = northHandDiv.offsetTop + northHandDiv.offsetHeight;
-  var southTop = southHandDiv.offsetTop;
-
-  var lineHeight = southTop - northBottom;
-  var lineTop = northBottom;
-  
-  // Adjust left line position
-  var lineLeft = northHandDiv.offsetLeft ; // Add a small offset
-
-  lineDiv.style.width = '1px';
-  lineDiv.style.height = lineHeight + 'px';
-  lineDiv.style.top = lineTop + 'px';
-  lineDiv.style.left = lineLeft + 'px';
-
-  // Draw the line from North to South on the right side
-  var lineDivRight = document.getElementById('lineDivRight');
-  if (!lineDivRight) {
-    lineDivRight = document.createElement('div');
-    lineDivRight.id = 'lineDivRight';
-    lineDivRight.style.position = 'absolute';
-    lineDivRight.style.backgroundColor = 'white';
-    document.body.appendChild(lineDivRight);
-  }
-
-  // Adjust right line position
-  var lineRight = northHandDiv.offsetLeft + northHandDiv.offsetWidth - 1; // Subtract a small offset
-
-  lineDivRight.style.width = '1px';
-  lineDivRight.style.height = lineHeight + 'px';
-  lineDivRight.style.top = lineTop + 'px';
-  lineDivRight.style.left = lineRight + 'px';
-}
 
 // Function to load group data
 function loadGroupData() {
@@ -8357,7 +8297,7 @@ if (typeof playSeqPoint !== 'undefined' && playSeqPoint === 0) {
         // South is on lead.
         if (declarer === 1 || declarer === 3) {
             // South defending against E/W declarer
-            showTransientAnnouncement("Select opening lead", -1);
+            showTransientAnnouncement("Select a lead", -1);
         } else {
             // South is Declarer (S plays first? Rare in standard bridge, usually LHO leads)
             // or Passed out hand logic
@@ -8365,12 +8305,12 @@ if (typeof playSeqPoint !== 'undefined' && playSeqPoint === 0) {
         }
     } else if (whosTurn === 2 && declarer === 0) {
         // North is on lead, South is declarer (User controls North)
-        showTransientAnnouncement("Select opening lead", -1);
+        showTransientAnnouncement("Select a lead", -1);
     } else if (whosTurn === 2 && declarer === 1) {
-        // North is on lead against West declarer - user must click Next
-        showTransientAnnouncement("Click Next to start", -1);
+        // North is on lead against West declarer - user must Next
+        showTransientAnnouncement("Next to start", -1);
     } else if (whosTurn === 2 && declarer === 3) {
-        // North is on lead against East declarer - user must click Next
-        showTransientAnnouncement("Click Next to start", -1);
+        // North is on lead against East declarer - user must Next
+        showTransientAnnouncement("Next to start", -1);
     }
 }

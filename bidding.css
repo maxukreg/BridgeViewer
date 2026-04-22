@@ -1,9 +1,17 @@
 div.mainDivStyle
-{ position: absolute;
+{ 
+  position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0;  /* Change from "margin: 0 auto;" to just "margin: 0;" */
+  height: 100vh;
   background: #006600;
   font-family: arial;
+  overflow: hidden;
+  
 }
 div.editorDivStyle
 { position: absolute;
@@ -446,17 +454,14 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 10px;
-  width: 500px; /* This will be dynamically set by JavaScript */
-  height: auto; /* Adjust height to fit content */
-  padding: 20px;
+  gap: 6px;
+  padding: 8px;
   background-color: #cccc9a;
   border: 1px solid white;
-  /* border-radius: 0; */
   box-sizing: border-box;
-  margin: 0 auto; /* Center horizontally */
-  visibility: hidden; /* Initially hidden */
+  visibility: hidden;
   z-index: 1000;
+  overflow: hidden;
 }
 
 
@@ -605,4 +610,41 @@ button:hover {
 
 .suits button.heart, .suits button.diamond {
   color: #CB0000; /* Red color for hearts and diamonds */
+}
+@media (max-width: 600px) {
+  .container {
+    width: 96vw !important;
+    left: 2vw !important;
+    padding: 8px;
+    gap: 6px;
+  }
+
+  button {
+    font-size: 22px;
+    padding: 6px 8px;
+  }
+
+  .numbers button {
+    min-width: 24px;
+    height: 32px;
+    font-size: 15px;
+  }
+
+  .suits button {
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .action {
+    font-size: 18px;
+    padding: 8px 10px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .suits {
+    gap: 2px;
+  }
 }
