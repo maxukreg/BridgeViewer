@@ -486,13 +486,6 @@ function respondToResize() {
     var winH = window.innerHeight || document.documentElement.clientHeight;
 
     var isMobile = winW < 600;
-    
-    if (isMobile) {
-      // Tighter proportions for phone
-      handWidth = Math.floor(winW * 0.28);      // slightly wider relative hands
-      var sideOffset = Math.floor(winW * 0.02); // E/W hands pushed right to edge
-      fontSize = Math.floor(handHeight / 7);    // slightly smaller text
-    }
 
 
     // 2. Bar Proportions (7% footer)
@@ -525,6 +518,17 @@ function respondToResize() {
 
     // NEW: shift the whole layout left
     var globalShiftX = Math.floor(totalWidth * 0.05);
+
+    // MOBILE OVERRIDES: tighter, scaled-down layout for narrow screens
+    if (isMobile) {
+        handWidth = Math.floor(totalWidth * 0.32);
+        handHeight = Math.floor((totalHeight - (margin * 4)) / 3.2);
+        suitHeight = Math.floor(handHeight / 5);
+        fontSize = Math.floor(handHeight / 7);
+        nameHeight = Math.floor(handHeight / 5);
+        sideOffset = Math.floor(totalWidth * 0.01);
+        globalShiftX = 0;
+    }
 
     // 4. Position & Size Hands
     for (var s = 0; s < 4; s++) {
@@ -616,6 +620,24 @@ function respondToResize() {
             ypos[3] = midY;
         }
 
+        if (isMobile) {
+            var mMidX = Math.floor((totalWidth - handWidth) / 2);
+            var mMidY = (totalHeight - ((4 * suitHeight) + nameHeight)) / 2;
+            if (s === 0) { // South — centred, near bottom
+                xpos[0] = mMidX;
+                ypos[0] = totalHeight - ((4 * suitHeight) + nameHeight) - margin;
+            } else if (s === 2) { // North — top-left, clear of auction box
+                xpos[2] = Math.floor(totalWidth * 0.02);
+                ypos[2] = margin;
+            } else if (s === 1) { // West — left edge, vertically centred
+                xpos[1] = Math.floor(totalWidth * 0.01);
+                ypos[1] = mMidY;
+            } else if (s === 3) { // East — right-of-centre, below auction box
+                xpos[3] = Math.floor(totalWidth * 0.55);
+                ypos[3] = mMidY;
+            }
+        }
+
         table.style.left = xpos[s] + 'px';
         table.style.top = (ypos[s] + nameHeight) + 'px';
         bar.style.left = xpos[s] + 'px';
@@ -648,11 +670,19 @@ function respondToResize() {
     // 5. CENTERED TRICK AREA (Wider Cards + Larger Border)
         var trickCardWidth = Math.floor(handWidth * 0.27);
         var trickCardHeight = Math.floor(trickCardWidth * 0.77);
-    
-        var centerX = totalWidth / 2 - globalShiftX  + Math.floor(totalWidth * 0.02);
-        var centerY = totalHeight / 2;
-    
-        var containerCenterX = totalWidth / 2 - globalShiftX;
+
+        // On mobile, centre the trick area between the left and right hands
+        var centerX, centerY, containerCenterX;
+        if (isMobile) {
+            // Left hand ends ~32%, right hand starts ~55% — midpoint ~43%
+            centerX = Math.floor(totalWidth * 0.43);
+            centerY = totalHeight / 2;
+            containerCenterX = centerX;
+        } else {
+            centerX = totalWidth / 2 - globalShiftX  + Math.floor(totalWidth * 0.02);
+            centerY = totalHeight / 2;
+            containerCenterX = totalWidth / 2 - globalShiftX;
+        }
     
         // Container calculations locked to ORIGINAL card size
         var containerPadding = Math.floor(trickCardHeight * 0.85);
@@ -736,6 +766,12 @@ function respondToResize() {
     if (showAuction()) {
         var aucW = handWidth;
         var aucLeft = totalWidth - aucW - margin - globalShiftX - Math.floor(totalWidth * 0.03);
+
+        // On mobile, shrink auction box and anchor it to top-right with reduced width
+        if (isMobile) {
+            aucW = Math.floor(totalWidth * 0.42);
+            aucLeft = totalWidth - aucW - Math.floor(totalWidth * 0.01);
+        }
         var auctionFontSize = Math.floor(fontSize * 0.85);
         var headerH = Math.floor(auctionFontSize * 1.5);
 
