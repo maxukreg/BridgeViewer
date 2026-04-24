@@ -519,13 +519,14 @@ function respondToResize() {
     // NEW: shift the whole layout left
     var globalShiftX = Math.floor(totalWidth * 0.05);
 
-    // MOBILE OVERRIDES: tighter, scaled-down layout for narrow screens
+    // MOBILE OVERRIDES: wider hands, compact font to fit 8+ cards per row
     if (isMobile) {
-        handWidth = Math.floor(totalWidth * 0.32);
+        handWidth = Math.floor(totalWidth * 0.43);          // wide enough for 8+ cards
         handHeight = Math.floor((totalHeight - (margin * 4)) / 3.2);
         suitHeight = Math.floor(handHeight / 5);
-        fontSize = Math.floor(handHeight / 7);
-        nameHeight = Math.floor(handHeight / 5);
+        // Use same compact condensed font size the auction heading uses (~85% of normal)
+        fontSize = Math.max(11, Math.floor(handHeight / 8));
+        nameHeight = Math.floor(handHeight / 4.5);
         sideOffset = Math.floor(totalWidth * 0.01);
         globalShiftX = 0;
     }
@@ -626,14 +627,14 @@ function respondToResize() {
             if (s === 0) { // South — centred, near bottom
                 xpos[0] = mMidX;
                 ypos[0] = totalHeight - ((4 * suitHeight) + nameHeight) - margin;
-            } else if (s === 2) { // North — top-left, clear of auction box
-                xpos[2] = Math.floor(totalWidth * 0.02);
+            } else if (s === 2) { // North — centred top (same as desktop)
+                xpos[2] = mMidX;
                 ypos[2] = margin;
             } else if (s === 1) { // West — left edge, vertically centred
                 xpos[1] = Math.floor(totalWidth * 0.01);
                 ypos[1] = mMidY;
-            } else if (s === 3) { // East — right-of-centre, below auction box
-                xpos[3] = Math.floor(totalWidth * 0.55);
+            } else if (s === 3) { // East — far right edge, vertically centred
+                xpos[3] = totalWidth - handWidth - Math.floor(totalWidth * 0.01);
                 ypos[3] = mMidY;
             }
         }
@@ -671,11 +672,10 @@ function respondToResize() {
         var trickCardWidth = Math.floor(handWidth * 0.27);
         var trickCardHeight = Math.floor(trickCardWidth * 0.77);
 
-        // On mobile, centre the trick area between the left and right hands
+        // On mobile, centre the trick area between West and East hands
         var centerX, centerY, containerCenterX;
         if (isMobile) {
-            // Left hand ends ~32%, right hand starts ~55% — midpoint ~43%
-            centerX = Math.floor(totalWidth * 0.43);
+            centerX = Math.floor(totalWidth * 0.5);
             centerY = totalHeight / 2;
             containerCenterX = centerX;
         } else {
@@ -689,9 +689,14 @@ function respondToResize() {
         var containerWidth = Math.floor(trickCardWidth * 2.4) + (containerPadding * 2);
         var containerHeight = Math.floor(trickCardHeight * 2.2) + (containerPadding * 1.4);
     
-        // NOW shrink cards only
-        trickCardWidth = Math.floor(handWidth * 0.215);
-        trickCardHeight = Math.floor(trickCardWidth * 0.71);
+        // Trick cards: on mobile make them bigger (suit symbol + rank both need to fit)
+        if (isMobile) {
+            trickCardWidth = Math.floor(handWidth * 0.28);
+            trickCardHeight = Math.floor(trickCardWidth * 1.1); // taller to show suit+rank on two lines
+        } else {
+            trickCardWidth = Math.floor(handWidth * 0.215);
+            trickCardHeight = Math.floor(trickCardWidth * 0.71);
+        }
     
         var vOffset = Math.floor(trickCardHeight * 1.6);
         var hOffset = Math.floor(trickCardWidth * 1.2);
@@ -700,13 +705,14 @@ function respondToResize() {
             var trickCard = trickDivs[seat];
             trickCard.style.width = trickCardWidth + 'px';
             trickCard.style.height = trickCardHeight + 'px';
-            trickCard.style.lineHeight = trickCardHeight + 'px';
+            trickCard.style.lineHeight = isMobile ? Math.floor(trickCardHeight / 2) + 'px' : trickCardHeight + 'px';
             trickCard.style.fontSize = Math.floor(fontSize * 1.25) + 'px';
             trickCard.style.backgroundColor = "white";
             trickCard.style.color = "black";
-            trickCard.style.border = "2px solid #000";
-            trickCard.style.borderRadius = "4px";
-            trickCard.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+            // No border on mobile — clean look
+            trickCard.style.border = isMobile ? "none" : "2px solid #000";
+            trickCard.style.borderRadius = isMobile ? "0" : "4px";
+            trickCard.style.boxShadow = isMobile ? "none" : "0 2px 4px rgba(0,0,0,0.2)";
             trickCard.style.textAlign = "center";
     
             if (seat === 0) { // South (Bottom)
@@ -735,7 +741,7 @@ function respondToResize() {
         window.trickContainerBorder.style.height = containerHeight + "px";
         window.trickContainerBorder.style.left = (containerCenterX - containerWidth / 2 + Math.floor(totalWidth * 0.02)) + "px";
         window.trickContainerBorder.style.top = (centerY - containerHeight / 2) + "px";
-        window.trickContainerBorder.style.border = "2px solid #f7f2f2ff";
+        window.trickContainerBorder.style.border = isMobile ? "none" : "2px solid #f7f2f2ff";
         window.trickContainerBorder.style.borderRadius = "12px";
         window.trickContainerBorder.style.pointerEvents = "none";
         window.trickContainerBorder.style.zIndex = "1";
@@ -779,11 +785,14 @@ function respondToResize() {
         auctionHeadingDiv.style.left = aucLeft + 'px';
         auctionHeadingDiv.style.width = aucW + 'px';
         auctionHeadingDiv.style.height = headerH + 'px';
+        // Hide the W/N/E/S header row on mobile — recalled on demand later
+        auctionHeadingDiv.style.visibility = isMobile ? 'hidden' : 'visible';
+        auctionHeadingDiv.style.height = isMobile ? '0px' : headerH + 'px';
 
         auctionHeadingDiv.style.border = '1px solid black';
         auctionHeadingDiv.style.borderBottom = 'none';
 
-        auctionTableDiv.style.top = (margin + headerH) + 'px';
+        auctionTableDiv.style.top = (margin + (isMobile ? 0 : headerH)) + 'px';
         auctionTableDiv.style.left = aucLeft + 'px';
         auctionTableDiv.style.width = aucW + 'px';
 
