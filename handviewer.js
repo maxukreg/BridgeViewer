@@ -539,16 +539,17 @@ function respondToResize() {
 
         // VISIBILITY LOGIC
         var showingCards = isHandShowing(s);
-        var auctionOver = (declarer !== -1);
+        var auctionOver = (declarer !== -1);nameHeight = Math.floor(handHeight /9)
         var showingBox = showingCards || auctionOver;
 
         // On mobile, hide East (3) and West (1) when South (0) is declarer
         if (isMobile && auctionOver && declarer === 0 && (s === 1 || s === 3)) {
-            table.style.visibility = 'hidden';
-            bar.style.visibility = 'hidden';
-            continue;
-        }
-
+                    table.style.visibility = 'hidden';
+                    bar.style.visibility = 'hidden';
+                    var nameText = bar.querySelector('.nameTextDivStyle');
+                    if (nameText) nameText.style.setProperty('visibility', 'hidden', 'important');
+                    continue;
+                }
         if (!showingBox) {
             table.style.visibility = 'hidden';
             bar.style.visibility = 'hidden';
