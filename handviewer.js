@@ -541,6 +541,13 @@ function respondToResize() {
         var auctionOver = (declarer !== -1);
         var showingBox = showingCards || auctionOver;
 
+        // On mobile, hide East (3) and West (1) when South (0) is declarer
+        if (isMobile && auctionOver && declarer === 0 && (s === 1 || s === 3)) {
+            table.style.visibility = 'hidden';
+            bar.style.visibility = 'hidden';
+            continue;
+        }
+
         if (!showingBox) {
             table.style.visibility = 'hidden';
             bar.style.visibility = 'hidden';
