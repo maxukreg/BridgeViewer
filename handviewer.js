@@ -525,7 +525,7 @@ function respondToResize() {
         handHeight = Math.floor((totalHeight - (margin * 4)) / 3.2);
         suitHeight = Math.floor(handHeight / 5);
         // Use same compact condensed font size the auction heading uses (~85% of normal)
-        fontSize = Math.max(11, Math.floor(handHeight / 8));
+        fontSize = Math.max(11, Math.floor(handHeight / 9));
         nameHeight = Math.floor(handHeight / 4.5);
         sideOffset = Math.floor(totalWidth * 0.01);
         globalShiftX = 0;
