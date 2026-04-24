@@ -520,6 +520,7 @@ function respondToResize() {
     var globalShiftX = Math.floor(totalWidth * 0.05);
 
     // MOBILE OVERRIDES: wider hands, compact font to fit 8+ cards per row
+    if (isMobile) console.log('declarer=', declarer, 'seats=', seats);
     if (isMobile) {
         handWidth = Math.floor(totalWidth * 0.43);          // wide enough for 8+ cards
         handHeight = Math.floor((totalHeight - (margin * 4)) / 3.2);
