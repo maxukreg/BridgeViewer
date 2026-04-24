@@ -692,12 +692,12 @@ function respondToResize() {
         // Trick cards: on mobile make them bigger (suit symbol + rank both need to fit)
         if (isMobile) {
             trickCardWidth = Math.floor(handWidth * 0.28);
-            trickCardHeight = Math.floor(trickCardWidth * 1.1); // taller to show suit+rank on two lines
+            trickCardHeight = Math.floor(trickCardWidth * 0.75); // taller to show suit+rank on two lines
         } else {
             trickCardWidth = Math.floor(handWidth * 0.215);
             trickCardHeight = Math.floor(trickCardWidth * 0.71);
         }
-    
+        
         var vOffset = Math.floor(trickCardHeight * 1.6);
         var hOffset = Math.floor(trickCardWidth * 1.2);
     
