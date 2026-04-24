@@ -526,8 +526,8 @@ function respondToResize() {
         handHeight = Math.floor((totalHeight - (margin * 4)) / 3.2);
         suitHeight = Math.floor(handHeight / 5);
         // Use same compact condensed font size the auction heading uses (~85% of normal)
-        fontSize = Math.max(11, Math.floor(handHeight / 9));
-        nameHeight = Math.floor(handHeight / 4.5);
+        fontSize = Math.max(11, Math.floor(handHeight / 5));
+        nameHeight = Math.floor(handHeight / 9);
         sideOffset = Math.floor(totalWidth * 0.01);
         globalShiftX = 0;
     }
@@ -539,7 +539,7 @@ function respondToResize() {
 
         // VISIBILITY LOGIC
         var showingCards = isHandShowing(s);
-        var auctionOver = (declarer !== -1);nameHeight = Math.floor(handHeight /9)
+        var auctionOver = (declarer !== -1);nameHeight = Math.floor(handHeight /4.5)
         var showingBox = showingCards || auctionOver;
 
         // On mobile, hide East (3) and West (1) when South (0) is declarer

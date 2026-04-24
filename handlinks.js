@@ -458,6 +458,8 @@
                     if (linkData) {
                         const fullUrl = `${htmlLoc}?${linkData.query}`;
                         console.log('Navigating to:', fullUrl);
+                        console.log('linkData:', linkData);
+                        console.log('fullUrl:', fullUrl);
                         window.location.href = fullUrl;
                     } else {
                         console.error('Link data not found for ID:', linkId);
