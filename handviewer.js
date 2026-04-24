@@ -689,14 +689,18 @@ function respondToResize() {
         var containerWidth = Math.floor(trickCardWidth * 2.4) + (containerPadding * 2);
         var containerHeight = Math.floor(trickCardHeight * 2.2) + (containerPadding * 1.4);
     
-        // Trick cards: on mobile make them bigger (suit symbol + rank both need to fit)
-        if (isMobile) {
-            trickCardWidth = Math.floor(handWidth * 0.28);
-            trickCardHeight = Math.floor(trickCardWidth * 0.75); // taller to show suit+rank on two lines
-        } else {
-            trickCardWidth = Math.floor(handWidth * 0.215);
-            trickCardHeight = Math.floor(trickCardWidth * 0.71);
-        }
+        // Trick cards: 
+
+                if (isMobile) {
+                    trickCardWidth = Math.floor(handWidth * 0.28);
+                    trickCardHeight = Math.floor(trickCardWidth * 0.75); // reduced — no wasted whitespace
+                } else {
+                    trickCardWidth = Math.floor(handWidth * 0.215);
+                    trickCardHeight = Math.floor(trickCardWidth * 0.71);
+                }
+            
+                var vOffset = Math.floor(trickCardHeight * 1.6);
+                var hOffset = isMobile ? Math.floor(trickCardWidth * 2.2) : Math.floor(trickCardWidth * 1.2);
         
         var vOffset = Math.floor(trickCardHeight * 1.6);
         var hOffset = Math.floor(trickCardWidth * 1.2);
@@ -705,7 +709,7 @@ function respondToResize() {
             var trickCard = trickDivs[seat];
             trickCard.style.width = trickCardWidth + 'px';
             trickCard.style.height = trickCardHeight + 'px';
-            trickCard.style.lineHeight = isMobile ? Math.floor(trickCardHeight / 2) + 'px' : trickCardHeight + 'px';
+            trickCard.style.lineHeight = trickCardHeight + 'px';
             trickCard.style.fontSize = Math.floor(fontSize * 1.25) + 'px';
             trickCard.style.backgroundColor = "white";
             trickCard.style.color = "black";
