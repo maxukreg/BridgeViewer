@@ -468,12 +468,13 @@ function showEditorMenu(visible) {
 
 function respondToBodyResize(param) {
   //if (!fastVersion) {
-
+   
   respondToResize();
   // }
 }
 
 function respondToResize() {
+    console.log('winW:', winW, 'isMobile:', isMobile);
     var div = document.getElementById('theDiv');
     var buttonDiv = document.getElementById('buttonDiv');
     if (!div || !buttonDiv) return;
@@ -524,9 +525,9 @@ function respondToResize() {
     if (isMobile) {
         handWidth = Math.floor(totalWidth * 0.43);          // wide enough for 8+ cards
         handHeight = Math.floor((totalHeight - (margin * 4)) / 3.2);
-        suitHeight = Math.floor(handHeight / 5);
+        suitHeight = Math.floor(handHeight / 7);
         // Use same compact condensed font size the auction heading uses (~85% of normal)
-        fontSize = Math.max(11, Math.floor(handHeight / 5));
+        fontSize = Math.max(11, Math.floor(handHeight / 9));
         nameHeight = Math.floor(handHeight / 9);
         sideOffset = Math.floor(totalWidth * 0.01);
         globalShiftX = 0;
@@ -539,7 +540,7 @@ function respondToResize() {
 
         // VISIBILITY LOGIC
         var showingCards = isHandShowing(s);
-        var auctionOver = (declarer !== -1);nameHeight = Math.floor(handHeight /4.5)
+        var auctionOver = (declarer !== -1);
         var showingBox = showingCards || auctionOver;
 
         // On mobile, hide East (3) and West (1) when South (0) is declarer
@@ -635,10 +636,11 @@ function respondToResize() {
             var mMidY = (totalHeight - ((4 * suitHeight) + nameHeight)) / 2;
             if (s === 0) { // South — centred, near bottom
                 xpos[0] = mMidX;
-                ypos[0] = totalHeight - ((4 * suitHeight) + nameHeight) - margin;
-            } else if (s === 2) { // North — centred top (same as desktop)
+                ypos[0] = Math.floor(totalHeight * 0.65);
+            } else if (s === 2) { // North — centred top
                 xpos[2] = mMidX;
-                ypos[2] = margin;
+                ypos[2] = Math.floor(totalHeight * 0.05);
+            
             } else if (s === 1) { // West — left edge, vertically centred
                 xpos[1] = Math.floor(totalWidth * 0.01);
                 ypos[1] = mMidY;
@@ -711,8 +713,7 @@ function respondToResize() {
                 var vOffset = Math.floor(trickCardHeight * 1.6);
                 var hOffset = isMobile ? Math.floor(trickCardWidth * 2.2) : Math.floor(trickCardWidth * 1.2);
         
-        var vOffset = Math.floor(trickCardHeight * 1.6);
-        var hOffset = Math.floor(trickCardWidth * 1.2);
+
     
         for (seat = 0; seat < 4; seat++) {
             var trickCard = trickDivs[seat];
@@ -3094,7 +3095,8 @@ function manageAnnounceDiv() {
     announceDiv.style.width = 'auto'; 
     announceDiv.style.height = 'auto';
     announceDiv.style.lineHeight = 'normal';
-    announceDiv.style.left = (totalWidth - announceDiv.clientWidth) / 2 + 'px';
+    announceDiv.style.left = window.innerWidth < 600 ? Math.floor((totalWidth - 150) / 2) + 'px' : (totalWidth - announceDiv.clientWidth) / 2 + 'px';
+    if (window.innerWidth < 600) announceDiv.style.width = '150px';
     announceDiv.style.top = (totalHeight - announceDiv.clientHeight) / 2 + 'px';
     announceDiv.style.border = '1px solid white';
   } else {
@@ -3118,8 +3120,8 @@ function manageAnnounceDiv() {
     // 3. STYLING
     announceDiv.style.fontSize = textFontSize + 'px';
     announceDiv.style.lineHeight = (announceHeight - 4) + 'px'; 
-    announceDiv.style.width = availableWidth + 'px';
-    announceDiv.style.left = startX + 'px';
+    announceDiv.style.width = window.innerWidth < 600 ? Math.floor(totalWidth * 0.5) + 'px' : availableWidth + 'px';
+    announceDiv.style.left = window.innerWidth < 600 ? Math.floor(totalWidth * 0.25) + 'px' : startX + 'px';
     announceDiv.style.height = announceHeight + 'px';
     announceDiv.style.whiteSpace = 'nowrap';
     announceDiv.style.padding = '0';
@@ -3214,10 +3216,17 @@ function manageTricksDiv() {
     var endX = totalWidth - margin - Math.floor(totalWidth * 0.08);
     var availableWidth = Math.max((endX - startX), 120);
     
-    tricksDiv.style.width = availableWidth + 'px';
-    tricksDiv.style.left = startX + 'px';
-    tricksDiv.style.height = boxHeight + 'px';
-    tricksDiv.style.top = (totalHeight - boxHeight - margin - 2) + 'px';
+    if (window.innerWidth < 600) {
+        tricksDiv.style.width = Math.floor(totalWidth * 0.5) + 'px';
+        tricksDiv.style.left = Math.floor(totalWidth * 0.25) + 'px';
+        tricksDiv.style.height = boxHeight + 'px';
+        tricksDiv.style.top = (totalHeight - boxHeight - margin - 2) + 'px';
+    } else {
+        tricksDiv.style.width = availableWidth + 'px';
+        tricksDiv.style.left = startX + 'px';
+        tricksDiv.style.height = boxHeight + 'px';
+        tricksDiv.style.top = (totalHeight - boxHeight - margin - 2) + 'px';
+    }
     
     // Inner Left (Contract) Styling
     tricksDivLeft.className = ''; 

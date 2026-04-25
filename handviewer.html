@@ -4,9 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <link rel="stylesheet" href="handviewer.css" type="text/css" />
-    <link
-      rel="stylesheet"
-      href="ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css"  />
+    <script src="https://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
     <script src="group11.js"></script>
     <script src="group12.js"></script>
 	<script src="group17.js"></script>
@@ -31,37 +29,11 @@
     <script src="group36.js"></script>
     <script src="group37.js"></script>
     <script src="group38.js"></script>
-    <script
-      src="ajax/libs/jquery/1.8.3/jquery.min.js"
-      type="text/javascript"
-    ></script>
-    <script
-      type="text/javascript"
-      src="ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="js/jquery.hoverIntent.minified.js"
-    ></script>
+  
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/bbo_public.css" />
-    <script type="text/javascript" src="js/bbo_public.js"></script>
+    <script src="https://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 
-    <script type="text/javascript">
-      $(document).ready(function () {
-        var hovercfg = {
-          interval: 300,
-          sensitivity: 6,
-          timeout: 0,
-          over: function (e) {
-            bbo_profile(e, 'BBO:' + this.innerHTML)
-          },
-          out: function () {},
-        }
 
-        if (gup('bbo').toUpperCase() == 'Y') $('.nameTextDivStyle').hoverIntent(hovercfg)
-      })
-    </script>
   </head>
   <script type="text/javascript">
     var _resizeTimer;
