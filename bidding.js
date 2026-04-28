@@ -256,6 +256,7 @@ var expectedBid = '';
 let validBidEntered = false; 
 let selectedNumber = null;
 var lastBid='';
+var southHorizontalMode = true;
 
 var editorMenuDiv = document.getElementById('editorMenuDiv');
 var biddingCheck = document.getElementById('bidding');
@@ -438,6 +439,40 @@ function showAll(visible) {
   showCardImages(visible);
   respondToResize();
 }
+
+ function renderSouthHorizontalCompact() {
+     if (!southHorizontalMode || picturesOfCards) return;
+ 
+     if (handDivs[0]) handDivs[0].style.visibility = 'hidden';
+     if (nameBars[0]) nameBars[0].style.visibility = 'hidden';
+ 
+     var el = document.getElementById('southHandBar');
+     if (!el) {
+         el = document.createElement('div');
+         el.id = 'southHandBar';
+         document.getElementById('theDiv').appendChild(el);
+     }
+ 
+     var html = '<div id="southHandBanner">South</div>';
+     html += '<div id="southHandCards">';
+     for (var suit = 3; suit >= 0; suit--) {
+         for (var card = 12; card >= 0; card--) {
+             if (deck[suit][card] == 0) {
+                 var suitColor = (suit === 1 || suit === 2) ? '#CB0000' : '#000000';
+                 html += '<span class="southCompactCard">'
+                       + '<span class="southCompactRankTop">' + getCardChar(card) + '</span>'
+                       + '<span class="southCompactSuitBottom" style="color:' + suitColor + '">' + suitHTMLs[suit] + '</span>'
+                       + '</span>';
+             }
+         }
+     }
+     html += '</div>';
+ 
+     el.innerHTML = html;
+ 
+     var clearance = nameHeight + margin + 4;
+     el.style.bottom = clearance + 'px';
+ }
 
 function showEditorMenu(visible) {
   editorMenuShowing = visible;
@@ -873,17 +908,24 @@ function respondToResize() {
     table.style.left = xpos[seat];
 
     nameBars[seat].style.fontSize = fontSize;
-    nameBars[seat].style.left = xpos[seat];
+    nameBars[seat].style.left = xpos[seat] + 'px';
     if (picturesOfCards) {
       nameBars[seat].style.top = getPicturesNameBarTop(seat);
     } else {
       nameBars[seat].style.top = ypos[seat];
     }
 
-    nameBars[seat].style.height = nameHeight;
-    nameBars[seat].style.width = getHandWidth(seat);
-    nameTexts[seat].style.left = nameInitials[seat].clientWidth;
-    nameTexts[seat].style.width = getHandWidth(seat) - nameInitials[seat].clientWidth;
+    const actualSeatWidth = getHandWidth(seat);
+    nameBars[seat].style.height = nameHeight + 'px';
+    nameBars[seat].style.width = actualSeatWidth + 'px';
+    nameTexts[seat].style.left = nameInitials[seat].clientWidth + 'px';
+    nameTexts[seat].style.width =
+    Math.max(0, actualSeatWidth - nameInitials[seat].clientWidth - margin) + 'px';
+    if (seat == 0 && southHorizontalMode && !picturesOfCards) {
+        renderSouthHorizontalCompact();
+        // positioning handled by CSS fixed layout and bottom clearance in the function
+        continue;
+    }
   }
 
   if (numHandsShowing == 4) {
@@ -922,31 +964,48 @@ function respondToResize() {
     if (auctionHeadingDiv.parentNode != div) div.appendChild(auctionHeadingDiv);
     if (auctionTableDiv.parentNode != div) div.appendChild(auctionTableDiv);
     div.appendChild(alertDiv);
+  
     auctionHeading.style.fontSize = fontSize;
     auctionHeadingDiv.style.width = handWidth;
-
+  
     auctionHeading.style.height = suitHeight;
     auctionHeading.style.width = handWidth;
-
+  
     auctionTableDiv.style.fontSize = fontSize;
     auctionTableDiv.style.width = handWidth;
-
+  
     var auctionDivHeight = 4 * suitHeight;
     auctionTableDiv.style.height = auctionDivHeight + 'px';
-
+  
     auctionTable.style.fontSize = fontSize;
     auctionTable.style.width = handWidth;
-
-    const aucLeft = xpos[0];
-    const aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin;
+  
+    const southHand = handDivs[0];
+    const southLeft = southHand.offsetLeft;
+    const southWidth = southHand.offsetWidth;
+    const southCenter = southLeft + southWidth / 2;
+  
+    const biddingBoxEl = biddingBox || document.getElementById('biddingBox');
+    const auctionWidth = auctionTableDiv.offsetWidth || handWidth;
+    const aucLeft = southCenter - auctionWidth / 2;
+  
+    let aucTabTop;
+    if (biddingBoxEl && biddingBoxEl.style.visibility === 'visible') {
+      const bidTop = biddingBoxEl.offsetTop;
+      aucTabTop = bidTop - auctionTableDiv.offsetHeight - margin;
+    } else {
+      aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin;
+    }
+  
     const aucHdrTop = aucTabTop - auctionHeadingDiv.offsetHeight;
-
-    auctionHeadingDiv.style.left = `${aucLeft}px`;
-    auctionTableDiv.style.left   = `${aucLeft}px`;
-    auctionTableDiv.style.top    = `${aucTabTop}px`;
-    auctionHeadingDiv.style.top  = `${aucHdrTop}px`;
+  
+    auctionHeadingDiv.style.left = aucLeft + 'px';
+    auctionTableDiv.style.left = aucLeft + 'px';
+    auctionTableDiv.style.top = aucTabTop + 'px';
+    auctionHeadingDiv.style.top = aucHdrTop + 'px';
+  
     manageAuctionScrollBar();
-
+  
     alertDiv.style.fontSize = (3 * fontSize) / 4;
     alertDiv.style.height = (3 * suitHeight) / 4;
     manageAlertDiv();
@@ -993,6 +1052,10 @@ function respondToResize() {
 
   manageAnnounceDiv();
   manageInfoDiv();
+  console.log('handDivs[0].offsetWidth BEFORE positionBiddingBox =', handDivs[0].offsetWidth);
+  console.log('handDivs[0].offsetLeft BEFORE positionBiddingBox =', handDivs[0].offsetLeft);
+  positionBiddingBox();
+
 
 }
 debugSeatState('before startBiddingProcess');
@@ -1004,18 +1067,33 @@ startBiddingProcess().then(() => {
 
 
 async function startBiddingProcess() {
+  southHorizontalMode = true;  
+  console.log('southHorizontalMode =', southHorizontalMode);
+  console.log('handDivs[0].offsetWidth before render =', handDivs[0].offsetWidth);
+  console.log('handDivs[0].offsetLeft before render =', handDivs[0].offsetLeft);  
   console.log('startBiddingProcess entered');
   console.log('South visible before first bid:', deck[0], handDivs[0].innerHTML);  
   blankOutHand(2); // North
   blankOutHand(3); // East
   blankOutHand(1); // West
+
   hideTricksDiv();
   blankOutAuctionTable();
   hideButtons(['rewindButton', 'optionsButton', 'undoButton', 'gibButton', 'nextButton']);
   manageInfoDiv();
+  // Hide the old south hand div — we use #southHandBar instead
+  handDivs[0].style.visibility = 'hidden';
+  nameBars[0].style.visibility = 'hidden';  
   
+  renderSouthHorizontalCompact();
+  var hw = handDivs[0].offsetWidth;
+  handDivs[0].style.left = Math.round((totalWidth - hw) / 2) + 'px';
+  xpos[0] = Math.round((totalWidth - hw) / 2);
+  respondToResize();
+  requestAnimationFrame(() => {
+    positionBiddingBox();
+  });
 
-  
     // showButtonBar() returns false during bidding so respondToResize() hides
     // the button bar. Force it visible so Play (and any other kept buttons) show.
     window.addEventListener('resize', positionBiddingBox);
@@ -1050,6 +1128,10 @@ async function startBiddingProcess() {
     
       bidSeqPoint = 0;
       passes = 0;
+      renderSouthHorizontalCompact();
+      var hw = handDivs[0].offsetWidth;
+      handDivs[0].style.left = Math.round((totalWidth - hw) / 2) + 'px';
+      xpos[0] = Math.round((totalWidth - hw) / 2);
       initializeBiddingBox();
   
   await nextBid();
@@ -1057,16 +1139,18 @@ async function startBiddingProcess() {
 }
 
 function initializeBiddingBox() {
-  // Get the double and redouble buttons
+  const box = document.getElementById('biddingBox');
   const doubleButton = document.getElementById('dbl');
   const redoubleButton = document.getElementById('redbl');
 
-  // Hide the double and redouble buttons
-  if (doubleButton) {
-    doubleButton.style.visibility = 'hidden';
-  }
-  if (redoubleButton) {
-    redoubleButton.style.visibility = 'hidden';
+  if (doubleButton) doubleButton.style.visibility = 'hidden';
+  if (redoubleButton) redoubleButton.style.visibility = 'hidden';
+
+  if (box) {
+    box.style.display = 'block';
+    box.style.visibility = 'visible';
+    box.style.position = 'absolute';
+    positionBiddingBox();
   }
 }
 
@@ -1120,6 +1204,8 @@ blankOutHand(1); // West
 
 // Call the function to nullify the mouseover effect for the South hand
 blankOutHand(0, false); // South
+nameBars[0].style.visibility = 'visible';
+nameBars[0].style.backgroundColor = '#003399';  // or whatever the standard bar colour is
 
 function manageStatusDiv() {
   if (editorMenuShowing) {
@@ -2145,13 +2231,12 @@ function shuffle() {
 }
 
 function resizeCards(seat, suit) {
-  if (fastVersion || !cardDivsCreated) {
-    return;
-  }
+  if (fastVersion || !cardDivsCreated) return;
 
   var pixels = 0;
   var fs = 1.2 * fontSize;
-  var maxWidth = 0.82 * handWidth;
+  var maxWidth = 0.82 * getHandWidth(seat);
+
   for (i = 0; i < 13; i++) {
     if (cardDivs[seat][suit][i].innerHTML == '') {
       cardDivs[seat][suit][i].style.left = 0;
@@ -2159,7 +2244,6 @@ function resizeCards(seat, suit) {
       cardDivs[seat][suit][i].style.left = pixels;
       cardDivs[seat][suit][i].style.fontSize = fs;
       pixels += cardDivs[seat][suit][i].clientWidth + 1;
-
       if (pixels > maxWidth && fs > 8) {
         fs--;
         i = -1;
@@ -8517,46 +8601,28 @@ function HideAuction() {
 function positionBiddingBox() {
   const southHand = handDivs[0];
   const biddingBox = document.getElementById('biddingBox');
+  if (!southHand || !biddingBox) return;
 
-  const southLeft   = southHand.offsetLeft;
-  const southTop    = southHand.offsetTop;
-  const southWidth  = southHand.offsetWidth;
-  const southHeight = southHand.offsetHeight;
-
-  // Shift South hand and nameBar right by 1/4 of totalWidth
-  const shift = Math.round(totalWidth * 0.25);
-  const newSouthLeft = Math.min(southLeft + shift, totalWidth - southWidth - margin);  
-  southHand.style.left = `${newSouthLeft}px`;
-  nameBars[0].style.left = `${newSouthLeft}px`;
-
-  // Bidding box: sits to the LEFT of the South hand
-  const boxWidth    = southWidth;
-  const leftPosition = newSouthLeft - boxWidth - margin * 6;
+  // Use offsetLeft/offsetTop relative to the positioned parent (theDiv)
+  const southLeft = southHand.offsetLeft;
+  const southTop = southHand.offsetTop;
+  // offsetWidth gives the rendered width; for auto-height hand use scrollWidth/offsetWidth
+  const southWidth = southHand.offsetWidth || handWidth;
+  // Centre of the south hand
+  const southCenter = southLeft + southWidth / 2;
 
   biddingBox.style.position = 'absolute';
-  biddingBox.style.width    = `${boxWidth}px`;
-  biddingBox.style.height   = `${southHeight}px`;
-  biddingBox.style.left     = `${leftPosition}px`;
 
-  const boxHeight = biddingBox.offsetHeight || southHeight;
-  biddingBox.style.top = `${southTop - boxHeight - 10}px`;
+  const boxWidth = biddingBox.offsetWidth || southWidth;
+  // Centre the bidding box over the south hand
+  biddingBox.style.left = Math.round(southCenter - boxWidth / 2) + 'px';
+
+  // Place the bidding box directly above the top edge of the south hand
+  const boxHeight = biddingBox.offsetHeight || handHeight;
+  biddingBox.style.top = Math.round(southTop - boxHeight - margin) + 'px';
 
   biddingBox.style.visibility = 'visible';
-  biddingBox.style.zIndex = '1000';
-
-  // Auction table sits directly above the (shifted) South hand
-  const aucLeft = newSouthLeft;
-  if (typeof auctionHeadingDiv !== 'undefined' && auctionHeadingDiv && auctionHeadingDiv.parentNode) {
-    auctionHeadingDiv.style.left = `${aucLeft}px`;
-  }
-  if (typeof auctionTableDiv !== 'undefined' && auctionTableDiv && auctionTableDiv.parentNode) {
-    auctionTableDiv.style.left = `${aucLeft}px`;
-  }
-  // Re-position announce div below the shifted South hand
-  if (typeof announceDiv !== 'undefined' && announceDiv) {
-    announceDiv.style.left = `${newSouthLeft}px`;
-    announceDiv.style.top  = `${southTop + southHeight + margin}px`;
-  }
+  biddingBox.style.zIndex = 1000;
 }
 
 

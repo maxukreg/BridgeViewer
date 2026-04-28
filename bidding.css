@@ -648,3 +648,85 @@ button:hover {
     gap: 2px;
   }
 }
+
+#southHandBar {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #e6d98a;
+    border: 1px solid white;
+    padding: 0;
+    z-index: 500;
+    max-width: 98vw;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+#southHandBanner {
+    width: 100%;
+    background: #003399;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    padding: 4px 8px;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+}
+
+#southHandCards {
+    display: flex;
+    flex-direction: row;    /* THIS is what keeps cards horizontal */
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 8px;
+    gap: 4px;
+}
+
+span.southCompactCard {
+    display: inline-flex;
+    flex-direction: column;  /* suit on top, rank below, WITHIN each card tile */
+    align-items: center;
+    justify-content: center;
+    padding: 4px 6px;
+    background: #ffffff;
+    border: 1px solid #999999;
+    box-sizing: border-box;
+    min-width: 36px;
+    height: 56px;
+    border-radius: 3px;
+}
+
+span.southCompactRankTop {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000000;
+    margin-bottom: -4px;
+}
+
+span.southCompactSuitBottom {
+    display: block;
+    font-size: 26px;
+    line-height: 1;
+}
+
+@media (max-width: 600px) {
+    span.southCompactCard {
+        min-width: 26px;
+        height: 44px;
+        padding: 3px 4px;
+    }
+    span.southCompactRankTop,
+    span.southCompactSuitBottom {
+        font-size: 14px;
+    }
+}
+
