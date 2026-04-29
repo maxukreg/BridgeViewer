@@ -651,7 +651,7 @@ button:hover {
 
 #southHandBar {
     position: fixed;
-    bottom: 40px;
+    bottom: 0px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;

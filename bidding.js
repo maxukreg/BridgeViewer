@@ -471,7 +471,7 @@ function showAll(visible) {
  
      el.innerHTML = html;
  
-     var clearance = nameHeight + margin + 4;
+     var clearance = nameHeight + margin + 40 ;
      el.style.bottom = clearance + 'px';
  }
 
@@ -992,9 +992,9 @@ function respondToResize() {
   
     let aucTabTop;
     if (biddingBoxEl && biddingBoxEl.style.visibility === 'visible') {
-        aucTabTop = biddingBoxEl.offsetTop - auctionTableDiv.offsetHeight - margin;
+        aucTabTop = biddingBoxEl.offsetTop - auctionTableDiv.offsetHeight - margin - 150;
     } else {
-        aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin;
+        aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin - 150;
     }
     const aucHdrTop = aucTabTop - auctionHeadingDiv.offsetHeight;
   
@@ -3483,7 +3483,7 @@ function manageEditorAnnounceDiv() {
   editorNewButton.style.paddingLeft = margin;
   editorNewButton.style.paddingRight = margin;
   editorNewButton.style.top = editorDiv.clientHeight - margin - 4 - editorNewButton.clientHeight;
-  editorHVLButton.style.height = buttonHeight;
+  announceDiv.style.top = totalHeight - announceDiv.clientHeight -5;
   editorHVLButton.style.fontSize = buttonFontSize;
   editorHVLButton.style.paddingLeft = margin;
   editorHVLButton.style.paddingRight = margin;
@@ -8646,7 +8646,7 @@ function positionBiddingBox() {
 
   // Place the bidding box directly above the top edge of the south hand
   const boxHeight = biddingBox.offsetHeight || handHeight;
-  biddingBox.style.top = Math.round(southTop - boxHeight - margin) + 'px';
+  biddingBox.style.top = Math.round(southTop - boxHeight - margin +50) + 'px';
 
   biddingBox.style.visibility = 'visible';
   biddingBox.style.zIndex = 1000;
