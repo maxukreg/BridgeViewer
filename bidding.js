@@ -74,6 +74,7 @@ var tricksDiv;
 var tricksDivLeft;
 var tricksDivRight;
 var scoreDiv;
+var biddingBoxReady = false;
 var otherTableDiv;
 var nsTeamDiv;
 var ewTeamDiv;
@@ -987,20 +988,28 @@ function respondToResize() {
   
     const biddingBoxEl = biddingBox || document.getElementById('biddingBox');
     const auctionWidth = auctionTableDiv.offsetWidth || handWidth;
-    const aucLeft = southCenter - auctionWidth / 2;
+    const aucLeft = Math.round(southCenter - auctionWidth / 2);
   
     let aucTabTop;
     if (biddingBoxEl && biddingBoxEl.style.visibility === 'visible') {
-      const bidTop = biddingBoxEl.offsetTop;
-      aucTabTop = bidTop - auctionTableDiv.offsetHeight - margin;
+        aucTabTop = biddingBoxEl.offsetTop - auctionTableDiv.offsetHeight - margin;
     } else {
-      aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin;
+        aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin;
     }
-  
     const aucHdrTop = aucTabTop - auctionHeadingDiv.offsetHeight;
   
-    auctionHeadingDiv.style.left = aucLeft + 'px';
-    auctionTableDiv.style.left = aucLeft + 'px';
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            const sh = handDivs[0];
+            const shLeft = sh.offsetLeft;
+            const shWidth = sh.offsetWidth;
+            const shCenter = shLeft + shWidth / 2;
+            const aWidth = auctionTableDiv.offsetWidth || handWidth;
+            const aLeft = Math.round(shCenter - aWidth / 2);
+            auctionHeadingDiv.style.left = aLeft + 'px';
+            auctionTableDiv.style.left = aLeft + 'px';
+        });
+    });
     auctionTableDiv.style.top = aucTabTop + 'px';
     auctionHeadingDiv.style.top = aucHdrTop + 'px';
   
@@ -1054,7 +1063,7 @@ function respondToResize() {
   manageInfoDiv();
   console.log('handDivs[0].offsetWidth BEFORE positionBiddingBox =', handDivs[0].offsetWidth);
   console.log('handDivs[0].offsetLeft BEFORE positionBiddingBox =', handDivs[0].offsetLeft);
-  positionBiddingBox();
+  if (biddingBoxReady) positionBiddingBox();
 
 
 }
@@ -1084,22 +1093,21 @@ async function startBiddingProcess() {
   // Hide the old south hand div — we use #southHandBar instead
   handDivs[0].style.visibility = 'hidden';
   nameBars[0].style.visibility = 'hidden';  
-  
   renderSouthHorizontalCompact();
-  var hw = handDivs[0].offsetWidth;
-  handDivs[0].style.left = Math.round((totalWidth - hw) / 2) + 'px';
-  xpos[0] = Math.round((totalWidth - hw) / 2);
+  
+    
   respondToResize();
+  
   requestAnimationFrame(() => {
-    positionBiddingBox();
+      requestAnimationFrame(() => {
+          var hw = handDivs[0].offsetWidth;
+          handDivs[0].style.left = Math.round((totalWidth - hw) / 2) + 'px';  // moved here
+          xpos[0] = Math.round((totalWidth - hw) / 2);  
+           biddingBoxReady = true;                         // moved here
+          if (biddingBoxReady) positionBiddingBox();
+          window.addEventListener('resize', positionBiddingBox); 
+      });
   });
-
-    // showButtonBar() returns false during bidding so respondToResize() hides
-    // the button bar. Force it visible so Play (and any other kept buttons) show.
-    window.addEventListener('resize', positionBiddingBox);
-      respondToResize();
-      positionBiddingBox()
-      positionBiddingBox();
     
       // showButtonBar() returns false during bidding so respondToResize() hides
       // the button bar. Force it visible so Play (and any other kept buttons) show.
@@ -1150,7 +1158,7 @@ function initializeBiddingBox() {
     box.style.display = 'block';
     box.style.visibility = 'visible';
     box.style.position = 'absolute';
-    positionBiddingBox();
+    if (biddingBoxReady) positionBiddingBox();
   }
 }
 
@@ -8603,6 +8611,17 @@ function positionBiddingBox() {
   const biddingBox = document.getElementById('biddingBox');
   if (!southHand || !biddingBox) return;
 
+  if (biddingBox.parentNode !== document.getElementById('theDiv')) {
+    document.getElementById('theDiv').appendChild(biddingBox);
+}
+  
+  console.trace('positionBiddingBox called from:');
+  console.log('southHand.offsetLeft =', southHand.offsetLeft);
+  console.log('southHand.offsetWidth =', southHand.offsetWidth);
+  console.log('southHand.style.left =', southHand.style.left);
+  console.log('biddingBox.offsetWidth =', biddingBox.offsetWidth);
+  console.log('southHand.offsetParent =', southHand.offsetParent);
+  console.log('biddingBox.offsetParent =', biddingBox.offsetParent);
   // Use offsetLeft/offsetTop relative to the positioned parent (theDiv)
   const southLeft = southHand.offsetLeft;
   const southTop = southHand.offsetTop;
@@ -8612,10 +8631,18 @@ function positionBiddingBox() {
   const southCenter = southLeft + southWidth / 2;
 
   biddingBox.style.position = 'absolute';
-
-  const boxWidth = biddingBox.offsetWidth || southWidth;
-  // Centre the bidding box over the south hand
-  biddingBox.style.left = Math.round(southCenter - boxWidth / 2) + 'px';
+  biddingBox.style.visibility = 'visible';
+  biddingBox.style.display = 'block';
+  
+  // Force a reflow so offsetWidth is accurate
+  void biddingBox.offsetWidth;
+  
+  const boxWidth = biddingBox.offsetWidth;   // remove any || fallback
+  biddingBox.style.left = Math.round(southCenter - boxWidth / 2) + "px";  
+  console.log('southCenter =', southCenter);
+  console.log('boxWidth =', boxWidth);
+  console.log('calculated left =', Math.round(southCenter - boxWidth / 2));
+  console.log('biddingBox.style.left after set =', biddingBox.style.left);
 
   // Place the bidding box directly above the top edge of the south hand
   const boxHeight = biddingBox.offsetHeight || handHeight;
@@ -8623,6 +8650,12 @@ function positionBiddingBox() {
 
   biddingBox.style.visibility = 'visible';
   biddingBox.style.zIndex = 1000;
+  const computed = window.getComputedStyle(biddingBox);
+  console.log('computed left =', computed.left);
+  console.log('computed margin-left =', computed.marginLeft);
+  console.log('computed transform =', computed.transform);
+  console.log('computed right =', computed.right);
+  console.log('biddingBox.getBoundingClientRect =', JSON.stringify(biddingBox.getBoundingClientRect()));
 }
 
 

@@ -691,21 +691,21 @@ button:hover {
 
 span.southCompactCard {
     display: inline-flex;
-    flex-direction: column;  /* suit on top, rank below, WITHIN each card tile */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 4px 6px;
+    padding: 6px 9px;          /* was 4px 6px */
     background: #ffffff;
     border: 1px solid #999999;
     box-sizing: border-box;
-    min-width: 36px;
-    height: 56px;
+    min-width: 48px;            /* was 36px */
+    height: 80px;               /* was 62px */
     border-radius: 3px;
 }
 
 span.southCompactRankTop {
     display: block;
-    font-size: 20px;
+    font-size: 28px;            /* was 20px */
     font-weight: bold;
     line-height: 1;
     color: #000000;
@@ -714,7 +714,7 @@ span.southCompactRankTop {
 
 span.southCompactSuitBottom {
     display: block;
-    font-size: 26px;
+    font-size: 34px;            /* was 26px */
     line-height: 1;
 }
 
