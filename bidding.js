@@ -471,7 +471,7 @@ function showAll(visible) {
  
      el.innerHTML = html;
  
-     var clearance = nameHeight + margin + 40 ;
+     var clearance = nameHeight + margin + 5 ;
      el.style.bottom = clearance + 'px';
  }
 
@@ -3464,8 +3464,9 @@ function manageAnnounceDiv() {
       announceDiv.style.left = xpos[0];
     }
 
-    // Place below the South hand
-    announceDiv.style.top = ypos[0] + handDivs[0].clientHeight + margin;
+   // Pin to the very bottom of the main green div
+   var mainDiv = document.getElementById('theDiv');
+   announceDiv.style.top = (mainDiv.clientHeight - announceDiv.offsetHeight - margin) + 'px';
   }
 }
 
