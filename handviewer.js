@@ -639,7 +639,7 @@ function respondToResize() {
                 ypos[0] = Math.floor(totalHeight * 0.65);
             } else if (s === 2) { // North — centred top
                 xpos[2] = mMidX;
-                ypos[2] = Math.floor(totalHeight * 0.05);
+                ypos[2] = Math.floor(totalHeight * 0.2);
             
             } else if (s === 1) { // West — left edge, vertically centred
                 xpos[1] = Math.floor(totalWidth * 0.01);
@@ -783,36 +783,36 @@ function respondToResize() {
     }
 
     // 7. NARROW BIDDING BOX (Red Header)
-    if (showAuction()) {
-        var aucW = handWidth;
-        var aucLeft = totalWidth - aucW - margin - globalShiftX - Math.floor(totalWidth * 0.03);
+  // 7. NARROW BIDDING BOX Red Header
+  if (showAuction) {
+    var aucW = handWidth;
+    var aucLeft = totalWidth - aucW - margin - globalShiftX - Math.floor(totalWidth * 0.03);
 
-        // On mobile, shrink auction box and anchor it to top-right with reduced width
-        if (isMobile) {
-            aucW = Math.floor(totalWidth * 0.42);
-            aucLeft = totalWidth - aucW - Math.floor(totalWidth * 0.01);
-        }
-        var auctionFontSize = Math.floor(fontSize * 0.85);
-        var headerH = Math.floor(auctionFontSize * 1.5);
+    // On mobile, shrink auction box and anchor it to top-right with reduced width
+    if (isMobile) {
+      aucW = Math.floor(totalWidth * 0.42);
+      aucLeft = totalWidth - aucW - Math.floor(totalWidth * 0.01);
+    }
 
-        auctionHeadingDiv.style.top = margin + 'px';
-        auctionHeadingDiv.style.left = aucLeft + 'px';
-        auctionHeadingDiv.style.width = aucW + 'px';
-        auctionHeadingDiv.style.height = headerH + 'px';
-        // Hide the W/N/E/S header row on mobile — recalled on demand later
-        auctionHeadingDiv.style.visibility = isMobile ? 'hidden' : 'visible';
-        auctionHeadingDiv.style.height = isMobile ? '0px' : headerH + 'px';
+    var auctionFontSize = Math.floor(fontSize * 0.85);
+    var headerH = Math.floor(auctionFontSize * 1.5);
 
-        auctionHeadingDiv.style.border = '1px solid black';
-        auctionHeadingDiv.style.borderBottom = 'none';
+    auctionHeadingDiv.style.top = margin + 'px';
+    auctionHeadingDiv.style.left = aucLeft + 'px';
+    auctionHeadingDiv.style.width = aucW + 'px';
+    auctionHeadingDiv.style.height = headerH + 'px';
 
-        auctionTableDiv.style.top = (margin + (isMobile ? 0 : headerH)) + 'px';
-        auctionTableDiv.style.left = aucLeft + 'px';
-        auctionTableDiv.style.width = aucW + 'px';
+    auctionHeadingDiv.style.visibility = 'visible';
+    auctionHeadingDiv.style.border = '1px solid black';
+    auctionHeadingDiv.style.borderBottom = 'none';
 
-        var totalAucHeight = (4 * suitHeight) + nameHeight - suitHeight;
-        var bodyH = totalAucHeight - headerH;
-        auctionTableDiv.style.height = bodyH + 'px';
+    auctionTableDiv.style.top = (margin + headerH) + 'px';
+    auctionTableDiv.style.left = aucLeft + 'px';
+    auctionTableDiv.style.width = aucW + 'px';
+
+    var totalAucHeight = (4 * suitHeight) + nameHeight - suitHeight;
+    var bodyH = totalAucHeight - headerH;
+    auctionTableDiv.style.height = bodyH + 'px';
 
         var aucBgColor = "#D0E4E4";
         auctionTableDiv.style.backgroundColor = aucBgColor;
@@ -2053,9 +2053,7 @@ function showContextMenu(x, y, nav) {
 }
 
 function contextMenuRequest(event) {
-  if (showMovie() || isEditor) {
-    showContextMenu(event.clientX, event.clientY, false);
-  }
+  return;
 }
 
 function removeMenuCommand(command, nav) {

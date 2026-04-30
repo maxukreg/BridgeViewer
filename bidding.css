@@ -617,6 +617,7 @@ button:hover {
     left: 2vw !important;
     padding: 8px;
     gap: 6px;
+    top: 55% !important;
   }
 
   button {
@@ -625,9 +626,13 @@ button:hover {
   }
 
   .numbers button {
-    min-width: 24px;
-    height: 32px;
+    min-width: 32px;
+    height: 28px;
     font-size: 15px;
+  }
+
+  .numbers {
+    gap: 10px;        /* overrides the 3px set outside the media query */
   }
 
   .suits button {
@@ -647,6 +652,29 @@ button:hover {
   .suits {
     gap: 2px;
   }
+  div.auctionTableDivStyle {
+    width: 75vw !important;
+    min-width: 180px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    
+  }
+  
+  div.auctionTableDivStyle table {
+    width: 100% !important;
+    min-width: 180px !important;
+  
+  }
+  #biddingBox {
+    top: 58% !important;
+  }
+
+  div.announceDivStyle {
+    width: 90vw !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+  
 }
 
 #southHandBar {
@@ -730,3 +758,8 @@ span.southCompactSuitBottom {
     }
 }
 
+@media (min-width: 601px) {
+  div.biddingBoxDivStyle {
+    top: 75% !important;
+  }
+}

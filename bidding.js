@@ -556,6 +556,9 @@ function respondToResize() {
     maxWidthRatio = 4 / 3;
     maxHeightRatio = 1;
   }
+  if (availableWidth < 600) {
+      maxHeightRatio = availableHeight / availableWidth;
+  }
 
   if (picturesOfCards) {
     maxWidthRatio *= 4 / 3;
@@ -992,9 +995,9 @@ function respondToResize() {
   
     let aucTabTop;
     if (biddingBoxEl && biddingBoxEl.style.visibility === 'visible') {
-        aucTabTop = biddingBoxEl.offsetTop - auctionTableDiv.offsetHeight - margin - 150;
+        aucTabTop = biddingBoxEl.offsetTop - auctionTableDiv.offsetHeight - margin - (availableWidth < 600 ? 23 : 150);
     } else {
-        aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin - 150;
+       aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin - (availableWidth < 600 ? 23 : 150);
     }
     const aucHdrTop = aucTabTop - auctionHeadingDiv.offsetHeight;
   
@@ -8647,8 +8650,8 @@ function positionBiddingBox() {
 
   // Place the bidding box directly above the top edge of the south hand
   const boxHeight = biddingBox.offsetHeight || handHeight;
-  biddingBox.style.top = Math.round(southTop - boxHeight - margin +50) + 'px';
-
+//   biddingBox.style.top = Math.round(southTop - boxHeight - margin +50) + 'px';
+  biddingBox.style.top = Math.round(southTop - boxHeight - margin + 50 + (availableWidth >= 600 ? 32 : 0)) + 'px';
   biddingBox.style.visibility = 'visible';
   biddingBox.style.zIndex = 1000;
   const computed = window.getComputedStyle(biddingBox);
