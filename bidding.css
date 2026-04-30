@@ -763,3 +763,10 @@ span.southCompactSuitBottom {
     top: 75% !important;
   }
 }
+#buttonDiv {
+  width: 100% !important;
+  max-width: 1200px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
+}
