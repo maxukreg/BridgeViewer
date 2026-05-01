@@ -456,7 +456,8 @@ function showAll(visible) {
  
      var html = '<div id="southHandBanner">South</div>';
      html += '<div id="southHandCards">';
-     for (var suit = 3; suit >= 0; suit--) {
+     for (var si = 0; si < 4; si++) {
+         var suit = [3, 2, 0, 1][si];  // S H C D order
          for (var card = 12; card >= 0; card--) {
              if (deck[suit][card] == 0) {
                  var suitColor = (suit === 1 || suit === 2) ? '#CB0000' : '#000000';

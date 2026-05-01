@@ -609,89 +609,15 @@ button:hover {
 }
 
 .suits button.heart, .suits button.diamond {
-  color: #CB0000; /* Red color for hearts and diamonds */
+  color: #CB0000;
 }
 
-
-@media (max-width: 600px) {
-  .container {
-    width: 96vw !important;
-    left: 2vw !important;
-    padding: 8px;
-    gap: 6px;
-    top: 55% !important;
-  }
-
-  button {
-    font-size: 22px;
-    padding: 6px 8px;
-  }
-
-  .numbers button {
-    min-width: 32px;
-    height: 28px;
-    font-size: 15px;
-  }
-
-  .numbers {
-    gap: 10px;        /* overrides the 3px set outside the media query */
-  }
-
-  .suits button {
-    height: 38px;
-    font-size: 20px;
-  }
-
-  .action {
-    font-size: 18px;
-    padding: 8px 10px;
-  }
-
-  .actions {
-    gap: 6px;
-  }
-
-  .suits {
-    gap: 2px;
-  }
-  div.auctionTableDivStyle {
-    width: 75vw !important;
-    min-width: 180px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    
-  }
-  
-  div.auctionTableDivStyle table {
-    width: 100% !important;
-    min-width: 180px !important;
-  
-  }
-  #biddingBox {
-    top: 55% !important;
-  }
-
-  div.announceDivStyle {
-    width: 90vw !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
-
-  span.southCompactCard {
-      min-width: 28px;   /* was 20px */
-      height: 46px;      /* was 40px */
-      padding: 3px 4px;  /* was 2px 3px */
-  }
-  
-  span.southCompactRankTop,
-  span.southCompactSuitBottom {
-      font-size: 14px;   /* was 12px */
-  }
-  
-  #southHandCards {
-      gap: 3px;          /* was 2px */
-      padding: 3px 4px;
-  }
+#buttonDiv {
+  width: 100% !important;
+  max-width: 1200px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
 }
 
 #southHandBar {
@@ -706,7 +632,7 @@ button:hover {
     border: 1px solid white;
     padding: 0;
     z-index: 500;
-    max-width: 80vw;
+    max-width: 98vw;
     overflow-x: auto;
     box-sizing: border-box;
 }
@@ -726,7 +652,7 @@ button:hover {
 
 #southHandCards {
     display: flex;
-    flex-direction: row;    /* THIS is what keeps cards horizontal */
+    flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
@@ -739,18 +665,18 @@ span.southCompactCard {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 6px 9px;          /* was 4px 6px */
+    padding: 6px 9px;
     background: #ffffff;
     border: 1px solid #999999;
     box-sizing: border-box;
-    min-width: 48px;            /* was 36px */
-    height: 80px;               /* was 62px */
+    min-width: 48px;
+    height: 80px;
     border-radius: 3px;
 }
 
 span.southCompactRankTop {
     display: block;
-    font-size: 28px;            /* was 20px */
+    font-size: 28px;
     font-weight: bold;
     line-height: 1;
     color: #000000;
@@ -759,7 +685,116 @@ span.southCompactRankTop {
 
 span.southCompactSuitBottom {
     display: block;
-    font-size: 34px;            /* was 26px */
+    font-size: 34px;
     line-height: 1;
 }
 
+@media (max-width: 600px) {
+
+  .container {
+    width: 96vw !important;
+    left: 2vw !important;
+    padding: 8px;
+    gap: 6px;
+  }
+
+  #biddingBox {
+    top: 52% !important;
+  }
+
+  button {
+    font-size: 22px;
+    padding: 6px 8px;
+  }
+
+  .numbers {
+    gap: 10px;
+  }
+
+  .numbers button {
+    min-width: 32px;
+    height: 28px;
+    font-size: 15px;
+  }
+
+  .suits {
+    gap: 2px;
+  }
+
+  .suits button {
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .action {
+    font-size: 18px;
+    padding: 8px 10px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+  div.vulDivStyle {
+    transform: scale(0.6) !important;
+    transform-origin: top left !important;
+    margin-right: -40% !important;  /* compensate for shrunken width */
+    margin-bottom: -40% !important; /* compensate for shrunken height */
+  }
+
+  div.vulInnerDivStyle {
+    transform: scale(0.6) !important;
+    transform-origin: top left !important;
+  }
+
+  div.auctionTableDivStyle {
+    transform: none !important;
+  }
+  
+
+  div.auctionTableDivStyle {
+    width: 75vw !important;
+    min-width: 180px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  div.auctionTableDivStyle table {
+    width: 100% !important;
+    min-width: 180px !important;
+  }
+
+  div.announceDivStyle {
+    width: 90vw !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  #southHandBar {
+    width: 96vw !important;
+    max-width: 96vw !important;
+  }
+
+  #southHandCards {
+      gap: 0px !important;
+      padding: 3px 2px !important;
+      width: 100% !important;
+      justify-content: space-between !important;
+  }
+
+  span.southCompactCard {
+      flex: 1 1 0 !important;      /* each card grows equally to fill the space */
+      min-width: 0 !important;     /* allow shrinking below 22px */
+      max-width: 30px !important;  /* stops them getting too wide on bigger phones */
+      height: 38px !important;
+      padding: 2px 1px !important;
+  }
+
+  span.southCompactRankTop {
+    font-size: 16px !important;
+  }
+
+  span.southCompactSuitBottom {
+    font-size: 18px !important;
+  }
+
+}
