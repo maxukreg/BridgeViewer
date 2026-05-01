@@ -257,6 +257,7 @@ var expectedBid = '';
 let validBidEntered = false; 
 let selectedNumber = null;
 var lastBid='';
+var vulWrap; 
 var southHorizontalMode = true;
 
 var editorMenuDiv = document.getElementById('editorMenuDiv');
@@ -1438,23 +1439,22 @@ function manageScoreDiv() {
 
 function manageInfoDiv() {
   var div = document.getElementById('theDiv');
-  if (!showInfoDiv()) {
-    for (seat = 0; seat < 4; seat++) {
-      if (vulDivs[seat].parentNode == div) div.removeChild(vulDivs[seat]);
-    }
-    if (vulInnerDiv.parentNode == div) {
-      div.removeChild(vulInnerDiv);
-    }
 
+  if (!showInfoDiv()) {
+    if (vulWrap.parentNode == div) div.removeChild(vulWrap);
     return;
   }
 
+  if (vulWrap.parentNode != div) {
+    div.appendChild(vulWrap);
+  }
+
   for (seat = 0; seat < 4; seat++) {
-    if (showVul() && vulDivs[seat].parentNode != div) {
-      div.appendChild(vulDivs[seat]);
+    if (showVul() && vulDivs[seat].parentNode != vulWrap) {
+      vulWrap.appendChild(vulDivs[seat]);
     }
-    if (!showVul() && vulDivs[seat].parentNode == div) {
-      div.removeChild(vulDivs[seat]);
+    if (!showVul() && vulDivs[seat].parentNode == vulWrap) {
+      vulWrap.removeChild(vulDivs[seat]);
     }
     if (dealer >= 0) vulDivs[seat].style.visibility = 'visible';
     else vulDivs[seat].style.visibility = 'hidden';
@@ -1462,8 +1462,8 @@ function manageInfoDiv() {
     else vulDivs[seat].innerHTML = '';
   }
 
-  if (vulInnerDiv.parentNode != div) {
-    div.appendChild(vulInnerDiv);
+  if (vulInnerDiv.parentNode != vulWrap) {
+    vulWrap.appendChild(vulInnerDiv);
   }
 
   if (lessonID) {
@@ -1485,11 +1485,13 @@ function manageInfoDiv() {
   var vulSize = Math.floor((2 * suitHeight) / 3);
   var vulBorder = 2;
   var minWidth = (5 * fontSize) / 2;
+
   if (lessonID) {
     vulInnerDiv.style.fontSize = fontSize;
   } else {
     vulInnerDiv.style.fontSize = (7 * fontSize) / 4;
   }
+
   vulInnerDiv.style.height = minWidth + 'px';
 
   if (lessonID) {
@@ -1498,28 +1500,52 @@ function manageInfoDiv() {
   } else {
     vulInnerDiv.style.width = minWidth;
   }
+
   if (!lessonID) {
     vulInnerDiv.style.lineHeight = Math.max(1, minWidth - 2 * vulMargin) + 'px';
   }
+
+  // Original absolute positions
+  var absInnerTop, absInnerLeft;
+
   if (showVul()) {
-    vulInnerDiv.style.top = margin + vulMargin + vulSize;
-    vulInnerDiv.style.left = margin + vulMargin + vulSize + editorWidthOffset;
+    absInnerTop = margin + vulMargin + vulSize;
+    absInnerLeft = margin + vulMargin + vulSize + editorWidthOffset;
   } else {
-    vulInnerDiv.style.top = margin;
-    vulInnerDiv.style.left = margin + editorWidthOffset;
+    absInnerTop = margin;
+    absInnerLeft = margin + editorWidthOffset;
   }
+
+  // Wrapper origin
+  var wrapLeft = margin + editorWidthOffset;
+  var wrapTop = margin;
+
+  // Position wrapper once
+  vulWrap.style.position = 'absolute';
+  vulWrap.style.left = wrapLeft + 'px';
+  vulWrap.style.top = wrapTop + 'px';
+
+  // Inner div now positioned relative to wrapper
+  vulInnerDiv.style.top = absInnerTop - wrapTop;
+  vulInnerDiv.style.left = absInnerLeft - wrapLeft;
+
+  var maxRight = vulInnerDiv.clientWidth + (absInnerLeft - wrapLeft);
+  var maxBottom = vulInnerDiv.clientHeight + (absInnerTop - wrapTop);
 
   for (seat = 0; seat < 4; seat++) {
     vulDivs[seat].style.fontSize = (2 * fontSize) / 3;
+
+    var absTop, absLeft, boxWidth, boxHeight;
+
     if (seat % 2) {
-      vulDivs[seat].style.top = margin + vulMargin + vulSize;
-      vulDivs[seat].style.height = vulInnerDiv.clientHeight + 2 * vulBorder - !fireFox;
-      vulDivs[seat].style.width = vulSize;
+      absTop = margin + vulMargin + vulSize;
+      boxHeight = vulInnerDiv.clientHeight + 2 * vulBorder - !fireFox;
+      boxWidth = vulSize;
       vulDivs[seat].style.lineHeight = vulInnerDiv.clientHeight + 2 * vulBorder + 'px';
 
-      if (seat == 1) vulDivs[seat].style.left = margin + editorWidthOffset;
+      if (seat == 1) absLeft = margin + editorWidthOffset;
       else
-        vulDivs[seat].style.left =
+        absLeft =
           margin +
           2 * vulMargin +
           vulSize +
@@ -1528,17 +1554,33 @@ function manageInfoDiv() {
           editorWidthOffset -
           !fireFox;
     } else {
-      vulDivs[seat].style.left = margin + vulMargin + vulSize + editorWidthOffset;
-      vulDivs[seat].style.width = vulInnerDiv.clientWidth + 2 * vulBorder - !fireFox;
-      vulDivs[seat].style.height = vulSize;
+      absLeft = margin + vulMargin + vulSize + editorWidthOffset;
+      boxWidth = vulInnerDiv.clientWidth + 2 * vulBorder - !fireFox;
+      boxHeight = vulSize;
       vulDivs[seat].style.lineHeight = vulSize + 'px';
 
-      if (seat == 2) vulDivs[seat].style.top = margin;
+      if (seat == 2) absTop = margin;
       else
-        vulDivs[seat].style.top =
-          margin + 2 * vulMargin + vulSize + vulInnerDiv.clientHeight + 2 * vulBorder - !fireFox;
+        absTop =
+          margin +
+          2 * vulMargin +
+          vulSize +
+          vulInnerDiv.clientHeight +
+          2 * vulBorder -
+          !fireFox;
     }
+
+    vulDivs[seat].style.top = absTop - wrapTop;
+    vulDivs[seat].style.left = absLeft - wrapLeft;
+    vulDivs[seat].style.width = boxWidth;
+    vulDivs[seat].style.height = boxHeight;
+
+    maxRight = Math.max(maxRight, absLeft - wrapLeft + boxWidth);
+    maxBottom = Math.max(maxBottom, absTop - wrapTop + boxHeight);
   }
+
+  vulWrap.style.width = maxRight + 'px';
+  vulWrap.style.height = maxBottom + 'px';
 }
 
 function manageHandBackground(seatMin, seatMax) {
@@ -1616,7 +1658,8 @@ function getSuitColor(suit) {
   else return '#000000';
 }
 
-function createHandTables() {
+function createHandTables()
+{
   disableSelection(document.getElementById('buttonDiv'));
   scrollBarWidth = getScrollBarWidth();
 
@@ -1625,6 +1668,15 @@ function createHandTables() {
   theParent.onclick = function () {
     mainDivClicked();
   };
+
+  // ADD THIS BLOCK
+  vulWrap = document.createElement('div');
+  disableSelection(vulWrap);
+  vulWrap.id = 'vulWrap';
+  vulWrap.style.position = 'absolute';
+  vulWrap.style.margin = '0';
+  vulWrap.style.padding = '0';
+  theParent.appendChild(vulWrap);
 
   for (seat = 0; seat < 4; seat++) {
     var hand = document.createElement('div');
@@ -1693,7 +1745,9 @@ function createHandTables() {
     vulDivs[seat] = document.createElement('div');
     disableSelection(vulDivs[seat]);
     vulDivs[seat].className = 'vulDivStyle';
-    theParent.appendChild(vulDivs[seat]);
+
+    // CHANGE THIS LINE
+    vulWrap.appendChild(vulDivs[seat]);
   }
 
   vulInnerDiv = document.createElement('div');
@@ -1712,7 +1766,9 @@ function createHandTables() {
   vulInnerDiv.onclick = function () {
     vulDivClicked();
   };
-  theParent.appendChild(vulInnerDiv);
+
+  // CHANGE THIS LINE
+  vulWrap.appendChild(vulInnerDiv);
 
   auctionHeadingDiv = document.createElement('div');
   disableSelection(auctionHeadingDiv);

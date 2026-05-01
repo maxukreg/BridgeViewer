@@ -699,7 +699,7 @@ span.southCompactSuitBottom {
   }
 
   #biddingBox {
-    top: 60% !important;
+    top: 54% !important;
   }
 
   button {
@@ -780,5 +780,14 @@ span.southCompactSuitBottom {
   span.southCompactSuitBottom {
     font-size: 18px !important;
   }
+  #vulWrap {
+      transform: scale(0.7) !important;
+      transform-origin: top left !important;
+    }
 
+}
+@media (min-width: 601px) {
+  #vulWrap {
+    transform: none !important;
+  }
 }
