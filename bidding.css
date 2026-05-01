@@ -699,7 +699,7 @@ span.southCompactSuitBottom {
   }
 
   #biddingBox {
-    top: 52% !important;
+    top: 60% !important;
   }
 
   button {
@@ -734,22 +734,6 @@ span.southCompactSuitBottom {
   .actions {
     gap: 6px;
   }
-  div.vulDivStyle {
-    transform: scale(0.6) !important;
-    transform-origin: top left !important;
-    margin-right: -40% !important;  /* compensate for shrunken width */
-    margin-bottom: -40% !important; /* compensate for shrunken height */
-  }
-
-  div.vulInnerDivStyle {
-    transform: scale(0.6) !important;
-    transform-origin: top left !important;
-  }
-
-  div.auctionTableDivStyle {
-    transform: none !important;
-  }
-  
 
   div.auctionTableDivStyle {
     width: 75vw !important;
