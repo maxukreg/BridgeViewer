@@ -611,6 +611,8 @@ button:hover {
 .suits button.heart, .suits button.diamond {
   color: #CB0000; /* Red color for hearts and diamonds */
 }
+
+
 @media (max-width: 600px) {
   .container {
     width: 96vw !important;
@@ -666,7 +668,7 @@ button:hover {
   
   }
   #biddingBox {
-    top: 58% !important;
+    top: 55% !important;
   }
 
   div.announceDivStyle {
@@ -674,7 +676,22 @@ button:hover {
     left: 50% !important;
     transform: translateX(-50%) !important;
   }
+
+  span.southCompactCard {
+      min-width: 28px;   /* was 20px */
+      height: 46px;      /* was 40px */
+      padding: 3px 4px;  /* was 2px 3px */
+  }
   
+  span.southCompactRankTop,
+  span.southCompactSuitBottom {
+      font-size: 14px;   /* was 12px */
+  }
+  
+  #southHandCards {
+      gap: 3px;          /* was 2px */
+      padding: 3px 4px;
+  }
 }
 
 #southHandBar {
@@ -689,7 +706,7 @@ button:hover {
     border: 1px solid white;
     padding: 0;
     z-index: 500;
-    max-width: 98vw;
+    max-width: 80vw;
     overflow-x: auto;
     box-sizing: border-box;
 }
@@ -746,27 +763,3 @@ span.southCompactSuitBottom {
     line-height: 1;
 }
 
-@media (max-width: 600px) {
-    span.southCompactCard {
-        min-width: 26px;
-        height: 44px;
-        padding: 3px 4px;
-    }
-    span.southCompactRankTop,
-    span.southCompactSuitBottom {
-        font-size: 14px;
-    }
-}
-
-@media (min-width: 601px) {
-  div.biddingBoxDivStyle {
-    top: 75% !important;
-  }
-}
-#buttonDiv {
-  width: 100% !important;
-  max-width: 1200px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  box-sizing: border-box !important;
-}
