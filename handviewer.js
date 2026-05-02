@@ -687,7 +687,8 @@ function respondToResize() {
         var centerX, centerY, containerCenterX;
         if (isMobile) {
             centerX = Math.floor(totalWidth * 0.5);
-            centerY = totalHeight / 2;
+            // centerY = totalHeight / 2;
+            centerY = Math.floor(totalHeight * 0.525);
             containerCenterX = centerX;
         } else {
             centerX = totalWidth / 2 - globalShiftX  + Math.floor(totalWidth * 0.02);
@@ -710,9 +711,10 @@ function respondToResize() {
                     trickCardHeight = Math.floor(trickCardWidth * 0.71);
                 }
             
-                var vOffset = Math.floor(trickCardHeight * 1.6);
-                var hOffset = isMobile ? Math.floor(trickCardWidth * 2.2) : Math.floor(trickCardWidth * 1.2);
-        
+                var hOffset = isMobile ? Math.floor(trickCardWidth * 1.4) : Math.floor(trickCardWidth * 1.2);
+                var vOffset = isMobile
+                  ? Math.floor(trickCardHeight * 1.2)
+                  : Math.floor(trickCardHeight * 1.6);
 
     
         for (seat = 0; seat < 4; seat++) {
