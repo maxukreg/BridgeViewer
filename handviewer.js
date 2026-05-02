@@ -522,15 +522,15 @@ function respondToResize() {
 
     // MOBILE OVERRIDES: wider hands, compact font to fit 8+ cards per row
     if (isMobile) console.log('declarer=', declarer, 'seats=', seats);
+    
     if (isMobile) {
-        handWidth = Math.floor(totalWidth * 0.46);          // wide enough for 8+ cards
-        handHeight = Math.floor((totalHeight - (margin * 4)) / 3.2);
-        suitHeight = Math.floor(handHeight / 7);
-        // Use same compact condensed font size the auction heading uses (~85% of normal)
-        fontSize = Math.max(11, Math.floor(handHeight / 9));
-        nameHeight = Math.floor(handHeight / 9);
-        sideOffset = Math.floor(totalWidth * 0.01);
-        globalShiftX = 0;
+      handWidth = Math.floor(totalWidth * 0.43);
+      handHeight = Math.floor((totalHeight - margin * 4) / 3.2);
+      suitHeight = Math.floor(handHeight / 7);
+      fontSize = Math.max(10, Math.floor(handHeight / 9.8));
+      nameHeight = Math.floor(handHeight / 9);
+      sideOffset = Math.floor(totalWidth * 0.01);
+      globalShiftX = 0;
     }
 
     // 4. Position & Size Hands
@@ -674,6 +674,9 @@ function respondToResize() {
             holding.style.left = (symW + 0.1) + 'px';
             holding.style.fontSize = fontSize + 'px';
             holding.style.lineHeight = suitHeight + 'px';
+            holding.style.fontFamily = "Roboto Condensed, Arial Narrow, Arial, sans-serif";
+            holding.style.fontWeight = "400";
+            holding.style.letterSpacing = "-0.3px";
 
             resizeCards(s, suitIdx);
         }
@@ -713,7 +716,7 @@ function respondToResize() {
             
                 var hOffset = isMobile ? Math.floor(trickCardWidth * 1.4) : Math.floor(trickCardWidth * 1.2);
                 var vOffset = isMobile
-                  ? Math.floor(trickCardHeight * 1.2)
+                  ? Math.floor(trickCardHeight * 1.25)
                   : Math.floor(trickCardHeight * 1.6);
 
     
