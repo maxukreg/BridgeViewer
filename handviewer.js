@@ -523,7 +523,7 @@ function respondToResize() {
     // MOBILE OVERRIDES: wider hands, compact font to fit 8+ cards per row
     if (isMobile) console.log('declarer=', declarer, 'seats=', seats);
     if (isMobile) {
-        handWidth = Math.floor(totalWidth * 0.43);          // wide enough for 8+ cards
+        handWidth = Math.floor(totalWidth * 0.46);          // wide enough for 8+ cards
         handHeight = Math.floor((totalHeight - (margin * 4)) / 3.2);
         suitHeight = Math.floor(handHeight / 7);
         // Use same compact condensed font size the auction heading uses (~85% of normal)
@@ -3120,8 +3120,8 @@ function manageAnnounceDiv() {
     // 3. STYLING
     announceDiv.style.fontSize = textFontSize + 'px';
     announceDiv.style.lineHeight = (announceHeight - 4) + 'px'; 
-    announceDiv.style.width = window.innerWidth < 600 ? Math.floor(totalWidth * 0.5) + 'px' : availableWidth + 'px';
-    announceDiv.style.left = window.innerWidth < 600 ? Math.floor(totalWidth * 0.25) + 'px' : startX + 'px';
+    announceDiv.style.width = window.innerWidth < 600 ? Math.floor(totalWidth * 0.68) + 'px' : availableWidth + 'px';
+    announceDiv.style.left = window.innerWidth < 600 ? Math.floor(totalWidth * 0.16) + 'px' : startX + 'px';
     announceDiv.style.height = announceHeight + 'px';
     announceDiv.style.whiteSpace = 'nowrap';
     announceDiv.style.padding = '0';
@@ -3217,8 +3217,8 @@ function manageTricksDiv() {
     var availableWidth = Math.max((endX - startX), 120);
     
     if (window.innerWidth < 600) {
-        tricksDiv.style.width = Math.floor(totalWidth * 0.5) + 'px';
-        tricksDiv.style.left = Math.floor(totalWidth * 0.25) + 'px';
+        tricksDiv.style.width = Math.floor(totalWidth * 0.68) + 'px';
+        tricksDiv.style.left = Math.floor(totalWidth * 0.16) + 'px';
         tricksDiv.style.height = boxHeight + 'px';
         tricksDiv.style.top = (totalHeight - boxHeight - margin - 2) + 'px';
     } else {
