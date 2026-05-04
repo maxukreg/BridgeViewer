@@ -424,4 +424,102 @@ select:focus {
     .hand-seat-south {
         justify-self: start;
     }
+    body {
+        padding: 10px;
+    }
+    
+    .bridge-page {
+        padding: 16px;
+        border-radius: 10px;
+    }
+    
+    header {
+        gap: 10px;
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+    }
+    
+    .suit-symbols {
+        font-size: 28px;
+        margin-right: 10px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+    
+    h1 {
+        padding: 10px 14px;
+        font-size: 18px;
+        line-height: 1.15;
+        border-radius: 8px;
+        letter-spacing: 0.2px;
+        margin: 0;
+    }
+    
+    .dropdown-section {
+        width: min(100%, 340px);
+        margin: 20px auto;
+        padding: 16px;
+        box-sizing: border-box;
+    }
+    
+    .dropdown-section label {
+        display: block;
+        margin-right: 0;
+        margin-bottom: 8px;
+        font-size: 15px;
+    }
+    
+    select {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        font-size: 16px;
+    }
+    .section-title {
+        display: block;
+        width: fit-content;
+        max-width: 92%;
+        margin: 0 auto 18px auto;
+        padding: 10px 14px;
+        font-size: 17px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    /* Mobile intro overlay tightening */
+    #intro-modal-title {
+        display: none;
+    }
+    
+    #intro-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 5;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    #intro-modal-body {
+        padding-top: 44px;
+    }
+    
+    .intro-content {
+        line-height: 1.35;
+    }
+    
+    .intro-heading {
+        margin: 0 0 8px 0;
+        font-size: 16px;
+        line-height: 1.2;
+    }
+    
+    .intro-paragraph {
+        margin: 0 0 8px 0;
+        line-height: 1.35;
+    }
 }
