@@ -289,6 +289,34 @@ select:focus {
     text-align: left;
 }
 
+.intro-modal {
+    position: relative;
+}
+
+.intro-modal-header {
+    padding: 16px 56px 16px 20px;
+}
+
+
+.intro-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    color: white;
+    font-size: 28px;
+    line-height: 34px;
+    text-align: center;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .intro-status {
     color: #5d6d7e;
     font-style: italic;
@@ -338,13 +366,55 @@ select:focus {
         width: 100%;
     }
 
-    .intro-modal {
-        max-height: 88vh;
-    }
-
-    .intro-modal-title {
-        font-size: 20px;
-    }
+        .intro-modal {
+            position: relative;
+            width: 100%;
+            max-height: 92vh;
+            border-radius: 14px;
+        }
+    
+        .intro-modal-header {
+            display: none !important;
+        }
+    
+        .intro-close {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            z-index: 10;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 22px;
+            line-height: 26px;
+            text-align: center;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.95);
+            color: #2c3e50;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+    
+        .intro-modal-body {
+            max-height: 92vh;
+            padding: 16px 14px 14px 14px;
+        }
+    
+        .intro-content {
+            line-height: 1.35;
+        }
+    
+        .intro-heading {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            line-height: 1.2;
+        }
+    
+        .intro-paragraph {
+            margin: 0 0 8px 0;
+            line-height: 1.35;
+        }
 
     .hand-diagram {
         min-width: 0;
