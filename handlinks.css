@@ -370,6 +370,7 @@ select:focus {
         padding: 14px 14px 14px 20px;
         font-size: 14px;
     }
+    
 }
 .hand-diagram-grid {
     display: grid;
@@ -538,6 +539,6 @@ select:focus {
     
     .intro-paragraph {
         margin: 0 0 8px 0;
-        line-height: 1.35;
+        line-height: 1.25;
     }
 }
