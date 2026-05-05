@@ -286,8 +286,28 @@
         
                 function flushPara() {
                     if (!para.length) return;
+                
                     const text = para.join(' ').replace(/\s+/g, ' ').trim();
-                    if (text) blocks.push({ type: 'paragraph', text });
+                    if (!text) {
+                        para = [];
+                        return;
+                    }
+                
+                    const sentences = text.match(/[^.!?]+[.!?]+["']?|[^.!?]+$/g) || [text];
+                    let chunk = [];
+                
+                    sentences.forEach((sentence, index) => {
+                        chunk.push(sentence.trim());
+                
+                        if (chunk.length === 3 || index === sentences.length - 1) {
+                            blocks.push({
+                                type: 'paragraph',
+                                text: chunk.join(' ')
+                            });
+                            chunk = [];
+                        }
+                    });
+                
                     para = [];
                 }
         
