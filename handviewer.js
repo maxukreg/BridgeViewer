@@ -710,7 +710,7 @@ function respondToResize() {
                     trickCardWidth = Math.floor(handWidth * 0.28);
                     trickCardHeight = Math.floor(trickCardWidth * 0.75); // reduced — no wasted whitespace
                 } else {
-                    trickCardWidth = Math.floor(handWidth * 0.215);
+                    trickCardWidth = Math.floor(handWidth * 0.22);
                     trickCardHeight = Math.floor(trickCardWidth * 0.71);
                 }
             

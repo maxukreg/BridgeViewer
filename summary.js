@@ -590,7 +590,7 @@ function respondToResize() {
   var annotDivHeight;
 
  
-    buttonDivHeight = Math.max(30, 0.07 * totalHeight);
+  buttonDivHeight = Math.max(40, 0.09 * totalHeight);
     totalHeight -= buttonDivHeight;
  
   margin = Math.max(2, totalHeight / 35);
@@ -658,7 +658,7 @@ function respondToResize() {
 
   
 
-  buttonDiv.style.height = (buttonDivHeight/2) - 2 * fireFox;
+  buttonDiv.style.height = buttonDivHeight - 2 * fireFox;
   buttonDiv.style.width = totalWidth - (4 - isEditor) * fireFox - editorWidthOffset;
 
   if (showButtonBar()) {
@@ -730,7 +730,7 @@ function respondToResize() {
     // ypos is top
     // xpos is left
 // South (seat 0)
-xpos[0] = (totalWidth - (totalWidth/1.25));
+xpos[0] = (totalWidth - (totalWidth/1.18));
 ypos[0] = 2 * handHeight + (margin * 2.5) ;
 
 
@@ -4051,8 +4051,63 @@ function formatText(text) {
 
 // Function to update the text container
 function updateTextContainer() {
+    const textContainer = document.getElementById('textContainer');
+    const match = currentId.match(/Group(\d+)Deal(\d+)/);
+
+    if (!match) {
+        console.error('Invalid ID format');
+        return;
+    }
+
+    const groupNum = match[1];
+    const boardNum = match[2];
+    const dealPropertyName = `Group${groupNum}Deal${boardNum}`;
+
+    loadGroupTextData();
+
+    if (groupTextData[groupNum] && groupTextData[groupNum].hasOwnProperty(dealPropertyName)) {
+        const rawText = groupTextData[groupNum][dealPropertyName];
+
+        const biddingMatch = rawText.match(/The Bidding([\s\S]*?)(?=The Play|$)/i);
+        const playMatch = rawText.match(/The Play([\s\S]*)/i);
+
+        let html = '';
+
+        if (biddingMatch) {
+            const biddingText = biddingMatch[1].trim();
+            const biddingParagraphs = biddingText
+                .split(/(?<=[.!?])\s+(?=[A-Z])/)
+                .filter(Boolean);
+
+            html += '<h3>The Bidding</h3>';
+            biddingParagraphs.forEach(paragraph => {
+                html += `<p>${paragraph.trim()}</p>`;
+            });
+        }
+
+        if (playMatch) {
+            const playText = playMatch[1].trim();
+            const playParagraphs = playText
+                .split(/(?<=[.!?])\s+(?=[A-Z])/)
+                .filter(Boolean);
+
+            html += '<h3>The Play</h3>';
+            playParagraphs.forEach(paragraph => {
+                html += `<p>${paragraph.trim()}</p>`;
+            });
+        }
+
+        textContainer.innerHTML = html || rawText;
+    } else {
+        console.error(`Deal text not found for ${dealPropertyName}`);
+        textContainer.innerHTML = 'Deal text not available.';
+    }
+}
+
+function updateTextContainer() {
   const textContainer = document.getElementById('textContainer');
   const match = currentId.match(/Group(\d+)Deal(\d+)/);
+
   if (!match) {
     console.error('Invalid ID format');
     return;
@@ -4060,19 +4115,50 @@ function updateTextContainer() {
 
   const groupNum = match[1];
   const boardNum = match[2];
-
-  // Construct the deal-specific property name
   const dealPropertyName = `Group${groupNum}Deal${boardNum}`;
-  loadGroupTextData();
-  // Directly access the Group38dealText object
-  if (groupTextData[groupNum] && groupTextData[groupNum].hasOwnProperty(dealPropertyName)) {
 
+  loadGroupTextData();
+
+  if (groupTextData[groupNum] && groupTextData[groupNum].hasOwnProperty(dealPropertyName)) {
     const rawText = groupTextData[groupNum][dealPropertyName];
-    const formattedText = formatText(rawText);
-  
-    // Set the inner HTML of the text container to the formatted text
-    textContainer.innerHTML = formattedText;
-    
+
+    const biddingMatch = rawText.match(/The Bidding([\s\S]*?)(?=The Play|$)/i);
+    const playMatch = rawText.match(/The Play([\s\S]*)/i);
+
+    function buildSectionHtml(title, sectionText) {
+      const sentences = sectionText
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(/(?<=[.!?])\s+(?=[A-Z])/)
+        .filter(Boolean);
+
+      let html = `<h3>${title}</h3>`;
+
+      for (let i = 0; i < sentences.length; i += 2) {
+        const paragraph = [sentences[i], sentences[i + 1]]
+          .filter(Boolean)
+          .join(' ')
+          .trim();
+
+        if (paragraph) {
+          html += `<p>${paragraph}</p>`;
+        }
+      }
+
+      return html;
+    }
+
+    let html = '';
+
+    if (biddingMatch) {
+      html += buildSectionHtml('The Bidding', biddingMatch[1]);
+    }
+
+    if (playMatch) {
+      html += buildSectionHtml('The Play', playMatch[1]);
+    }
+
+    textContainer.innerHTML = html || rawText;
   } else {
     console.error(`Deal text not found for ${dealPropertyName}`);
     textContainer.innerHTML = 'Deal text not available.';
@@ -4184,6 +4270,23 @@ function loadGroupData() {
   if (typeof group38Data !== 'undefined') groupData['38'] = group38Data;
   // Add more groups as needed
   
+}
+
+function paragraphiseFormattedText(formattedText) {
+  return formattedText.replace(
+    /<h3>(.*?)<\/h3>\s*([^<]+)/g,
+    (match, heading, bodyText) => {
+      const paragraphs = bodyText
+        ? bodyText.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean)
+        : [];
+
+      const paragraphHtml = paragraphs
+        .map(p => `<p class="intro-paragraph">${p.trim()}</p>`)
+        .join('');
+
+      return `<h3>${heading}</h3>${paragraphHtml}`;
+    }
+  );
 }
 
 function loadGroupTextData() {
