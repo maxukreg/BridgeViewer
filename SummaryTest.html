@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary Screen Tester</title>
+
+<!-- Data files – all must be in the same directory as this page -->
+<script src="group11.js"></script><script src="deals11.js"></script>
+<script src="group12.js"></script><script src="deals12.js"></script>
+<script src="group17.js"></script><script src="deals17.js"></script>
+<script src="group18.js"></script><script src="deals18.js"></script>
+<script src="group19.js"></script><script src="deals19.js"></script>
+<script src="group20.js"></script><script src="deals20.js"></script>
+<script src="group21.js"></script><script src="deals21.js"></script>
+<script src="group22.js"></script><script src="deals22.js"></script>
+<script src="group23.js"></script><script src="deals23.js"></script>
+<script src="group24.js"></script><script src="deals24.js"></script>
+<script src="group25.js"></script><script src="deals25.js"></script>
+<script src="group26.js"></script><script src="deals26.js"></script>
+<script src="group27.js"></script><script src="deals27.js"></script>
+<script src="group28.js"></script><script src="deals28.js"></script>
+<script src="group29.js"></script><script src="deals29.js"></script>
+<script src="group30.js"></script><script src="deals30.js"></script>
+<script src="group31.js"></script><script src="deals31.js"></script>
+<script src="group32.js"></script><script src="deals32.js"></script>
+<script src="group33.js"></script><script src="deals33.js"></script>
+<script src="group34.js"></script><script src="deals34.js"></script>
+<script src="group35.js"></script><script src="deals35.js"></script>
+<script src="group36.js"></script><script src="deals36.js"></script>
+<script src="group37.js"></script><script src="deals37.js"></script>
+<script src="group38.js"></script><script src="deals38.js"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;600&display=swap');
+
+  :root {
+    --green:   #006600;
+    --teal:    #99CCCC;
+    --yellow:  #ffce00;
+    --bg:      #1a1a1a;
+    --surface: #242424;
+    --border:  #333;
+    --text:    #e8e8e8;
+    --muted:   #888;
+    --red:     #CB0000;
+    --ok:      #4caf50;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .suit-icon { font-size: 26px; line-height: 1; letter-spacing: 2px; }
+  .header-text h1 { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+  .header-text p  { font-size: 12px; color: var(--muted); margin-top: 3px; font-family: 'DM Mono', monospace; }
+
+  /* ── Section labels ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  /* ── Group tabs ── */
+  .group-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .group-tab {
+    padding: 5px 13px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .group-tab:hover { border-color: var(--teal); color: var(--teal); }
+  .group-tab.active { background: var(--green); border-color: var(--green); color: #fff; font-weight: 500; }
+
+  /* ── Hand grid ── */
+  .hand-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+    gap: 6px;
+    margin-bottom: 16px;
+    max-height: 190px;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+  .hand-btn {
+    padding: 8px 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    user-select: none;
+    position: relative;
+  }
+  .hand-btn:hover { border-color: var(--yellow); color: var(--yellow); }
+  .hand-btn.active { background: rgba(255,206,0,0.12); border-color: var(--yellow); color: var(--yellow); font-weight: 500; }
+  /* small dot indicates deal text is present */
+  .hand-btn.has-text::after {
+    content: '';
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+
+  /* ── Deal text preview ── */
+  .text-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 13px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    margin-bottom: 20px;
+    min-height: 42px;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .text-preview.present { color: var(--teal); border-color: #2a4a4a; }
+  .text-preview.absent  { color: #555; }
+
+  /* ── Options row ── */
+  .options-row { display: flex; gap: 10px; margin-bottom: 20px; }
+  .option-group { flex: 1; }
+  .option-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 7px;
+  }
+  .option-group select,
+  .option-group input[type="text"] {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    appearance: none;
+  }
+  .option-group select:focus,
+  .option-group input[type="text"]:focus {
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 3px rgba(255,206,0,0.1);
+  }
+
+  /* ── Launch button ── */
+  .launch-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .launch-btn:hover  { background: #008000; }
+  .launch-btn:active { transform: scale(0.98); }
+
+  /* ── Status ── */
+  .status { min-height: 18px; font-size: 12px; font-family: 'DM Mono', monospace; text-align: center; color: var(--muted); }
+  .status.error { color: var(--red); }
+  .status.ok    { color: var(--ok); }
+
+  /* ── URL inspector ── */
+  .inspector { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 18px; }
+  details > summary {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--muted); cursor: pointer; user-select: none; list-style: none;
+    display: flex; align-items: center; gap: 6px; outline: none;
+  }
+  details > summary::before { content: '▶'; font-size: 8px; display: inline-block; transition: transform 0.18s; }
+  details[open] > summary::before { transform: rotate(90deg); }
+  .inspector pre {
+    margin-top: 10px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 11px 13px; font-size: 11px;
+    font-family: 'DM Mono', monospace; color: var(--teal);
+    overflow-x: auto; white-space: pre-wrap; word-break: break-all;
+    max-height: 130px; overflow-y: auto;
+  }
+
+  /* ── Note ── */
+  .note {
+    margin-top: 18px; padding: 13px 15px;
+    background: rgba(153,204,204,0.05); border: 1px solid rgba(153,204,204,0.15);
+    border-radius: 8px; font-size: 12px; line-height: 1.65; color: var(--muted);
+  }
+  .note strong { color: var(--teal); }
+  code { font-family: 'DM Mono', monospace; font-size: 11px; color: #999; }
+
+  .red { color: var(--red); }
+  .blk { color: #ccc; }
+
+  .hand-grid::-webkit-scrollbar { width: 4px; }
+  .hand-grid::-webkit-scrollbar-track { background: transparent; }
+  .hand-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="header">
+    <div class="suit-icon"><span class="blk">♠</span><span class="red">♥</span><span class="red">♦</span><span class="blk">♣</span></div>
+    <div class="header-text">
+      <h1>Summary Screen Tester</h1>
+      <p>launches summary.html · mode=tester</p>
+    </div>
+  </div>
+
+  <div class="section-label">Group</div>
+  <div class="group-tabs" id="groupTabs"></div>
+
+  <div class="section-label">Hand</div>
+  <div class="hand-grid" id="handGrid"></div>
+
+  <!-- Deal text availability preview -->
+  <div class="text-preview absent" id="textPreview">← select a hand</div>
+
+  <div class="options-row">
+    <div class="option-group">
+      <label>Target page</label>
+      <input type="text" id="targetPage" value="summary.html">
+    </div>
+    <div class="option-group">
+      <label>Open in</label>
+      <select id="openTarget">
+        <option value="_blank">New tab</option>
+        <option value="_self">Same tab</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="launch-btn" onclick="launch()">
+    <span>▶</span> Launch Hand
+  </button>
+
+  <div class="status" id="status">Select a group and hand above.</div>
+
+  <div class="inspector">
+    <details>
+      <summary>Resolved URL</summary>
+      <pre id="resolvedUrl">—</pre>
+    </details>
+  </div>
+
+  <div class="note">
+    <strong>How it works:</strong> Reads <code>group<em>N</em>Data</code> (from <code>group<em>N</em>.js</code>)
+    to find the hand's query string and opens <code>summary.html?…&amp;mode=tester</code>.
+    In tester mode the <strong>Next Hand</strong> button steps forward without a page reload.
+    A <span style="color:var(--teal)">●</span> dot on a hand button means commentary text is loaded from <code>deals<em>N</em>.js</code>.
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────────────────────
+var selectedGroup = null;
+var selectedDeal  = null;
+
+// All known groups – extend as more are added
+var ALL_GROUPS = [11, 12, 17, 18, 19, 20, 21, 22, 23, 24,
+                  25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38];
+
+// ─────────────────────────────────────────────────────────────
+// Which groups have groupNData loaded?
+// ─────────────────────────────────────────────────────────────
+function getGroupData(g) {
+  // 'const' at top level does NOT attach to window in modern browsers,
+  // so we try eval as a fallback for const/let declared variables.
+  try {
+    var val = window['group' + g + 'Data'];
+    if (Array.isArray(val)) return val;
+    val = eval('typeof group' + g + 'Data !== "undefined" ? group' + g + 'Data : undefined');
+    return Array.isArray(val) ? val : null;
+  } catch(e) { return null; }
+}
+
+function loadedGroups() {
+  return ALL_GROUPS.filter(function(g) {
+    return getGroupData(g) !== null;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// Does a deal have commentary text in groupNDealText?
+// deals11.js sets window.group11DealText = { Group11Deal1: `...`, ... }
+// ─────────────────────────────────────────────────────────────
+function getDealText(groupNum, dealNum) {
+  var textObj = window['group' + groupNum + 'DealText'];
+  if (!textObj) {
+    try { textObj = eval('typeof group' + groupNum + 'DealText !== "undefined" ? group' + groupNum + 'DealText : undefined'); } catch(e) {}
+  }
+  if (!textObj) return null;
+  var key = 'Group' + groupNum + 'Deal' + dealNum;
+  return textObj[key] || null;
+}
+
+// Return first ~120 chars of the deal text as a preview line
+function dealTextPreview(groupNum, dealNum) {
+  var raw = getDealText(groupNum, dealNum);
+  if (!raw) return null;
+  // Strip markdown headings and excess whitespace
+  var clean = raw.replace(/###\s*/g, '').replace(/\s+/g, ' ').trim();
+  return clean.length > 120 ? clean.slice(0, 117) + '…' : clean;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Build group tab row
+// ─────────────────────────────────────────────────────────────
+function buildGroupTabs() {
+  var groups = loadedGroups();
+  var wrap   = document.getElementById('groupTabs');
+  wrap.innerHTML = '';
+
+  if (!groups.length) {
+    wrap.innerHTML = '<span style="font-size:12px;color:#555;font-family:\'DM Mono\',monospace">'
+                   + 'No group data loaded — check &lt;script&gt; tags</span>';
+    return;
+  }
+
+  groups.forEach(function(g) {
+    var btn = document.createElement('button');
+    btn.className   = 'group-tab';
+    btn.textContent = 'Group ' + g;
+    btn.onclick     = function() { selectGroup(g); };
+    wrap.appendChild(btn);
+  });
+
+  selectGroup(groups[0]);
+}
+
+// ─────────────────────────────────────────────────────────────
+// Select a group → populate hand grid
+// ─────────────────────────────────────────────────────────────
+function selectGroup(g) {
+  selectedGroup = g;
+  selectedDeal  = null;
+
+  document.querySelectorAll('.group-tab').forEach(function(btn) {
+    btn.classList.toggle('active', btn.textContent === 'Group ' + g);
+  });
+
+
+  var data = getGroupData(g) || [];
+  var grid = document.getElementById('handGrid');
+  grid.innerHTML = '';
+
+  data.forEach(function(entry) {
+    var match = entry.id.match(/Deal(\d+)$/);
+    if (!match) return;
+    var num = parseInt(match[1], 10);
+
+    var btn = document.createElement('button');
+    btn.className   = 'hand-btn';
+    btn.textContent = num;
+    btn.title       = entry.id;
+
+    // Mark button if commentary text exists for this deal
+    if (getDealText(g, num)) btn.classList.add('has-text');
+
+    btn.onclick = (function(n, b) {
+      return function() { selectDeal(n, b); };
+    }(num, btn));
+
+    grid.appendChild(btn);
+  });
+
+  updateTextPreview();
+  updateStatus();
+  updateResolvedUrl();
+}
+
+// ─────────────────────────────────────────────────────────────
+// Select a hand number
+// ─────────────────────────────────────────────────────────────
+function selectDeal(num, btn) {
+  selectedDeal = num;
+  document.querySelectorAll('.hand-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  updateTextPreview();
+  updateStatus();
+  updateResolvedUrl();
+}
+
+// ─────────────────────────────────────────────────────────────
+// Update the commentary text preview strip
+// ─────────────────────────────────────────────────────────────
+function updateTextPreview() {
+  var el = document.getElementById('textPreview');
+  if (!selectedDeal) {
+    el.className   = 'text-preview absent';
+    el.textContent = '← select a hand';
+    return;
+  }
+  var preview = dealTextPreview(selectedGroup, selectedDeal);
+  if (preview) {
+    el.className   = 'text-preview present';
+    el.textContent = '✓ text · ' + preview;
+  } else {
+    el.className   = 'text-preview absent';
+    el.textContent = '✗ no commentary text found for this hand';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Build the full URL
+// ─────────────────────────────────────────────────────────────
+function buildUrl() {
+  if (!selectedGroup || !selectedDeal) return null;
+
+  var dealId = 'Group' + selectedGroup + 'Deal' + selectedDeal;
+  var data   = getGroupData(selectedGroup) || [];
+  var entry  = null;
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].id === dealId) { entry = data[i]; break; }
+  }
+  if (!entry) return null;
+
+  // entry.query is already the full param string:
+  //   bbo=y&lin=qx|o1|md|...|rh|Group 11|ah|Board 1|...
+  // Append mode=tester for summary.js to use showNextHandSummaryOnly()
+  var query = entry.query;
+  if (query.indexOf('mode=') === -1) {
+    query += '&mode=tester';
+  } else {
+    query = query.replace(/mode=[^&]*/, 'mode=tester');
+  }
+
+  var page = (document.getElementById('targetPage').value || 'summary.html').trim();
+  return page + '?' + query;
+}
+
+// ─────────────────────────────────────────────────────────────
+// UI helpers
+// ─────────────────────────────────────────────────────────────
+function updateResolvedUrl() {
+  document.getElementById('resolvedUrl').textContent = buildUrl() || '—';
+}
+
+function updateStatus() {
+  var el = document.getElementById('status');
+  if (!selectedGroup) {
+    el.className = 'status'; el.textContent = 'Select a group above.';
+  } else if (!selectedDeal) {
+    el.className = 'status'; el.textContent = 'Group ' + selectedGroup + ' loaded — select a hand.';
+  } else {
+    el.className = 'status ok';
+    el.textContent = '✓ Ready · Group ' + selectedGroup + ' · Hand ' + selectedDeal;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Launch
+// ─────────────────────────────────────────────────────────────
+function launch() {
+  var el  = document.getElementById('status');
+  var url = buildUrl();
+
+  if (!url) {
+    el.className   = 'status error';
+    el.textContent = (!selectedGroup || !selectedDeal)
+      ? '✗ Select a group and hand first.'
+      : '✗ Hand not found in group' + selectedGroup + 'Data.';
+    return;
+  }
+
+  window.open(url, document.getElementById('openTarget').value);
+  el.className   = 'status ok';
+  el.textContent = '✓ Launched · Group ' + selectedGroup + ' · Hand ' + selectedDeal;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Keyboard: Enter to launch
+// ─────────────────────────────────────────────────────────────
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && selectedGroup && selectedDeal) launch();
+});
+
+// ─────────────────────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────────────────────
+buildGroupTabs();
+</script>
+</body>
+</html>

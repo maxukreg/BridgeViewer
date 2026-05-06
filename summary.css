@@ -201,6 +201,7 @@ body {
 #textContainer,
 .text-content {
   position: absolute;
+  /* Desktop default – JS overrides on mobile */
   left: 42%;
   right: 0;
   width: auto;
@@ -212,6 +213,8 @@ body {
   background-color: #f0f0f0;
   font-family: 'Satoshi', Arial, sans-serif;
 }
+
+
 
 #textContainer h3,
 .text-content h3 {
@@ -231,6 +234,56 @@ body {
   font-weight: 400;
 }
 
+/* ── Mobile stacked layout – toggled by JS adding .mobile-layout to body ── *
+ * All positioning is done via inline styles set in respondToResizeMobile().  *
+ * These rules only handle the CSS properties that inline styles can't reach  *
+ * (max-width) or that need to cascade to children.                           */
+body.mobile-layout {
+  overflow: hidden;
+}
+
+/* Prevent the stylesheet max-width:42% from capping the hands panel */
+body.mobile-layout div.mainDivStyle,
+body.mobile-layout #theDiv {
+  max-width: 100% !important;
+}
+
+/* Text panel: remove the desktop left:42% and let JS set position */
+body.mobile-layout #textContainer,
+body.mobile-layout .text-content {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  border-top: 3px solid #333 !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+body.mobile-layout #textContainer h3,
+body.mobile-layout .text-content h3 {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+body.mobile-layout #textContainer p,
+body.mobile-layout .text-content p {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Button bar */
+body.mobile-layout div.buttonDivStyle {
+  max-width: 100% !important;
+}
+
+body.mobile-layout div.buttonDivStyle input.buttonStyle {
+  flex: 1;
+  font-size: 0.9em;
+  height: 60%;
+  margin: 0 6px;
+  padding: 0 12px;
+}
 
 .page-wrapper {
   display: flex;
