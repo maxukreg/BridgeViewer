@@ -17,20 +17,20 @@
 // Page targets
 // ─────────────────────────────────────────────────────────────
 const htmlPlayLoc = 'handviewer.html';
-const htmlBidLoc  = 'bidding.html';
-const htmlLoc     = htmlBidLoc;
+const htmlBidLoc = 'bidding.html';
+const htmlLoc = htmlBidLoc;
 
 // ─────────────────────────────────────────────────────────────
 // Group / deal data (populated from external group*.js files)
 // ─────────────────────────────────────────────────────────────
-const groupData     = {};
+const groupData = {};
 const groupTextData = {};
 
 // ─────────────────────────────────────────────────────────────
 // URL params
 // ─────────────────────────────────────────────────────────────
 const urlParams = new URLSearchParams(window.location.search);
-const mode      = urlParams.get('mode'); // 'tester' = from BookletTester
+const mode = urlParams.get('mode'); // 'tester' = from BookletTester
 
 // Wire up the Next Hand button
 document.getElementById('nextButton').onclick = function () {
@@ -45,13 +45,13 @@ var fireFox = (typeof window.innerHeight === 'number') ? 1 : 0;
 
 // On the summary screen we always use the fast (innerHTML) path –
 // no individual card divs, no card images.
-var fastVersion     = true;
+var fastVersion = true;
 var picturesOfCards = false;
 var showPlayedCards = true;
-var cardByCard      = true;
+var cardByCard = true;
 
-var mainDivShowing  = false;
-var firstResize     = true;
+var mainDivShowing = false;
+var firstResize = true;
 
 var availableHeight = 10, availableWidth = 10;
 var totalWidth = 10, totalHeight = 10;
@@ -66,7 +66,7 @@ var highlightColor = '#FFCE00';
 // ─────────────────────────────────────────────────────────────
 // Suit / card constants
 // ─────────────────────────────────────────────────────────────
-var suits     = ['Club', 'Diamond', 'Heart', 'Spade'];
+var suits = ['Club', 'Diamond', 'Heart', 'Spade'];
 var suitHTMLs = [
   "<font color='000000'>&clubs;</font>",
   "<font color='CB0000'>&diams;</font>",
@@ -75,11 +75,11 @@ var suitHTMLs = [
   "<font color='000000'>NT</font>"
 ];
 var suitForums = ['[CL]', '[DI]', '[HE]', '[SP]', 'NT'];
-var suitchars  = 'CDHSN';
-var callchars  = 'PDR?';
-var calls      = ['P', 'X', 'XX', '?'];
-var cardchars  = '23456789TJQKA';
-var seats      = ['South', 'West', 'North', 'East'];
+var suitchars = 'CDHSN';
+var callchars = 'PDR?';
+var calls = ['P', 'X', 'XX', '?'];
+var cardchars = '23456789TJQKA';
+var seats = ['South', 'West', 'North', 'East'];
 
 // Hand positions [S, W, N, E]
 var xpos = [90, 10, 90, 170];
@@ -90,17 +90,17 @@ var ypos = [170, 90, 10, 90];
 // ─────────────────────────────────────────────────────────────
 var blockDiv, statusDiv, announceDiv, annotDiv, menuDiv, menuTable;
 
-var handDivs        = new Array(4);
-var nameBars        = new Array(4);
-var nameInitials    = new Array(4);
-var nameTexts       = new Array(4);
-var suitRows        = new Array(4);
-var suitSymbols     = new Array(4);
-var suitHoldings    = new Array(4);
-var cardDivs        = new Array(4);
+var handDivs = new Array(4);
+var nameBars = new Array(4);
+var nameInitials = new Array(4);
+var nameTexts = new Array(4);
+var suitRows = new Array(4);
+var suitSymbols = new Array(4);
+var suitHoldings = new Array(4);
+var cardDivs = new Array(4);
 var cardDivsCreated = false;
 
-var vulDivs    = new Array(4);
+var vulDivs = new Array(4);
 var vulInnerDiv;
 
 var auctionHeadingDiv;
@@ -111,29 +111,29 @@ var auctionTable;
 var alertDiv;
 var alertedCall = -1;
 
-var trickDivs    = new Array(4);
+var trickDivs = new Array(4);
 var tricksDiv, tricksDivLeft, tricksDivRight;
 var scoreDiv, otherTableDiv, nsTeamDiv, ewTeamDiv, nsScoreDiv, ewScoreDiv;
 
 // ─────────────────────────────────────────────────────────────
 // Hand display state
 // ─────────────────────────────────────────────────────────────
-var handShowing     = new Array(4);
+var handShowing = new Array(4);
 var numHandsShowing = 4;
-var mouseOverName   = -1;
+var mouseOverName = -1;
 
 // ─────────────────────────────────────────────────────────────
 // Card / deck state
 // ─────────────────────────────────────────────────────────────
-var deck              = new Array(4);
-var howManyCards      = new Array(4);
+var deck = new Array(4);
+var howManyCards = new Array(4);
 var howManyCardsDealt = new Array(4);
-var howManySuit       = new Array(4);
-var howManySuitDealt  = new Array(4);
-var howManyXs         = new Array(4);
+var howManySuit = new Array(4);
+var howManySuitDealt = new Array(4);
+var howManyXs = new Array(4);
 
 var cardHighlighted = new Array(4);
-var userDealt       = new Array(4);
+var userDealt = new Array(4);
 
 // ─────────────────────────────────────────────────────────────
 // Board / deal state
@@ -146,26 +146,26 @@ var whosTurn;
 // ─────────────────────────────────────────────────────────────
 // Bidding state
 // ─────────────────────────────────────────────────────────────
-var levelBid  = [], strainBid = [], seatBid = [];
+var levelBid = [], strainBid = [], seatBid = [];
 var passes = -1, lastLevelBid, lastStrainBid, lastBidder;
 var contractLevel, doubled, trump, declarer, dummy;
 var bidSeqPoint, bidSeqMax;
-var bidSequence    = [];
+var bidSequence = [];
 var callExplanation = [];
-var callAnnotation  = [];
-var callAnnotType   = [];
+var callAnnotation = [];
+var callAnnotType = [];
 
 // ─────────────────────────────────────────────────────────────
 // Play state
 // ─────────────────────────────────────────────────────────────
 var playSequence = new Array(52);
 var playSeqPoint, playSeqMax;
-var rankPlayed   = new Array(13);
-var suitPlayed   = new Array(13);
-var seatPlayed   = new Array(13);
-var trickWinner  = new Array(13);
+var rankPlayed = new Array(13);
+var suitPlayed = new Array(13);
+var seatPlayed = new Array(13);
+var trickWinner = new Array(13);
 var cardAnnotation = new Array(13);
-var cardAnnotType  = new Array(13);
+var cardAnnotType = new Array(13);
 var trick, inTrick;
 var nsTricks = 0, ewTricks = 0;
 var tricksClaimed;
@@ -176,7 +176,7 @@ var trickTimer;
 // Annotation state (annotDiv is null on summary screen but
 // processLinFile still calls addAnnotation, so we track state)
 // ─────────────────────────────────────────────────────────────
-var hasAnnotations  = false;
+var hasAnnotations = false;
 var introAnnotation = null;
 
 // ─────────────────────────────────────────────────────────────
@@ -213,18 +213,18 @@ if (linURL !== '') {
 // Layout / display helpers
 // ─────────────────────────────────────────────────────────────
 function showAll(visible) {
-  var div       = document.getElementById('theDiv');
+  var div = document.getElementById('theDiv');
   var buttonDiv = document.getElementById('buttonDiv');
 
   mainDivShowing = visible;
 
   if (visible) {
     statusDiv.style.visibility = 'hidden';
-    blockDiv.style.visibility  = 'hidden';
+    blockDiv.style.visibility = 'hidden';
     buttonDiv.style.visibility = 'visible';
   } else {
     statusDiv.style.visibility = 'visible';
-    blockDiv.style.visibility  = 'visible';
+    blockDiv.style.visibility = 'visible';
     buttonDiv.style.visibility = 'hidden';
     if (annotDiv) annotDiv.style.visibility = 'hidden';
     clearTrickCards(0, 3);
@@ -255,13 +255,13 @@ function respondToResize() {
   var div = document.getElementById('theDiv');
 
   // Always use window dimensions for consistency
-  availableWidth  = window.innerWidth;
+  availableWidth = window.innerWidth;
   availableHeight = window.innerHeight;
 
   if (firstResize) {
     firstResize = false;
     blockDiv.style.visibility = 'visible';
-    blockDiv.style.width  = availableWidth + 'px';
+    blockDiv.style.width = availableWidth + 'px';
     blockDiv.style.height = availableHeight + 'px';
     return;
   }
@@ -278,15 +278,15 @@ function respondToResize() {
   }
 
   // Common teardown
-  tricksDiv.style.fontSize     = (3 * fontSize) / 4 + 'px';
-  tricksDiv.style.paddingLeft  = margin + 'px';
+  tricksDiv.style.fontSize = (3 * fontSize) / 4 + 'px';
+  tricksDiv.style.paddingLeft = margin + 'px';
   tricksDiv.style.paddingRight = margin + 'px';
   announceDiv.style.paddingRight = margin + 'px';
-  announceDiv.style.paddingLeft  = margin + 'px';
+  announceDiv.style.paddingLeft = margin + 'px';
   manageTricksDiv();
 
-  scoreDiv.style.fontSize     = (3 * fontSize) / 4 + 'px';
-  scoreDiv.style.paddingLeft  = margin + 'px';
+  scoreDiv.style.fontSize = (3 * fontSize) / 4 + 'px';
+  scoreDiv.style.paddingLeft = margin + 'px';
   scoreDiv.style.paddingRight = margin + 'px';
   tricksDiv.style.display = 'none';
 
@@ -304,61 +304,61 @@ function respondToResizeDesktop(div) {
   var handCols = getHandCols();
 
   totalHeight = availableHeight;
-  totalWidth  = availableWidth;
-  if (totalWidth  < 10) totalWidth  = 10;
+  totalWidth = availableWidth;
+  if (totalWidth < 10) totalWidth = 10;
   if (totalHeight < 10) totalHeight = 10;
 
-  blockDiv.style.width  = totalWidth + 'px';
+  blockDiv.style.width = totalWidth + 'px';
   blockDiv.style.height = availableHeight + 'px';
 
   var buttonDivHeight = Math.max(40, 0.09 * totalHeight);
   totalHeight -= buttonDivHeight;
-  margin      = Math.max(2, totalHeight / 35);
+  margin = Math.max(2, totalHeight / 35);
   totalHeight = Math.max(1, totalHeight);
 
   var margins = handCols + 1;
-  handWidth  = Math.max(1, (totalWidth - margins * margin) / handCols);
+  handWidth = Math.max(1, (totalWidth - margins * margin) / handCols);
   handHeight = Math.max(1, (totalHeight - (handRows + 1) * margin) / handRows);
   suitHeight = handHeight / 5;
 
   // Scale to the 42%-wide left column
-  handWidth  /= 3;
+  handWidth /= 3;
   handHeight /= 1.9;
   suitHeight /= 1.9;
 
   resizeButtons();
   nameHeight = Math.floor(handHeight / 5);
-  fontSize   = handHeight / 6.5;
+  fontSize = handHeight / 6.5;
 
   // Hands panel
   div.style.position = 'absolute';
-  div.style.top      = '0px';
-  div.style.left     = '0px';
-  div.style.width    = '42%';
-  div.style.height   = totalHeight + 'px';
+  div.style.top = '0px';
+  div.style.left = '0px';
+  div.style.width = '42%';
+  div.style.height = totalHeight + 'px';
 
   // Text panel: right of hands
   var tc = document.getElementById('textContainer');
   if (tc) {
     tc.style.position = 'absolute';
-    tc.style.top      = '0px';
-    tc.style.left     = '42%';
-    tc.style.width    = '';       // CSS right:0 handles this
-    tc.style.height   = (totalHeight + buttonDivHeight) * 0.966 + 'px';
+    tc.style.top = '0px';
+    tc.style.left = '42%';
+    tc.style.width = '';       // CSS right:0 handles this
+    tc.style.height = (totalHeight + buttonDivHeight) * 0.966 + 'px';
     tc.style.overflowY = 'auto';
   }
 
   // Button bar: full width at bottom
   var buttonDiv = document.getElementById('buttonDiv');
   buttonDiv.style.position = 'absolute';
-  buttonDiv.style.top      = totalHeight + 'px';
-  buttonDiv.style.left     = '0px';
-  buttonDiv.style.width    = totalWidth + 'px';
-  buttonDiv.style.height   = (buttonDivHeight - 2 * fireFox) + 'px';
+  buttonDiv.style.top = totalHeight + 'px';
+  buttonDiv.style.left = '0px';
+  buttonDiv.style.width = totalWidth + 'px';
+  buttonDiv.style.height = (buttonDivHeight - 2 * fireFox) + 'px';
   buttonDiv.style.visibility = showButtonBar() ? 'visible' : 'hidden';
 
   if (showButtonBar()) {
-    buttonHeight   = Math.max(24, buttonDivHeight - 2 * margin);
+    buttonHeight = Math.max(24, buttonDivHeight - 2 * margin);
     buttonFontSize = buttonHeight / 2;
     if (menuTable) menuTable.style.fontSize = buttonFontSize + 'px';
   } else {
@@ -373,57 +373,57 @@ function respondToResizeDesktop(div) {
 // MOBILE layout: hands on top ~46%, scrollable text below
 // ─────────────────────────────────────────────────────────────
 function respondToResizeMobile(div) {
-  totalWidth  = availableWidth;
+  totalWidth = availableWidth;
   totalHeight = availableHeight;
 
   var buttonDivHeight = Math.max(50, Math.round(totalHeight * 0.10));
-  var handAreaHeight  = Math.round(totalHeight * 0.46);
-  var textAreaHeight  = totalHeight - handAreaHeight - buttonDivHeight;
+  var handAreaHeight = Math.round(totalHeight * 0.46);
+  var textAreaHeight = totalHeight - handAreaHeight - buttonDivHeight;
 
-  blockDiv.style.width  = totalWidth + 'px';
+  blockDiv.style.width = totalWidth + 'px';
   blockDiv.style.height = totalHeight + 'px';
 
-  margin     = Math.max(2, handAreaHeight / 40);
+  margin = Math.max(2, handAreaHeight / 40);
 
   // Divide into a 3×3 compass grid then scale down to leave room for
   // the name bar (≈ handHeight/5) above each hand and the auction table.
   var MOBILE_SCALE = 0.68;
-  handWidth  = Math.max(1, (totalWidth  - 4 * margin) / 3) * MOBILE_SCALE;
+  handWidth = Math.max(1, (totalWidth - 4 * margin) / 3) * MOBILE_SCALE;
   handHeight = Math.max(1, (handAreaHeight - 4 * margin) / 3) * MOBILE_SCALE;
   suitHeight = handHeight / 5;
 
   resizeButtons();
   nameHeight = Math.floor(handHeight / 5);
-  fontSize   = handHeight / 6.5;
+  fontSize = handHeight / 6.5;
 
   // Hands panel: full width, top of screen
   div.style.position = 'absolute';
-  div.style.top      = '0px';
-  div.style.left     = '0px';
-  div.style.width    = totalWidth + 'px';   // explicit px beats CSS 42%
-  div.style.height   = handAreaHeight + 'px';
+  div.style.top = '0px';
+  div.style.left = '0px';
+  div.style.width = totalWidth + 'px';   // explicit px beats CSS 42%
+  div.style.height = handAreaHeight + 'px';
 
   // Text panel: full width, directly below hands
   var tc = document.getElementById('textContainer');
   if (tc) {
-    tc.style.position  = 'absolute';
-    tc.style.top       = handAreaHeight + 'px';
-    tc.style.left      = '0px';
-    tc.style.width     = totalWidth + 'px';
-    tc.style.height    = textAreaHeight + 'px';
+    tc.style.position = 'absolute';
+    tc.style.top = handAreaHeight + 'px';
+    tc.style.left = '0px';
+    tc.style.width = totalWidth + 'px';
+    tc.style.height = textAreaHeight + 'px';
     tc.style.overflowY = 'auto';
   }
 
   // Button bar: full width, pinned at bottom
   var buttonDiv = document.getElementById('buttonDiv');
-  buttonDiv.style.position   = 'absolute';
-  buttonDiv.style.top        = (handAreaHeight + textAreaHeight) + 'px';
-  buttonDiv.style.left       = '0px';
-  buttonDiv.style.width      = totalWidth + 'px';
-  buttonDiv.style.height     = buttonDivHeight + 'px';
+  buttonDiv.style.position = 'absolute';
+  buttonDiv.style.top = (handAreaHeight + textAreaHeight) + 'px';
+  buttonDiv.style.left = '0px';
+  buttonDiv.style.width = totalWidth + 'px';
+  buttonDiv.style.height = buttonDivHeight + 'px';
   buttonDiv.style.visibility = 'visible';
 
-  buttonHeight   = Math.max(24, buttonDivHeight - 2 * margin);
+  buttonHeight = Math.max(24, buttonDivHeight - 2 * margin);
   buttonFontSize = buttonHeight / 2;
   if (menuTable) menuTable.style.fontSize = buttonFontSize + 'px';
 
@@ -447,46 +447,49 @@ function positionHandCompass(div) {
     table.style.visibility = 'visible';
     nameBars[seat].style.visibility = 'visible';
 
-    table.style.width    = getHandWidth(seat);
-    table.style.height   = handHeight;
+    table.style.width = getHandWidth(seat);
+    table.style.height = handHeight;
     table.style.fontSize = fontSize;
 
-    nameTexts[seat].style.left        = nameInitials[seat].clientWidth;
-    nameTexts[seat].style.top         = 0;
+    nameTexts[seat].style.left = nameInitials[seat].clientWidth;
+    nameTexts[seat].style.top = 0;
     nameTexts[seat].style.paddingLeft = margin;
 
     for (var suit = 0; suit < 4; suit++) {
-      suitRows[seat][suit].style.top    = (4 - suit) * suitHeight;
+      suitRows[seat][suit].style.top = (4 - suit) * suitHeight;
       suitRows[seat][suit].style.height = suitHeight;
-      suitSymbols[seat][suit].style.fontSize   = 1.5 * fontSize;
+      suitSymbols[seat][suit].style.fontSize = 1.5 * fontSize;
       suitSymbols[seat][suit].style.lineHeight = 1.3 * fontSize + 'px';
-      suitHoldings[seat][suit].style.fontSize   = 1.2 * fontSize;
+      suitHoldings[seat][suit].style.fontSize = 1.2 * fontSize;
       suitHoldings[seat][suit].style.lineHeight = 1.4 * fontSize + 'px';
       suitHoldings[seat][suit].style.left = suitSymbols[seat][suit].clientWidth;
-      suitHoldings[seat][suit].style.top  = 0;
+      suitHoldings[seat][suit].style.top = 0;
       resizeCards(seat, suit);
     }
 
-    // Centre the compass horizontally within whatever container width is active
+    // Compass positions: N top-centre, S bottom-centre, W/E middle sides
+    var panelWidth = isMobileLayout() ? totalWidth : totalWidth * 0.42;
+    var xOffset = isMobileLayout() ? -margin * 2 : 0;
+    var yOffset = isMobileLayout() ? margin * 3 : 0;
     var compassWidth = 3 * handWidth + 2 * margin;
-    var compassLeft = Math.max(margin, (totalWidth - compassWidth) / 2);
-    xpos[1] = compassLeft;                          // West
-    xpos[0] = compassLeft + handWidth + margin;     // North / South (centre column)
+    var compassLeft = (panelWidth - compassWidth) / 2 + xOffset;
+    xpos[1] = compassLeft;                               // West
+    xpos[0] = compassLeft + handWidth + margin;          // North / South (centre column)
     xpos[2] = xpos[0];
-    xpos[3] = compassLeft + 2 * (handWidth + margin); // East
-    ypos[2] = margin;                               // North
-    ypos[1] = ypos[2] + handHeight + margin;        // West / East (middle row)
-    ypos[3] = ypos[1];
-    ypos[0] = ypos[1] + handHeight + margin;        // South
+    xpos[3] = compassLeft + 2 * (handWidth + margin);   // East
+    ypos[0] = 2 * handHeight + (margin * 2.5) + yOffset; // South
+    ypos[2] = margin + yOffset;                          // North
+    ypos[1] = ypos[2] + handHeight + margin;             // West (middle row)
+    ypos[3] = ypos[1];                                   // East (middle row)
 
     nameBars[seat].style.fontSize = fontSize;
-    nameBars[seat].style.left     = xpos[seat];
-    nameBars[seat].style.top      = ypos[seat];
-    nameBars[seat].style.height   = nameHeight;
-    nameBars[seat].style.width    = getHandWidth(seat);
+    nameBars[seat].style.left = xpos[seat];
+    nameBars[seat].style.top = ypos[seat];
+    nameBars[seat].style.height = nameHeight;
+    nameBars[seat].style.width = getHandWidth(seat);
     table.style.left = xpos[seat];
-    table.style.top  = ypos[seat];
-    nameTexts[seat].style.left  = nameInitials[seat].clientWidth;
+    table.style.top = ypos[seat];
+    nameTexts[seat].style.left = nameInitials[seat].clientWidth;
     nameTexts[seat].style.width = getHandWidth(seat) - nameInitials[seat].clientWidth;
   }
 }
@@ -497,40 +500,41 @@ function positionHandCompass(div) {
 function positionAuction(div) {
   if (showAuction()) {
     if (auctionHeadingDiv.parentNode !== div) div.appendChild(auctionHeadingDiv);
-    if (auctionTableDiv.parentNode !== div)    div.appendChild(auctionTableDiv);
+    if (auctionTableDiv.parentNode !== div) div.appendChild(auctionTableDiv);
     div.appendChild(alertDiv);
 
     auctionHeading.style.fontSize = fontSize;
     auctionHeadingDiv.style.width = handWidth;
-    auctionHeading.style.height   = suitHeight;
-    auctionHeading.style.width    = handWidth;
+    auctionHeading.style.height = suitHeight;
+    auctionHeading.style.width = handWidth;
 
     auctionTableDiv.style.fontSize = fontSize;
-    auctionTableDiv.style.width    = handWidth;
+    auctionTableDiv.style.width = handWidth;
 
     var auctionDivHeight = 4 * suitHeight;
     auctionTableDiv.style.height = auctionDivHeight + 'px';
 
     auctionTable.style.fontSize = fontSize * 0.88;
-    auctionTable.style.width    = handWidth;
+    auctionTable.style.width = handWidth;
 
+    var yOffset = isMobileLayout() ? margin * 3 : 0;
     var auctionLeft = xpos[3];
-    var auctionTop  = margin + div.offsetTop;
+    var auctionTop = margin + yOffset + div.offsetTop;
 
-    auctionHeadingDiv.style.top  = auctionTop;
+    auctionHeadingDiv.style.top = auctionTop;
     auctionHeadingDiv.style.left = auctionLeft;
 
-    auctionTableDiv.style.top  = auctionTop + auctionHeading.clientHeight;
+    auctionTableDiv.style.top = auctionTop + auctionHeading.clientHeight;
     auctionTableDiv.style.left = auctionLeft;
 
     manageAuctionScrollBar();
 
     alertDiv.style.fontSize = (3 * fontSize) / 4;
-    alertDiv.style.height   = (3 * suitHeight) / 4;
+    alertDiv.style.height = (3 * suitHeight) / 4;
     manageAlertDiv();
   } else {
     if (auctionHeadingDiv.parentNode === div) div.removeChild(auctionHeadingDiv);
-    if (auctionTableDiv.parentNode === div)    div.removeChild(auctionTableDiv);
+    if (auctionTableDiv.parentNode === div) div.removeChild(auctionTableDiv);
   }
 }
 
@@ -542,11 +546,11 @@ function manageAuctionScrollBar() {
 
   if (auctionTable.clientHeight > auctionTableDiv.clientHeight && auctionTable.clientWidth !== 0) {
     auctionTableDiv.style.overflowY = 'scroll';
-    cellPercent  = Math.max(1, (100 * ((auctionTable.clientWidth - scrollBarWidth) / 4)) / auctionTable.clientWidth) + '%';
+    cellPercent = Math.max(1, (100 * ((auctionTable.clientWidth - scrollBarWidth) / 4)) / auctionTable.clientWidth) + '%';
     rightPercent = 100 * (scrollBarWidth / auctionTable.clientWidth) + '%';
   } else {
     auctionTableDiv.style.overflowY = 'hidden';
-    cellPercent  = '25%';
+    cellPercent = '25%';
     rightPercent = '0%';
   }
 
@@ -578,14 +582,14 @@ function manageTricksDiv() {
   if (doubled === 4) html += 'xx';
   html += ' ' + seats[declarer].charAt(0) + ' ';
 
-  tricksDivLeft.innerHTML  = html;
+  tricksDivLeft.innerHTML = html;
   tricksDivRight.innerHTML = 'NS: ' + nsTricks + ' EW: ' + ewTricks;
 
   tricksDivLeft.style.height = fontSize - margin / 2;
-  tricksDiv.style.left       = totalWidth - handWidth - margin - 2 * fireFox;
-  tricksDiv.style.width      = Math.max(0, handWidth - 2 * margin * fireFox);
-  tricksDiv.style.height     = tricksDivLeft.clientHeight + 2;
-  tricksDiv.style.top        = totalHeight - tricksDiv.clientHeight - margin - 2;
+  tricksDiv.style.left = totalWidth - handWidth - margin - 2 * fireFox;
+  tricksDiv.style.width = Math.max(0, handWidth - 2 * margin * fireFox);
+  tricksDiv.style.height = tricksDivLeft.clientHeight + 2;
+  tricksDiv.style.top = totalHeight - tricksDiv.clientHeight - margin - 2;
   tricksDiv.style.visibility = 'visible';
 }
 
@@ -613,40 +617,42 @@ function manageInfoDiv() {
   vulInnerDiv.innerHTML = (boardNum > 0) ? boardNum : '';
 
   if (dealer < 0) vulInnerDiv.style.visibility = 'hidden';
-  else            vulInnerDiv.style.visibility = 'visible';
+  else vulInnerDiv.style.visibility = 'visible';
 
-  var suitH    = handHeight / 5;
+  var suitH = handHeight / 5;
   var vulMargin = 2;
-  var vulSize   = Math.floor((2 * suitH) / 3);
+  var vulSize = Math.floor((2 * suitH) / 3);
   var vulBorder = 2;
-  var minWidth  = (5 * fontSize) / 2;
+  var minWidth = (5 * fontSize) / 2;
+  var yOffset = isMobileLayout() ? margin * 3 : 0;
+  var vTop = margin + yOffset;
 
-  vulInnerDiv.style.fontSize  = (7 * fontSize) / 4;
-  vulInnerDiv.style.height    = minWidth + 'px';
+  vulInnerDiv.style.fontSize = (7 * fontSize) / 4;
+  vulInnerDiv.style.height = minWidth + 'px';
   if (fireFox) vulInnerDiv.style.minWidth = minWidth;
-  else         vulInnerDiv.style.width    = minWidth;
+  else vulInnerDiv.style.width = minWidth;
   vulInnerDiv.style.lineHeight = Math.max(1, minWidth - 2 * vulMargin) + 'px';
-  vulInnerDiv.style.top  = margin + vulMargin + vulSize;
+  vulInnerDiv.style.top = vTop + vulMargin + vulSize;
   vulInnerDiv.style.left = xpos[0] - handWidth;
 
   for (var seat = 0; seat < 4; seat++) {
     vulDivs[seat].style.fontSize = (2 * fontSize) / 3;
     if (seat % 2) {
-      vulDivs[seat].style.top        = margin + vulMargin + vulSize;
-      vulDivs[seat].style.height     = vulInnerDiv.clientHeight + 2 * vulBorder - !fireFox;
-      vulDivs[seat].style.width      = vulSize;
+      vulDivs[seat].style.top = vTop + vulMargin + vulSize;
+      vulDivs[seat].style.height = vulInnerDiv.clientHeight + 2 * vulBorder - !fireFox;
+      vulDivs[seat].style.width = vulSize;
       vulDivs[seat].style.lineHeight = vulInnerDiv.clientHeight + 2 * vulBorder + 'px';
       vulDivs[seat].style.left = (seat === 1)
         ? xpos[0] - handWidth - vulSize - vulMargin
         : xpos[0] - handWidth + minWidth + (margin * 0.25);
     } else {
-      vulDivs[seat].style.left      = xpos[0] - handWidth;
-      vulDivs[seat].style.width     = vulInnerDiv.clientWidth + 2 * vulBorder - !fireFox;
-      vulDivs[seat].style.height    = vulSize;
+      vulDivs[seat].style.left = xpos[0] - handWidth;
+      vulDivs[seat].style.width = vulInnerDiv.clientWidth + 2 * vulBorder - !fireFox;
+      vulDivs[seat].style.height = vulSize;
       vulDivs[seat].style.lineHeight = vulSize + 'px';
       vulDivs[seat].style.top = (seat === 2)
-        ? margin
-        : margin + 2 * vulMargin + vulSize + vulInnerDiv.clientHeight + 2 * vulBorder - !fireFox;
+        ? vTop
+        : vTop + 2 * vulMargin + vulSize + vulInnerDiv.clientHeight + 2 * vulBorder - !fireFox;
     }
   }
 }
@@ -662,14 +668,14 @@ function manageVul() {
   for (var seat = 0; seat < 4; seat++) {
     if ((seat % 2 === 1 && ewVul) || (seat % 2 === 0 && nsVul)) {
       auctionHeadingCells[seat].style.background = '#CB0000';
-      auctionHeadingCells[seat].style.color      = '#FFFFFF';
+      auctionHeadingCells[seat].style.color = '#FFFFFF';
       vulDivs[seat].style.background = '#CB0000';
-      vulDivs[seat].style.color      = '#FFFFFF';
+      vulDivs[seat].style.color = '#FFFFFF';
     } else {
       auctionHeadingCells[seat].style.background = '#FFFFFF';
-      auctionHeadingCells[seat].style.color      = '#000000';
+      auctionHeadingCells[seat].style.color = '#000000';
       vulDivs[seat].style.background = '#FFFFFF';
-      vulDivs[seat].style.color      = '#000000';
+      vulDivs[seat].style.color = '#000000';
     }
   }
   auctionHeading.rows[0].cells[4].style.background =
@@ -708,7 +714,7 @@ function isHandShowing(seat) {
 // ─────────────────────────────────────────────────────────────
 function createHandTables() {
   scrollBarWidth = getScrollBarWidth();
-  var theParent  = document.getElementById('theDiv');
+  var theParent = document.getElementById('theDiv');
 
   disableSelection(document.getElementById('buttonDiv'));
 
@@ -721,9 +727,9 @@ function createHandTables() {
 
     var nameBar = document.createElement('div');
     disableSelection(nameBar);
-    nameBar.className      = 'nameRowDivStyle';
+    nameBar.className = 'nameRowDivStyle';
     nameBar.style.position = 'absolute';
-    nameBar.style.border   = '1px solid white';
+    nameBar.style.border = '1px solid white';
     nameBar.style.whiteSpace = 'nowrap';
 
     var nameInitial = document.createElement('div');
@@ -736,19 +742,19 @@ function createHandTables() {
     nameBar.appendChild(nameText);
     theParent.appendChild(nameBar);
 
-    nameBars[seat]    = nameBar;
+    nameBars[seat] = nameBar;
     nameInitials[seat] = nameInitial;
-    nameTexts[seat]    = nameText;
+    nameTexts[seat] = nameText;
 
-    suitRows[seat]     = new Array(4);
-    suitSymbols[seat]  = new Array(4);
+    suitRows[seat] = new Array(4);
+    suitSymbols[seat] = new Array(4);
     suitHoldings[seat] = new Array(4);
-    cardDivs[seat]     = new Array(4);
+    cardDivs[seat] = new Array(4);
 
     for (var suit = 0; suit < 4; suit++) {
-      suitRows[seat][suit]     = document.createElement('div');
+      suitRows[seat][suit] = document.createElement('div');
       suitRows[seat][suit].className = 'suitRowDivStyle';
-      suitSymbols[seat][suit]  = document.createElement('div');
+      suitSymbols[seat][suit] = document.createElement('div');
       suitSymbols[seat][suit].className = 'suitSymbolDivStyle';
       suitHoldings[seat][suit] = document.createElement('div');
       suitHoldings[seat][suit].className = 'suitHoldingDivStyle';
@@ -792,9 +798,9 @@ function createHandTables() {
   var s = 1;
   for (var i = 0; i < 4; i++) {
     auctionHeadingCells[s] = headingRow.insertCell(i);
-    auctionHeadingCells[s].align       = 'center';
+    auctionHeadingCells[s].align = 'center';
     auctionHeadingCells[s].style.width = '25%';
-    auctionHeadingCells[s].innerHTML   = seats[s].charAt(0);
+    auctionHeadingCells[s].innerHTML = seats[s].charAt(0);
     s++;
     if (s === 4) s = 0;
   }
@@ -807,7 +813,7 @@ function createHandTables() {
   auctionTableDiv = document.createElement('div');
   disableSelection(auctionTableDiv);
   auctionTableDiv.className = 'auctionTableDivStyle';
-  auctionTableDiv.onscroll  = function () { alertedCall = -1; manageAlertDiv(); };
+  auctionTableDiv.onscroll = function () { alertedCall = -1; manageAlertDiv(); };
   theParent.appendChild(auctionTableDiv);
 
   auctionTable = document.createElement('table');
@@ -853,7 +859,7 @@ function createHandTables() {
   // Announce (not used on summary screen)
   announceDiv = document.createElement('div');
   disableSelection(announceDiv);
-  announceDiv.className        = 'announceDivStyle';
+  announceDiv.className = 'announceDivStyle';
   announceDiv.style.visibility = 'hidden';
   theParent.appendChild(announceDiv);
 
@@ -867,7 +873,7 @@ function createHandTables() {
   theParent.appendChild(alertDiv);
 
   // Minimal menu table (referenced in respondToResize)
-  menuDiv   = document.createElement('div');
+  menuDiv = document.createElement('div');
   menuDiv.className = 'menuDivStyle';
   menuTable = document.createElement('table');
   menuDiv.appendChild(menuTable);
@@ -876,7 +882,7 @@ function createHandTables() {
   // Loading overlay
   blockDiv = document.createElement('div');
   disableSelection(blockDiv);
-  blockDiv.className            = 'blockDivStyle';
+  blockDiv.className = 'blockDivStyle';
   blockDiv.style.backgroundColor = '#FFFFFF';
   theParent.appendChild(blockDiv);
 
@@ -902,10 +908,10 @@ function createCardDivs() {
 // ─────────────────────────────────────────────────────────────
 function createAuctionRow() {
   var rowIndex = auctionTable.rows ? auctionTable.rows.length : 0;
-  var newRow   = auctionTable.insertRow(rowIndex);
+  var newRow = auctionTable.insertRow(rowIndex);
   for (var i = 0; i < 5; i++) {
     var cell = newRow.insertCell(i);
-    cell.align       = 'center';
+    cell.align = 'center';
     cell.style.width = (i < 4) ? '25%' : '0%';
   }
 }
@@ -923,21 +929,21 @@ function clearAuction() {
 // ─────────────────────────────────────────────────────────────
 function clearDeck() {
   for (var w = 0; w < 4; w++) {
-    howManyCards[w]      = 0;
+    howManyCards[w] = 0;
     howManyCardsDealt[w] = 0;
-    howManySuit[w]       = new Array(4);
-    howManySuitDealt[w]  = new Array(4);
-    howManyXs[w]         = new Array(4);
-    cardHighlighted[w]   = new Array(13);
-    userDealt[w]         = new Array(13);
+    howManySuit[w] = new Array(4);
+    howManySuitDealt[w] = new Array(4);
+    howManyXs[w] = new Array(4);
+    cardHighlighted[w] = new Array(13);
+    userDealt[w] = new Array(13);
     for (var s = 0; s < 4; s++) {
-      howManySuit[w][s]      = 0;
+      howManySuit[w][s] = 0;
       howManySuitDealt[w][s] = 0;
-      howManyXs[w][s]        = 0;
+      howManyXs[w][s] = 0;
     }
     for (var c = 0; c < 13; c++) {
       cardHighlighted[w][c] = false;
-      userDealt[w][c]       = false;
+      userDealt[w][c] = false;
     }
   }
 
@@ -947,12 +953,12 @@ function clearDeck() {
   }
 
   for (var t = 0; t < 13; t++) {
-    suitPlayed[t]     = new Array(4);
-    rankPlayed[t]     = new Array(4);
-    seatPlayed[t]     = new Array(4);
+    suitPlayed[t] = new Array(4);
+    rankPlayed[t] = new Array(4);
+    seatPlayed[t] = new Array(4);
     cardAnnotation[t] = [null, null, null, null];
-    cardAnnotType[t]  = [null, null, null, null];
-    trickWinner[t]    = -1;
+    cardAnnotType[t] = [null, null, null, null];
+    trickWinner[t] = -1;
     for (var it = 0; it < 4; it++) {
       suitPlayed[t][it] = rankPlayed[t][it] = seatPlayed[t][it] = -1;
     }
@@ -960,38 +966,38 @@ function clearDeck() {
 
   populateHands(0, 3, 0, 3);
   clearAuction();
-  boardNum     = 0;
-  dealer       = -1;
-  nsVul        = false;
-  ewVul        = false;
-  trick        = -1;
-  inTrick      = 3;
+  boardNum = 0;
+  dealer = -1;
+  nsVul = false;
+  ewVul = false;
+  trick = -1;
+  inTrick = 3;
   playSeqPoint = 0;
-  playSeqMax   = -1;
-  bidSeqPoint  = -1;
-  bidSeqMax    = -1;
-  lastBidder   = -1;
+  playSeqMax = -1;
+  bidSeqPoint = -1;
+  bidSeqMax = -1;
+  lastBidder = -1;
   contractLevel = -1;
-  nsTricks      = 0;
-  ewTricks      = 0;
+  nsTricks = 0;
+  ewTricks = 0;
   tricksClaimed = -1;
-  alertedCall   = -1;
-  lastLevelBid  = -1;
+  alertedCall = -1;
+  lastLevelBid = -1;
   lastStrainBid = -1;
-  doubled       = 0;
-  passes        = -1;
-  trump         = -1;
-  dummy         = -1;
-  declarer      = -1;
-  whosTurn      = -1;
-  claimShowing  = false;
-  hasAnnotations  = false;
+  doubled = 0;
+  passes = -1;
+  trump = -1;
+  dummy = -1;
+  declarer = -1;
+  whosTurn = -1;
+  claimShowing = false;
+  hasAnnotations = false;
   introAnnotation = null;
   callExplanation[0] = '';
 
   clearTrickCards(0, 3);
-  auctionTableDiv.style.visibility    = 'hidden';
-  auctionHeadingDiv.style.visibility  = 'hidden';
+  auctionTableDiv.style.visibility = 'hidden';
+  auctionHeadingDiv.style.visibility = 'hidden';
 
   manageWhosTurn();
   manageHandBackground(0, 3);
@@ -1021,13 +1027,15 @@ function dealCardToPlayer(suit, card, seat) {
 // ─────────────────────────────────────────────────────────────
 function removeButton(buttonID) {
   var buttonTD = document.getElementById('buttonDiv');
-  var button   = document.getElementById(buttonID);
+  var button = document.getElementById(buttonID);
   if (button && button.parentNode === buttonTD) buttonTD.removeChild(button);
 }
 
 function disableButton(which, disable) {
-  var ids = { new:'newButton', shuffle:'shuffleButton', next:'nextButton',
-              undo:'undoButton', rewind:'rewindButton', play:'playButton' };
+  var ids = {
+    new: 'newButton', shuffle: 'shuffleButton', next: 'nextButton',
+    undo: 'undoButton', rewind: 'rewindButton', play: 'playButton'
+  };
   var button = document.getElementById(ids[which]);
   if (button) button.disabled = disable;
 }
@@ -1047,14 +1055,14 @@ function populateHands(seatMin, seatMax, suitMin, suitMax) {
 
   for (var seat = seatMin; seat <= seatMax; seat++) {
     for (var suitOrder = suitMin; suitOrder <= suitMax; suitOrder++) {
-      var suit    = getSuitOrder(suitOrder);
+      var suit = getSuitOrder(suitOrder);
       var holding = '';
 
       for (var card = 12; card >= 0; card--) {
         var played = (deck[suit][card] === seat - 4);
         if (deck[suit][card] === seat || (showPlayedCards && played)) {
           if (played) holding += "<font color='808080'>";
-          else        holding += "<font color='000000'>";
+          else holding += "<font color='000000'>";
           holding += getCardChar(card) + '</font>';
         }
       }
@@ -1089,7 +1097,7 @@ function showAllTrickCards() {
 function showTrickCard(seat, suit, rank) {
   if (suit < 0 || rank < 0) return;
   var rankShow = getCardChar(rank);
-  trickDivs[seat].innerHTML   = suitHTMLs[suit] + "<font color='000000'>" + rankShow + '</font>';
+  trickDivs[seat].innerHTML = suitHTMLs[suit] + "<font color='000000'>" + rankShow + '</font>';
   trickDivs[seat].style.visibility = 'visible';
 }
 
@@ -1124,8 +1132,8 @@ function explainCall(explain, bsp) {
 
 function manageAlertDiv() {
   if (alertedCall >= 0) {
-    var row  = bspToAuctionRow(alertedCall);
-    var col  = bspToAuctionCol(alertedCall);
+    var row = bspToAuctionRow(alertedCall);
+    var col = bspToAuctionCol(alertedCall);
     var cell = auctionTable.rows[row].cells[col];
     alertDiv.innerHTML = insertSuitHTML(callExplanation[alertedCall]);
     alertDiv.style.left = Math.max(
@@ -1176,7 +1184,7 @@ function manageBiddingQuestionMark() {
 function makeCall(call) {
   if (call.length < 1 || passes === 3 || dealer === -1) return false;
 
-  if (call.toUpperCase() === 'X')  call = 'D';
+  if (call.toUpperCase() === 'X') call = 'D';
   if (call.toUpperCase() === 'XX') call = 'R';
 
   var level = -1, strain = -1;
@@ -1186,12 +1194,12 @@ function makeCall(call) {
     if (strain >= 0) level = 0;
   }
   if (call.length === 2) {
-    level  = parseInt(call.charAt(0));
+    level = parseInt(call.charAt(0));
     strain = suitchars.indexOf(call.charAt(1).toUpperCase());
   }
 
   if (level < 0 || strain < 0) return false;
-  if (level === 0 && strain === 1 && !allowDouble())   return false;
+  if (level === 0 && strain === 1 && !allowDouble()) return false;
   if (level === 0 && strain === 2 && !allowRedouble()) return false;
   if (level > 0 && 10 * level + strain <= 10 * lastLevelBid + lastStrainBid) return false;
 
@@ -1199,9 +1207,9 @@ function makeCall(call) {
   if (bidSeqPoint > bidSeqMax) bidSeqMax = bidSeqPoint;
 
   bidSequence[bidSeqPoint] = call;
-  levelBid[bidSeqPoint]    = level;
-  strainBid[bidSeqPoint]   = strain;
-  seatBid[bidSeqPoint]     = whosTurn;
+  levelBid[bidSeqPoint] = level;
+  strainBid[bidSeqPoint] = strain;
+  seatBid[bidSeqPoint] = whosTurn;
   whosTurn++;
   if (whosTurn === 4) whosTurn = 0;
 
@@ -1220,7 +1228,7 @@ function makeCall(call) {
   if (level === 0 && strain === 0) {
     passes++;
     if (passes === 3) {
-      trump         = lastStrainBid;
+      trump = lastStrainBid;
       contractLevel = lastLevelBid;
       setDeclarer();
       whosTurn = declarer + 1;
@@ -1228,13 +1236,13 @@ function makeCall(call) {
     }
   } else if (level === 0) {
     doubled = strain * 2;
-    passes  = 0;
+    passes = 0;
   } else {
-    lastLevelBid  = levelBid[bidSeqPoint];
+    lastLevelBid = levelBid[bidSeqPoint];
     lastStrainBid = strainBid[bidSeqPoint];
-    lastBidder    = seatBid[bidSeqPoint];
+    lastBidder = seatBid[bidSeqPoint];
     doubled = 0;
-    passes  = 0;
+    passes = 0;
   }
 
   manageWhosTurn();
@@ -1262,7 +1270,7 @@ function getQueryString() {
 function next() {
   while (bidSeqPoint < bidSeqMax && passes < 3) {
     var explain = callExplanation[bidSeqPoint + 1];
-    var retVal  = makeCall(bidSequence[bidSeqPoint + 1]);
+    var retVal = makeCall(bidSequence[bidSeqPoint + 1]);
     if (retVal) {
       explainCall(explain, bidSeqPoint);
     } else {
@@ -1279,8 +1287,8 @@ function nextHand() {
   if (!match) { console.error('Invalid ID format'); return; }
 
   var groupNumber = match[1];
-  var dealNumber  = parseInt(match[2], 10) + 1;
-  var newId       = 'Group' + groupNumber + 'Deal' + dealNumber;
+  var dealNumber = parseInt(match[2], 10) + 1;
+  var newId = 'Group' + groupNumber + 'Deal' + dealNumber;
 
   if (!groupData[groupNumber]) loadGroupData();
 
@@ -1303,8 +1311,8 @@ function showNextHandSummaryOnly() {
   if (!match) { console.error('Invalid currentId format', currentId); return; }
 
   var groupNumber = match[1];
-  var dealNumber  = parseInt(match[2], 10) + 1;
-  var newId       = 'Group' + groupNumber + 'Deal' + dealNumber;
+  var dealNumber = parseInt(match[2], 10) + 1;
+  var newId = 'Group' + groupNumber + 'Deal' + dealNumber;
 
   if (!groupData[groupNumber]) loadGroupData();
 
@@ -1400,11 +1408,11 @@ function setVul(vul) {
 function setDealer(direction) {
   var seat = interpretSeatString(direction);
   if (seat >= 0) {
-    dealer   = seat;
+    dealer = seat;
     whosTurn = seat;
     manageWhosTurn();
     manageInfoDiv();
-    auctionTableDiv.style.visibility   = 'visible';
+    auctionTableDiv.style.visibility = 'visible';
     auctionHeadingDiv.style.visibility = 'visible';
     return true;
   }
@@ -1492,7 +1500,7 @@ function insertSuitHTML(msg) {
 function processBidding(bidding) {
   var i = 0;
   while (i < bidding.length) {
-    var c   = bidding.charAt(i).toUpperCase();
+    var c = bidding.charAt(i).toUpperCase();
     var len = 0;
 
     if (c === '-') { i++; continue; }
@@ -1505,9 +1513,9 @@ function processBidding(bidding) {
     }
     if (len === 0) break;
 
-    callAnnotation[bidSeqPoint + 1]  = null;
+    callAnnotation[bidSeqPoint + 1] = null;
     callExplanation[bidSeqPoint + 1] = '';
-    bidSequence[bidSeqPoint + 1]     = bidding.substring(i, i + len);
+    bidSequence[bidSeqPoint + 1] = bidding.substring(i, i + len);
     bidSeqMax = bidSeqPoint + 1;
     bidSeqPoint++;
 
@@ -1556,20 +1564,20 @@ function processLinFile(lin) {
 
   var startIndex = 0;
   while (startIndex < lin.length) {
-    var openPipeIndex  = lin.indexOf('|', startIndex);
+    var openPipeIndex = lin.indexOf('|', startIndex);
     if (openPipeIndex < 2) break;
     var closePipeIndex = lin.indexOf('|', openPipeIndex + 1);
     if (closePipeIndex < 0) break;
 
     var command = lin.substring(openPipeIndex - 2, openPipeIndex).toUpperCase();
-    var param   = lin.substring(openPipeIndex + 1, closePipeIndex);
+    var param = lin.substring(openPipeIndex + 1, closePipeIndex);
 
     processLinCommand(command, param);
     startIndex = closePipeIndex + 1;
   }
 
   playSeqPoint = 0;
-  bidSeqPoint  = -1;
+  bidSeqPoint = -1;
 
   // Advance auction to end position
   if (!endPosition()) next();
@@ -1579,18 +1587,18 @@ function processLinFile(lin) {
     var level = parseInt(displayType.charAt(1));
     if (level > 0 && level < 8 && displayType.length === 4) {
       contractLevel = level;
-      trump         = suitchars.indexOf(displayType.charAt(2).toUpperCase());
-      declarer      = interpretSeatString(displayType.charAt(3));
-      whosTurn      = declarer + 1;
+      trump = suitchars.indexOf(displayType.charAt(2).toUpperCase());
+      declarer = interpretSeatString(displayType.charAt(3));
+      whosTurn = declarer + 1;
       if (whosTurn > 3) whosTurn = 0;
     } else {
       whosTurn = interpretSeatString(displayType.charAt(1));
-      trump    = (displayType.length > 2) ? suitchars.indexOf(displayType.charAt(2).toUpperCase()) : 4;
+      trump = (displayType.length > 2) ? suitchars.indexOf(displayType.charAt(2).toUpperCase()) : 4;
     }
   }
 
   if (numHandsShowing < 4) {
-    fastVersion     = true;
+    fastVersion = true;
     picturesOfCards = false;
   }
 
@@ -1603,22 +1611,22 @@ function processLinFile(lin) {
 // Fallback: load from individual URL params (v, d, b, s, w, n, e, a, p …)
 // ─────────────────────────────────────────────────────────────
 function loadParams(source) {
-  var pVul      = gup('v', source);
-  var pDealer   = gup('d', source);
-  var pBoard    = gup('b', source);
-  var pSouth    = gup('s', source);
-  var pWest     = gup('w', source);
-  var pNorth    = gup('n', source);
-  var pEast     = gup('e', source);
-  var pIntro    = safeDecode(gup('i', source));
+  var pVul = gup('v', source);
+  var pDealer = gup('d', source);
+  var pBoard = gup('b', source);
+  var pSouth = gup('s', source);
+  var pWest = gup('w', source);
+  var pNorth = gup('n', source);
+  var pEast = gup('e', source);
+  var pIntro = safeDecode(gup('i', source));
   var pSouthName = safeDecode(gup('sn', source));
-  var pWestName  = safeDecode(gup('wn', source));
+  var pWestName = safeDecode(gup('wn', source));
   var pNorthName = safeDecode(gup('nn', source));
-  var pEastName  = safeDecode(gup('en', source));
-  var pAuction   = safeDecode(gup('a', source));
-  var pClaim     = gup('c', source);
-  var pPlay      = safeDecode(gup('p', source));
-  var pKibitz    = gup('k', source);
+  var pEastName = safeDecode(gup('en', source));
+  var pAuction = safeDecode(gup('a', source));
+  var pClaim = gup('c', source);
+  var pPlay = safeDecode(gup('p', source));
+  var pKibitz = gup('k', source);
 
   var dealerNum = interpretSeatString(pDealer) + 1;
   if (dealerNum <= 0) dealerNum = 3;
@@ -1627,7 +1635,7 @@ function loadParams(source) {
   var sk = 'sk|' + pKibitz + '|';
   var md = 'md|' + dealerNum + pSouth + ',' + pWest + ',' + pNorth + ',' + pEast + '|';
   var pn = 'pn|' + encodePlayerName(pSouthName) + ',' + encodePlayerName(pWestName) + ','
-                 + encodePlayerName(pNorthName) + ',' + encodePlayerName(pEastName) + '|';
+    + encodePlayerName(pNorthName) + ',' + encodePlayerName(pEastName) + '|';
 
   var dt = 'dt|';
   var hands = [pSouth, pWest, pNorth, pEast];
@@ -1644,9 +1652,9 @@ function loadParams(source) {
   }
   dt += '|';
 
-  var sv    = 'sv|' + pVul + '|';
+  var sv = 'sv|' + pVul + '|';
   var board = parseInt(pBoard);
-  var ah    = (board > 0) ? 'ah|Board ' + board + '|' : '';
+  var ah = (board > 0) ? 'ah|Board ' + board + '|' : '';
 
   var bidding = '';
   var startPoint = 0, endPoint;
@@ -1703,7 +1711,7 @@ function loadParams(source) {
 // ─────────────────────────────────────────────────────────────
 function gup(name, source) {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  var regex   = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   var results = source ? regex.exec(source) : regex.exec(window.location.href);
   return (results == null) ? '' : results[1];
 }
@@ -1791,17 +1799,17 @@ function showHand(seat) {
   return false;
 }
 
-function showMovie()     { return displayType === ''; }
-function auctionOnly()   { return displayType === 'A'; }
-function endPosition()   { return displayType.charAt(0).toUpperCase() === 'P'; }
+function showMovie() { return displayType === ''; }
+function auctionOnly() { return displayType === 'A'; }
+function endPosition() { return displayType.charAt(0).toUpperCase() === 'P'; }
 
 function showAuction() {
   return (displayType === '') || auctionOnly() || (displayType.indexOf('A') !== -1);
 }
 
-function showInfoDiv()   { return showMovie(); }
+function showInfoDiv() { return showMovie(); }
 function showTricksDiv() { return showMovie() || endPosition(); }
-function showVul()       { return true; }
+function showVul() { return true; }
 
 function showButtonBar() {
   return mainDivShowing && (showMovie() || (endPosition() && playSeqMax >= 0));
@@ -1810,7 +1818,7 @@ function showButtonBar() {
 function showAnnotations() { return false; } // no annotDiv on summary screen
 
 function setDisplayType(param) {
-  displayType     = param.toUpperCase();
+  displayType = param.toUpperCase();
   numHandsShowing = 0;
   for (var seat = 0; seat < 4; seat++) {
     handShowing[seat] = showHand(seat);
@@ -1826,15 +1834,15 @@ function positionHandsContainer() {
   var container = document.getElementById('hands-container');
   if (!container) return;
 
-  var minLeft   = Math.min(xpos[0], xpos[1], xpos[2], xpos[3]);
-  var minTop    = Math.min(ypos[0], ypos[1], ypos[2], ypos[3]);
-  var maxRight  = Math.max(xpos[0] + handWidth, xpos[1] + handWidth, xpos[2] + handWidth, xpos[3] + handWidth);
+  var minLeft = Math.min(xpos[0], xpos[1], xpos[2], xpos[3]);
+  var minTop = Math.min(ypos[0], ypos[1], ypos[2], ypos[3]);
+  var maxRight = Math.max(xpos[0] + handWidth, xpos[1] + handWidth, xpos[2] + handWidth, xpos[3] + handWidth);
   var maxBottom = Math.max(ypos[0] + handHeight, ypos[1] + handHeight, ypos[2] + handHeight, ypos[3] + handHeight);
 
-  container.style.left   = (minLeft - margin) + 'px';
-  container.style.top    = (minTop  - margin / 2) + 'px';
-  container.style.width  = (maxRight  - minLeft + 2 * margin) + 'px';
-  container.style.height = (maxBottom - minTop  + 2 * margin) + 'px';
+  container.style.left = (minLeft - margin) + 'px';
+  container.style.top = (minTop - margin / 2) + 'px';
+  container.style.width = (maxRight - minLeft + 2 * margin) + 'px';
+  container.style.height = (maxBottom - minTop + 2 * margin) + 'px';
 }
 
 function drawHandsBox() {
@@ -1842,29 +1850,26 @@ function drawHandsBox() {
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
 
-  canvas.width  = window.innerWidth;
+  canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  var left    = Math.min(xpos[0], xpos[1], xpos[2], xpos[3]);
-  var top     = Math.min(ypos[0], ypos[1], ypos[2], ypos[3]);
-  var right   = Math.max(xpos[0] + handWidth, xpos[1] + handWidth, xpos[2] + handWidth, xpos[3] + handWidth);
-  var bottom  = Math.max(ypos[0] + handHeight, ypos[1] + handHeight, ypos[2] + handHeight, ypos[3] + handHeight);
+  var left = Math.min(xpos[0], xpos[1], xpos[2], xpos[3]);
+  var top = Math.min(ypos[0], ypos[1], ypos[2], ypos[3]);
+  var right = Math.max(xpos[0] + handWidth, xpos[1] + handWidth, xpos[2] + handWidth, xpos[3] + handWidth);
+  var bottom = Math.max(ypos[0] + handHeight, ypos[1] + handHeight, ypos[2] + handHeight, ypos[3] + handHeight);
 
-  var padding    = 15;
+  var padding = 15;
   var topPadding = 25;
-  var rightShift = 20;
-
-  left  += rightShift;
-  right += rightShift;
+  var rightShift = isMobileLayout() ? 20 : 20;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.strokeStyle = '#ffce00';
-  ctx.lineWidth   = 4;
+  ctx.lineWidth = 4;
   ctx.strokeRect(
-    left  - padding,
-    top   - padding + topPadding,
-    right - left  + padding * 2,
-    bottom - top  + padding * 2
+    left - padding + rightShift,
+    top - padding + topPadding,
+    right - left + padding * 2,
+    bottom - top + padding * 2
   );
 }
 
@@ -1872,20 +1877,20 @@ function drawHandsBox() {
 // Button resize
 // ─────────────────────────────────────────────────────────────
 function resizeButtons() {
-  var newWidth  = handWidth  * 0.116;
+  var newWidth = handWidth * 0.116;
   var newHeight = handHeight * 0.17;
 
   document.querySelectorAll('.number').forEach(function (btn) {
     btn.style.marginRight = margin / 2000 + 'px';
-    btn.style.width       = newWidth + 'px';
-    btn.style.height      = suitHeight + 'px';
-    btn.style.fontSize    = suitHeight * 0.8 + 'px';
+    btn.style.width = newWidth + 'px';
+    btn.style.height = suitHeight + 'px';
+    btn.style.fontSize = suitHeight * 0.8 + 'px';
   });
   document.querySelectorAll('.suit').forEach(function (btn) {
     btn.style.marginRight = margin / 2000 + 'px';
-    btn.style.width       = newWidth * 1.4 + 'px';
-    btn.style.height      = suitHeight + 'px';
-    btn.style.fontSize    = suitHeight * 1.15 + 'px';
+    btn.style.width = newWidth * 1.4 + 'px';
+    btn.style.height = suitHeight + 'px';
+    btn.style.fontSize = suitHeight * 1.15 + 'px';
   });
 }
 
@@ -1916,7 +1921,7 @@ function fatalError(message) {
 // ─────────────────────────────────────────────────────────────
 function loadGroupData() {
   // Each group file defines a global like group11Data, group12Data, …
-  var groups = [11,12,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38];
+  var groups = [11, 12, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38];
   groups.forEach(function (g) {
     var varName = 'group' + g + 'Data';
     if (typeof window[varName] !== 'undefined') groupData[String(g)] = window[varName];
@@ -1936,7 +1941,7 @@ function loadGroupTextData() {
   if (!match) { console.error('loadGroupTextData: cannot determine group from', currentId); return; }
 
   var groupNum = match[1];
-  var varName  = 'group' + groupNum + 'DealText';
+  var varName = 'group' + groupNum + 'DealText';
 
   if (typeof window[varName] !== 'undefined') {
     groupTextData[groupNum] = window[varName];
@@ -1953,9 +1958,9 @@ function updateTextContainer() {
   var match = currentId.match(/Group(\d+)Deal(\d+)/);
   if (!match) { console.error('updateTextContainer: invalid ID', currentId); return; }
 
-  var groupNum      = match[1];
-  var boardNum      = match[2];
-  var dealPropName  = 'Group' + groupNum + 'Deal' + boardNum;
+  var groupNum = match[1];
+  var boardNum = match[2];
+  var dealPropName = 'Group' + groupNum + 'Deal' + boardNum;
 
   loadGroupTextData();
 
@@ -1963,7 +1968,7 @@ function updateTextContainer() {
     var rawText = groupTextData[groupNum][dealPropName];
 
     var biddingMatch = rawText.match(/The Bidding([\s\S]*?)(?=The Play|$)/i);
-    var playMatch    = rawText.match(/The Play([\s\S]*)/i);
+    var playMatch = rawText.match(/The Play([\s\S]*)/i);
 
     function buildSection(title, sectionText) {
       var sentences = sectionText.replace(/\s+/g, ' ').trim()
@@ -1978,7 +1983,7 @@ function updateTextContainer() {
 
     var html = '';
     if (biddingMatch) html += buildSection('The Bidding', biddingMatch[1]);
-    if (playMatch)    html += buildSection('The Play',    playMatch[1]);
+    if (playMatch) html += buildSection('The Play', playMatch[1]);
 
     textContainer.innerHTML = html || rawText;
   } else {
