@@ -401,30 +401,33 @@ function respondToResizeMobile(div) {
   div.style.top = '0px';
   div.style.left = '0px';
   div.style.width = totalWidth + 'px';   // explicit px beats CSS 42%
-  div.style.height = handAreaHeight + 'px';
-
-  // Text panel: full width, directly below hands
-  var tc = document.getElementById('textContainer');
-  if (tc) {
-    tc.style.position = 'absolute';
-    tc.style.top = handAreaHeight + 'px';
-    tc.style.left = '0px';
-    tc.style.width = totalWidth + 'px';
-    tc.style.height = textAreaHeight + 'px';
-    tc.style.overflowY = 'auto';
-  }
-
-  // Button bar: full width, pinned at bottom
-  var buttonDiv = document.getElementById('buttonDiv');
-  buttonDiv.style.position = 'absolute';
-  buttonDiv.style.top = (handAreaHeight + textAreaHeight) + 'px';
-  buttonDiv.style.left = '0px';
-  buttonDiv.style.width = totalWidth + 'px';
-  buttonDiv.style.height = buttonDivHeight + 'px';
-  buttonDiv.style.visibility = 'visible';
-
-  buttonHeight = Math.max(24, buttonDivHeight - 2 * margin);
-  buttonFontSize = buttonHeight / 2;
+  var MOBILE_HEIGHT_TRIM = 0.84;  // reduce to cut more green below South
+    var trimmedHeight = Math.round(handAreaHeight * MOBILE_HEIGHT_TRIM);
+  
+    div.style.height = trimmedHeight + 'px';
+  
+    // Text panel: full width, directly below hands
+    var tc = document.getElementById('textContainer');
+    if (tc) {
+      tc.style.position = 'absolute';
+      tc.style.top = trimmedHeight + 'px';
+      tc.style.left = '0px';
+      tc.style.width = totalWidth + 'px';
+      tc.style.height = (textAreaHeight + (handAreaHeight - trimmedHeight)) + 'px';
+      tc.style.overflowY = 'auto';
+    }
+  
+    // Button bar: full width, pinned at bottom
+    var buttonDiv = document.getElementById('buttonDiv');
+    buttonDiv.style.position = 'absolute';
+    buttonDiv.style.top = (trimmedHeight + textAreaHeight + (handAreaHeight - trimmedHeight)) + 'px';
+    buttonDiv.style.left = '0px';
+    buttonDiv.style.width = totalWidth + 'px';
+    buttonDiv.style.height = buttonDivHeight + 'px';
+    buttonDiv.style.visibility = 'visible';
+  
+    buttonHeight = Math.max(24, buttonDivHeight - 2 * margin);
+    buttonFontSize = buttonHeight / 2;
   if (menuTable) menuTable.style.fontSize = buttonFontSize + 'px';
 
   positionHandCompass(div);
