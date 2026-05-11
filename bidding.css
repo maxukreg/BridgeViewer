@@ -791,3 +791,100 @@ span.southCompactSuitBottom {
     transform: none !important;
   }
 }
+/* ================================================================
+   BIDDING BOX RESKIN — paste this at the bottom of bidding.css
+   ================================================================ */
+
+.container#biddingBox {
+  background: #1c1c1c;
+  border: 2px solid #555;
+  border-radius: 8px;
+  padding: 6px;
+  gap: 5px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+  min-width: 230px;
+}
+
+#biddingBox button {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: filter 0.1s, transform 0.08s;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+#biddingBox button:hover  { filter: brightness(1.2); }
+#biddingBox button:active { transform: scale(0.93); }
+
+#biddingBox .actions {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  border-bottom: 1px solid #444;
+  padding-bottom: 6px;
+}
+#biddingBox .actions .action {
+  flex: 1;
+  height: 36px;
+  font-size: 15px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+#biddingBox #pass  { background: #1a7a1a; }
+#biddingBox #dbl   { background: #aa0000; }
+#biddingBox #redbl { background: #000099; }
+
+#biddingBox .numbers {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  border-bottom: 1px solid #444;
+  padding-bottom: 6px;
+  white-space: nowrap;
+}
+#biddingBox .numbers .number {
+  flex: 1;
+  height: 32px;
+  font-size: 16px;
+  background: #f0ede0;
+  color: #000000;
+  border-color: #888;
+  min-width: 0;
+}
+#biddingBox .numbers .number.selected {
+  background: #FFCE00;
+  border-color: #aa8800;
+}
+
+#biddingBox .suits {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  visibility: visible !important;
+}
+#biddingBox .suits .suit {
+  flex: 1;
+  height: 38px;
+  font-size: 24px;
+  background: #f0ede0;
+  color: #000000;
+  border-color: #888;
+  min-width: 0;
+  padding-bottom: 3px;
+}
+#biddingBox .suits .suit:nth-child(1) { color: #111111; }
+#biddingBox .suits .suit:nth-child(2) { color: #cc4400; }
+#biddingBox .suits .suit:nth-child(3) { color: #cc0000; }
+#biddingBox .suits .suit:nth-child(4) { color: #000077; }
+#biddingBox .suits .suit:nth-child(5) { font-size: 14px; color: #333333; }
+
+@media (max-width: 600px) {
+  .container#biddingBox        { min-width: 190px; padding: 4px; gap: 4px; }
+  #biddingBox .actions .action { height: 30px; font-size: 13px; }
+  #biddingBox .numbers .number { height: 28px; font-size: 14px; }
+  #biddingBox .suits   .suit   { height: 32px; font-size: 20px; }
+  #biddingBox .suits .suit:nth-child(5) { font-size: 12px; }
+}
