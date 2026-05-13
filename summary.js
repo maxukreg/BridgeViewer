@@ -1009,7 +1009,7 @@ function clearDeck() {
   manageAlertDiv();
 
   disableButton('play', false);
-  disableButton('next', true);
+  disableButton('next', false);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -1287,24 +1287,35 @@ function next() {
 // ─────────────────────────────────────────────────────────────
 function nextHand() {
   var match = currentId.match(/Group(\d+)Deal(\d+)/);
-  if (!match) { console.error('Invalid ID format'); return; }
+  if (!match) {
+    console.error('Invalid ID format');
+    return;
+  }
 
   var groupNumber = match[1];
   var dealNumber = parseInt(match[2], 10) + 1;
   var newId = 'Group' + groupNumber + 'Deal' + dealNumber;
 
-  if (!groupData[groupNumber]) loadGroupData();
-
+  // Try group data first
   if (groupData[groupNumber]) {
-    var linkData = groupData[groupNumber].find(function (item) { return item.id === newId; });
+    var linkData = groupData[groupNumber].find(item => item.id === newId);
     if (linkData) {
       window.location.href = htmlLoc + '?' + linkData.query;
-    } else {
-      console.error('Link data not found for ID:', newId);
+      return;
     }
-  } else {
-    console.error('Data for Group', groupNumber, 'not found');
   }
+
+  // Fallback: try lin param from URL
+  var linParam = new URLSearchParams(window.location.search).get('lin');
+  if (linParam) {
+    // Reconstruct next hand from current lin, or show message
+    console.log('Next hand fallback: group data missing, using URL params');
+    // For now, just warn instead of erroring
+    alert('Next hand data not available in group ' + groupNumber);
+    return;
+  }
+
+  console.error('Link data not found for ID:', newId);
 }
 
 function showNextHandSummaryOnly() {
@@ -2001,15 +2012,43 @@ function updateTextContainer() {
 document.addEventListener('DOMContentLoaded', function () {
 
   function initializeDisplay() {
+    // Instant loading feedback
+    var el = document.getElementById('statusDiv');
+    if (el) el.innerHTML = 'Loading deal...';
+
     if (typeof currentId !== 'string' || !currentId) {
-      var el = document.getElementById('textContainer');
-      if (el) el.innerHTML = 'Please select a deal.';
+      var textEl = document.getElementById('textContainer');
+      if (textEl) textEl.innerHTML = 'Please select a deal.';
       return;
     }
-    loadGroupTextData();
+
+    // Fast text loading - only current deal
+    var match = currentId.match(/Group(\\d+)Deal(\\d+)/);
+    if (match) {
+      var groupNum = match[1];
+      var varName = 'group' + groupNum + 'DealText';
+      if (typeof window[varName] !== 'undefined') {
+        groupTextData[groupNum] = window[varName];
+      }
+    }
+
+    // Group data fix (your existing code)
+    var groups = [11, 12, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38];
+    groups.forEach(function (g) {
+      var varName = 'group' + g + 'Data';
+      try {
+        if (typeof eval(varName) === 'object' && !groupData[String(g)]) {
+          groupData[String(g)] = eval(varName);
+        }
+      } catch (e) { }
+    });
+
     updateTextContainer();
-    respondToResize();
     drawHandsBox();
+    respondToResize();  // Last - fast now that DOM is ready
+
+    // Hide loading
+    if (el) el.style.visibility = 'hidden';
   }
 
   function waitForData() {
