@@ -1,0 +1,40 @@
+Please extract all bridge deals from the attached document. For each deal, output the following, using plain text with no quotation marks anywhere in the output:
+
+Output RAW CSV text ONLY. NO ``` fences, NO "text -" headers.
+
+The deal number on its own line, prefixed with deal, and the deal number, e.g.
+deal,33
+
+On the next line, the dealer (e.g. South dealer)
+
+On the next line, the vulnerability (e.g. East-West vulnerable)
+
+Then one or more lines giving the bidding sequence:
+
+Each bid is the level (1–7) followed by the first letter of the suit (C, D, H, S, N)
+
+Use X for double and XX for redouble
+
+Use P for pass
+
+Separate each bid with a comma
+
+Limit each line to four bids, then start a new line for the next four bids
+
+Very important formatting rules:
+
+Do not put any line in quotes.
+
+Do not put the bidding lines in quotes.
+
+Do not add any extra characters around the lines.
+
+The output must look exactly like this example (including line breaks and commas, but with no quotation marks):
+
+
+deal,1
+North dealer
+Both sides vulnerable
+1D,P,2N,P
+3N,P,P,P
+Provide the output inside a text block so it can easily be copied.

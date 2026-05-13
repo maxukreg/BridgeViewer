@@ -1,0 +1,23 @@
+Please read the attached PDF and transcribe the text with the following rules:
+
+Output a single continuous text block to be copied:.
+
+Keep the logical structure by deal:
+
+Start each deal with its heading (for example: DEAL NO. 33).
+
+Then include: dealer/vulnerability lines, the table of bidding (SOUTH/WEST/NORTH/EAST with calls),
+When transcribing suit symbols in the bidding table (e.g. 2♥, 3♠), replace the suit symbol with its first letter only: S for spades, H for hearts, D for diamonds, C for clubs. So 2♥ becomes 2H, 3♠ becomes 3S, etc.
+
+After that  the prose sections like “The Bidding”, “The Play”, and any concluding commentary.
+
+Do NOT transcribe any of the card hands:
+
+Omit all lines that show the North/South/East/West hands with card symbols or ranks (for example anything like NORTH, then lines beginning with ♠, ♥, ♦, ♣, or card ranks such as A, K, Q, J, 10 etc. arranged as a hand).
+
+If a block of text is just the four hands, skip that block entirely.
+
+Preserve paragraph breaks between logical paragraphs, but you don’t need to preserve the exact line wrapping from the printed page.
+
+Do not add explanations or commentary of your own; just provide the cleaned transcription following the rules above.
+

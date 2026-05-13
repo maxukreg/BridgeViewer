@@ -1,0 +1,115 @@
+Use the attached two images of a bridge deal: one shows North/South, the other East/West.
+
+Your task is to transcribe the deal into a small CSV table suitable for pasting directly into Excel, using the following rules.
+
+1. Header line
+At the very top, output one header line with two comma‑separated fields:
+
+Group X
+
+Deal Y
+
+Read X and Y from the caption at the top of the images (for example, Group 27 and Deal 1).
+
+Example header:
+
+Group 27,Deal 1
+
+2. General layout
+After the header, output eight more lines. Each line must contain only the 13 comma-separated values (either card codes or sequence numbers).
+
+The order of lines must be:
+North cards
+North sequence
+South cards
+South sequence
+East cards
+East sequence
+West cards
+West sequence
+
+3. Reading the cards
+For each hand (North, South, East, West):
+
+Each hand is printed on two horizontal rows.
+
+Read the cards in visual order:
+
+First the upper row from left to right.
+
+Then the lower row from left to right.
+
+This yields 13 cards per hand.
+
+4. Card encoding (cards lines, Type = C)
+For the 13 card fields, use RankSuit codes with no spaces.
+
+Ranks: A K Q J T 9 8 7 6 5 4 3 2
+
+Ten is always T, never 10.
+
+Suits:
+
+S = spades
+
+H = hearts
+
+D = diamonds
+
+C = clubs
+
+Examples:
+
+Ace of Spades → AS
+
+Queen of Hearts → QH
+
+Ten of Diamonds → TD
+
+Three of Clubs → 3C
+
+5. Sequence encoding (sequence lines, Type = Q)
+Each sequence line has the same hand letter, Q as the type, and 13 numeric fields.
+
+North and South
+
+Use the actual digits printed under each card in the image.
+
+Preserve the same positional order as the cards line for that hand.
+
+East (placeholder sequence)
+
+Use a countdown from 13 to 1 in order:
+
+13,12,11,10,9,8,7,6,5,4,3,2,1
+
+West (placeholder sequence)
+
+Use a count‑up from 1 to 13:
+
+1,2,3,4,5,6,7,8,9,10,11,12,13
+
+Ignore any artefacts. 
+
+6. Output format
+Wrap only the final 9 lines (header + 8 data lines) inside a single Markdown code block tagged as text, like this:
+
+text
+Group 27,Deal 1
+KS,JS,3S,AH,QH,5H,JC,TC,5C,AD,KD,5D,2D
+13,4,2,6,1,8,7,3,5,12,11,10,9
+AS,QS,KH,6H,2H,AC,KC,8C,3C,2C,6D,4D,3D
+2,4,8,6,1,9,10,7,5,3,13,12,11
+QD,JD,TD,7D,9S,JH,8S,4H,6S,5S,8D,2S,3H
+13,12,11,10,9,8,7,6,5,4,3,2,1
+TH,4S,6C,7S,QC,9H,4C,7H,7C,9S,9D,8H,TS
+1,2,3,4,5,6,7,8,9,10,11,12,13
+Replace the sample rows with the actual data from the images.
+
+Do not add any explanations, comments, or extra lines outside the code block.
+
+The output must be ready for a user to select inside the code block, copy, and paste directly into Excel so each comma‑separated value goes into its own cell.”
+
+
+
+

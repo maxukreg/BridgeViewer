@@ -1,0 +1,41 @@
+
+TASK: Deep Visual Analysis & Bridge Deal Transcription
+
+Instructions:
+Analyze the attached images (North/South and East/West) and transcribe the deal into a strict 9-line comma-separated block.
+
+Visual Protocol:
+
+Scanning: For every hand, read the upper row (left-to-right) first, then the lower row (left-to-right).
+
+Differentiation: Verify every black suit carefully. Spades have a sharp point; Clubs have round lobes.
+
+Ranks: Use T for Ten. Never use 10.
+
+Output Format Rules:
+
+Output only a Markdown code block.
+
+Do not use a language tag (like text or csv) after the opening backticks.
+
+No conversational filler or explanations.
+
+Row Structure (9 Lines Total):
+
+Header: Group,X,Deal,Y (Extract X and Y from the label at the top of the image).
+
+North Cards: 13 RankSuit codes (e.g., KS,TD,3C).
+
+North Sequence: The 13 integers printed under the North cards.
+
+South Cards: 13 RankSuit codes.
+
+South Sequence: The 13 integers printed under the South cards.
+
+East Cards: 13 RankSuit codes.
+
+East Sequence: Use exactly: 13,12,11,10,9,8,7,6,5,4,3,2,1
+
+West Cards: 13 RankSuit codes.
+
+West Sequence: Use exactly: 1,2,3,4,5,6,7,8,9,10,11,12,13

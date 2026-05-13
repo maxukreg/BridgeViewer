@@ -1,0 +1,70 @@
+# Prompt for group number
+$groupNumber = Read-Host "Enter group number"
+# Validate it's a number
+if (-not [int]::TryParse($groupNumber, [ref]$null)) {
+    Write-Error "Please enter a valid number"; exit
+}
+$groupNumber = [int]$groupNumber
+
+# Create backup folder
+$backupFolder = "backup"
+if (-not (Test-Path $backupFolder)) {
+    New-Item -ItemType Directory -Path $backupFolder | Out-Null
+}
+
+# Backup ALL PNG files first
+$allPngFiles = Get-ChildItem -Filter "*.png"
+foreach ($file in $allPngFiles) {
+    $backupPath = Join-Path $backupFolder $file.Name
+    Copy-Item -Path $file.FullName -Destination $backupPath -Force
+}
+Write-Host "Backed up $($allPngFiles.Count) files"
+
+# **STEP 1**: Rename file WITHOUT brackets to (1)
+$noBracketFile = Get-ChildItem -Filter "*Scan_*.png" | Where-Object { $_.Name -notmatch '\([0-9.]+\)\.png$' }
+if ($noBracketFile) {
+    $baseName = $noBracketFile.BaseName
+    $newBracketName = "$baseName (1).png"
+    Rename-Item -Path $noBracketFile.FullName -NewName $newBracketName
+    Write-Host "Renamed '$($noBracketFile.Name)' → '$newBracketName'"
+}
+
+# **STEP 2**: DECIMAL FLOAT SORT by bracket number (1, 2, 2.5, 3, 10, 10.5, 11...)
+$files = Get-ChildItem -Filter "*.png" | Sort-Object { 
+    if ($_.Name -match '\(([0-9.]+)\)\.png$') { 
+        [double]$matches[1] 
+    } else { 
+        999999.0 
+    }
+}
+
+# **VERIFY CORRECT NUMERICAL ORDER**
+Write-Host "`nCORRECT Decimal numerical sorting order:"
+for ($i = 0; $i -lt $files.Count; $i++) {
+    Write-Host "  $($i+1): $($files[$i].Name)"
+}
+$confirm = Read-Host "`nIs this order correct? (Y/N)"
+if ($confirm -ne 'Y' -and $confirm -ne 'y') { Write-Host "Stopped."; exit }
+
+# Determine starting suffix
+$startSuffix = if ($groupNumber % 2 -eq 1) { 1 } else { 33 }
+$tempFiles = @()
+$counter = $startSuffix
+
+# Step 3: Safe rename preserving NUMERICAL order
+foreach ($file in $files) {
+    $tempName = "temp-$counter-$(Get-Random).png"
+    $tempFiles += @{TempName=$tempName}
+    Rename-Item -Path $file.FullName -NewName $tempName
+    $counter++
+}
+
+# Step 4: Final names
+$counter = $startSuffix
+foreach ($tempFile in $tempFiles) {
+    $newName = "s-$groupNumber-$counter.png"
+    Rename-Item -Path $tempFile.TempName -NewName $newName
+    $counter++
+}
+
+Write-Host "Done! Files renamed s-$groupNumber-$startSuffix onwards. Backup in '$backupFolder'"
