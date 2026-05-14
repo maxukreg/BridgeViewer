@@ -1,7 +1,7 @@
 const group24Data = [
     {
         "id": "Group24Deal33",
-        "query": "bbo=y&lin=qx|o33|md|3SKT983HA52DQ7CAJ4,SQ76HK863DJ982C95,SAJ2HQT74DA5CKT63|rh|Group 24|ah|Board 33|sv|o|mb|1C|mb|p|mb|1S|mb|p|mb|2S|mb|p|mb|4S|mb|p|mb|p|pg||pc|D2|pc|DA|pc|D6|pc|D7|pg||pc|D5|pc|DK|pc|DQ|pc|D8|pg||pc|S5|pc|ST|pc|S6|pc|S2|pg||pc|S3|pc|S7|pc|SJ|pc|S4|pg||pc|SA|pc|D3|pc|S8|pc|SQ|pg||pc|C3|pc|C2|pc|CJ|pc|C5|pg||pc|CA|pc|C9|pc|C6|pc|C7|pg||pc|C4|pc|H3|pc|CK|pc|C8|pg||pc|H4|pc|H9|pc|HA|pc|H6|pg||pc|H2|pc|H8|pc|HQ|pc|HJ|pg||pc|CT|pc|CQ|pc|S9|pc|D9|pg||pc|D4|pc|SK|pc|DJ|pc|H7|pg||pc|HK|pc|HT|pc|DT|pc|H5|pg||"
+        "query": "bbo=y&lin=qx|o33|md|3SKT983HA52DQ7CAJ4,SQ76HK863DJ982C95,SAJ2HQT74DA5CKT63|rh|Group 24|ah|Board 33|sv|o|mb|1C|mb|p|mb|1S|mb|p|mb|2S|mb|p|mb|4S|mb|p|mb|p|mb|p|pg||pc|D2|pc|DA|pc|D6|pc|D7|pg||pc|D5|pc|DK|pc|DQ|pc|D8|pg||pc|S5|pc|ST|pc|S6|pc|S2|pg||pc|S3|pc|S7|pc|SJ|pc|S4|pg||pc|SA|pc|D3|pc|S8|pc|SQ|pg||pc|C3|pc|C2|pc|CJ|pc|C5|pg||pc|CA|pc|C9|pc|C6|pc|C7|pg||pc|C4|pc|H3|pc|CK|pc|C8|pg||pc|H4|pc|H9|pc|HA|pc|H6|pg||pc|H2|pc|H8|pc|HQ|pc|HJ|pg||pc|CT|pc|CQ|pc|S9|pc|D9|pg||pc|SK|pc|DJ|pc|H7|pc|D4|pg||pc|H5|pc|HK|pc|HT|pc|DT|pg||"
     },
     {
         "id": "Group24Deal34",
@@ -17,7 +17,7 @@ const group24Data = [
     },
     {
         "id": "Group24Deal37",
-        "query": "bbo=y&lin=qx|o37|md|1SK985HAK874D65CA4,S6H952DKT743CQ862,SAQ72HQJ63DA8CK95|rh|Group 24|ah|Board 37|sv|b|mb|1H|mb|p|mb|2S|mb|p|mb|3H|mb|p|mb|4H|mb|p|mb|5C|mb|p|mb|5D|mb|p|mb|6H|mb|p|mb|p|pg||pc|D4|pc|DA|pc|D9|pc|D5|pg||pc|HQ|pc|HT|pc|H7|pc|H2|pg||pc|H3|pc|C3|pc|HK|pc|H5|pg||pc|HA|pc|H9|pc|H6|pc|C7|pg||pc|CA|pc|C2|pc|C5|pc|CT|pg||pc|C4|pc|C6|pc|CK|pc|CJ|pg||pc|C9|pc|D2|pc|H4|pc|C8|pg||pc|SA|pc|S3|pc|S5|pc|S6|pg||pc|D8|pc|DJ|pc|D6|pc|D3|pg||pc|SJ|pc|S8|pc|CQ|pc|SQ|pg||pc|S2|pc|S4|pc|S9|pc|D7|pg||pc|SK|pc|DT|pc|S7|pc|ST|pg||pc|H8|pc|DK|pc|HJ|pc|DQ|pg||"
+        "query": "bbo=y&lin=qx|o37|md|1SK985HAK874D65CA4,S6H952DKT743CQ862,SAQ72HQJ63DA8CK95|rh|Group 24|ah|Board 37|sv|b|mb|1H|mb|p|mb|2S|mb|p|mb|3H|mb|p|mb|4H|mb|p|mb|5C|mb|p|mb|5D|mb|p|mb|6H|mb|p|mb|p|mb|p|pg||pc|D4|pc|DA|pc|D9|pc|D5|pg||pc|HQ|pc|HT|pc|H7|pc|H2|pg||pc|H3|pc|C3|pc|HK|pc|H5|pg||pc|HA|pc|H9|pc|H6|pc|C7|pg||pc|CA|pc|C2|pc|C5|pc|CT|pg||pc|C4|pc|C6|pc|CK|pc|CJ|pg||pc|C9|pc|D2|pc|H4|pc|C8|pg||pc|S5|pc|S6|pc|SA|pc|S3|pg||pc|D8|pc|DJ|pc|D6|pc|D3|pg||pc|SJ|pc|S8|pc|CQ|pc|SQ|pg||pc|S2|pc|S4|pc|S9|pc|D7|pg||pc|SK|pc|DT|pc|S7|pc|ST|pg||pc|H8|pc|DK|pc|HJ|pc|DQ|pg||"
     },
     {
         "id": "Group24Deal38",
@@ -81,7 +81,7 @@ const group24Data = [
     },
     {
         "id": "Group24Deal53",
-        "query": "bbo=y&lin=qx|o53|md|1SK72HAK9654DQ3CAQ,S865H8DAKJT74CKT9,SA94HQJT2D9852CJ5|rh|Group 24|ah|Board 53|sv|b|mb|1H|mb|2D|mb|2H|mb|p|mb|4H|mb|p|mb|p|mb|p|pg||pc|DA|pc|D2|pc|D6|pc|D3|pg||pc|DJ|pc|D5|pc|C2|pc|DQ|pg||pc|H4|pc|H8|pc|D8|pc|C3|pg||pc|D4|pc|HT|pc|H3|pc|H5|pg||pc|HJ|pc|H7|pc|H6|pc|S5|pg||pc|HQ|pc|C4|pc|H9|pc|S6|pg||pc|H2|pc|C6|pc|HK|pc|C9|pg||pc|HA|pc|S8|pc|C5|pc|C7|pg||pc|S2|pc|D7|pc|S4|pc|S3|pg||pc|SA|pc|ST|pc|S7|pc|DT|pg||pc|D9|pc|SJ|pc|SK|pc|CT|pg||pc|CJ|pc|C8|pc|CQ|pc|CK|pg||pc|DK|pc|S9|pc|SQ|pc|CA|pg||"
+        "query": "bbo=y&lin=qx|o53|md|1SK72HAK9654DQ3CAQ,S865H8DAKJT74CKT9,SA94HQJT2D9852CJ5|rh|Group 24|ah|Board 53|sv|b|mb|1H|mb|2D|mb|2H|mb|p|mb|4H|mb|p|mb|p|mb|p|pg||pc|DK|pc|D2|pc|D6|pc|D3|pg||pc|DA|pc|D5|pc|C2|pc|DQ|pg||pc|DJ|pc|D8|pc|C3|pc|H4|pg||pc|H5|pc|H8|pc|HT|pc|H3|pg||pc|HJ|pc|H7|pc|H6|pc|D4|pg||pc|HQ|pc|C4|pc|H9|pc|S5|pg||pc|H2|pc|C6|pc|HK|pc|S6|pg||pc|HA|pc|C9|pc|C5|pc|C7|pg||pc|S2|pc|S8|pc|S4|pc|S3|pg||pc|D7|pc|D9|pc|ST|pc|S7|pg||pc|SA|pc|SJ|pc|SK|pc|DT|pg||pc|CJ|pc|C8|pc|CQ|pc|CT|pg||pc|CA|pc|CK|pc|S9|pc|SQ|pg||"
     },
     {
         "id": "Group24Deal54",
