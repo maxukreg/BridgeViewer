@@ -995,13 +995,11 @@ function respondToResize() {
     const auctionWidth = auctionTableDiv.offsetWidth || handWidth;
     const aucLeft = Math.round(southCenter - auctionWidth / 2);
   
-    let aucTabTop;
-    if (biddingBoxEl && biddingBoxEl.style.visibility === 'visible') {
-        aucTabTop = biddingBoxEl.offsetTop - auctionTableDiv.offsetHeight - margin - (availableWidth < 600 ? 23 : 150);
-    } else {
-       aucTabTop = ypos[0] - auctionTableDiv.offsetHeight - margin - (availableWidth < 600 ? 23 : 150);
-    }
+    // AFTER
+    let aucTabTop = vulWrap.offsetTop;
+    aucTabTop = 40;
     const aucHdrTop = aucTabTop - auctionHeadingDiv.offsetHeight;
+    
   
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -1016,8 +1014,7 @@ function respondToResize() {
         });
     });
     auctionTableDiv.style.top = aucTabTop + 'px';
-    auctionHeadingDiv.style.top = aucHdrTop + 'px';
-  
+    
     manageAuctionScrollBar();
   
     alertDiv.style.fontSize = (3 * fontSize) / 4;
